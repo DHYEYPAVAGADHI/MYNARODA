@@ -1,0 +1,81 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Volunteer Leaderboard" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <div class="breadcrumb justify-center mb-4">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "Volunteers" %}</span>
+    </div>
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "Volunteer Hall of Fame" %}</h1>
+    <p class="mt-2 text-forest-200 text-sm md:text-base max-w-xl mx-auto">
+      {% trans "Honoring the champions of Naroda's urban afforestation drive." %}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site max-w-4xl">
+    <div class="text-center mb-12">
+      <div class="section-label mx-auto">🏆 {% trans "Leaderboard" %}</div>
+      <h2 class="heading-section text-2xl md:text-3xl text-forest-950 mt-4">
+        {% trans "Top Environmental Stewards" %}
+      </h2>
+    </div>
+
+    <!-- Leaderboard Table -->
+    <div class="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm reveal">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-gray-50 text-gray-700 text-xs font-semibold uppercase border-b border-gray-200">
+            <th class="p-5 text-center">{% trans "Rank" %}</th>
+            <th class="p-5">{% trans "Name" %}</th>
+            <th class="p-5">{% trans "Level" %}</th>
+            <th class="p-5 text-center">{% trans "Trees Planted" %}</th>
+            <th class="p-5 text-center">{% trans "Hours Logged" %}</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200 text-sm text-gray-600">
+          {% for volunteer in volunteers %}
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="p-5 text-center font-bold text-gray-800 font-serif text-lg">
+                {% if forloop.counter == 1 %}🥇
+                {% elif forloop.counter == 2 %}🥈
+                {% elif forloop.counter == 3 %}🥉
+                {% else %}{{ forloop.counter }}{% endif %}
+              </td>
+              <td class="p-5">
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-forest-50 text-forest-750 font-bold text-xs">
+                    {{ volunteer.full_name|first|upper }}
+                  </span>
+                  <div>
+                    <span class="font-semibold text-gray-900 block leading-snug">{{ volunteer.full_name }}</span>
+                    <span class="text-xs text-gray-400">{% trans "Naroda Resident" %}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="p-5">
+                <span class="badge badge-green">{{ volunteer.get_volunteer_level_display }}</span>
+              </td>
+              <td class="p-5 text-center font-bold text-gray-900 font-serif">{{ volunteer.trees_planted }}</td>
+              <td class="p-5 text-center">{{ volunteer.total_hours }} hrs</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="p-8 text-center text-gray-400">
+                {% trans "No volunteers found on the leaderboard yet." %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

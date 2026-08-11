@@ -1,0 +1,95 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Settings{% endblock %}
+{% block nav_settings %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Platform Settings</div>
+    <div class="ph-sub">Manage administrators, mission targets, and system toggles.</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <!-- System Toggles -->
+  <div class="card">
+    <div class="section-title">System Modules</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:20px;line-height:1.5">
+      Toggle access to public facing modules. When disabled, public users will see a "Maintenance" or "Coming Soon" screen for that section.
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #F3F4F6">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Public Website Live</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">The main landing page</div>
+      </div>
+      <div class="tog on"></div>
+    </div>
+    
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #F3F4F6">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Pledge Registration</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Allow citizens to take the pledge</div>
+      </div>
+      <div class="tog on"></div>
+    </div>
+    
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #F3F4F6">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Student Portal</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Competition entry form</div>
+      </div>
+      <div class="tog on"></div>
+    </div>
+    
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">Organization Signups</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:2px">Allow new organizations to join</div>
+      </div>
+      <div class="tog on"></div>
+    </div>
+  </div>
+
+  <!-- Campaign Configuration -->
+  <div class="card">
+    <div class="section-title">Campaign Target</div>
+    <div class="fg">
+      <label class="fl">Mission Name</label>
+      <input type="text" class="fi" value="Green Naroda · Clean Naroda" disabled>
+    </div>
+    <div class="fg">
+      <label class="fl">Pledge Target</label>
+      <input type="number" class="fi" value="28855" disabled>
+      <div style="font-size:11px;color:var(--text3);margin-top:6px">The final goal for the campaign progress ring.</div>
+    </div>
+    
+    <div class="section-title" style="margin-top:32px">Admin Accounts</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:16px">
+      Users with Mission Control access. To create new admins, use the CLI command:<br>
+      <code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;color:var(--text2);margin-top:6px;display:inline-block">python manage.py create_admin_users</code>
+    </div>
+    
+    <div class="table-wrap">
+      <table class="dt" style="font-size:11.5px">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for admin in admins %}
+          <tr>
+            <td class="td-name">{{ admin.full_name|default:"—" }}</td>
+            <td style="color:var(--text2)">{{ admin.email }}</td>
+            <td><span class="badge badge-gold">{{ admin.get_role_display }}</span></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

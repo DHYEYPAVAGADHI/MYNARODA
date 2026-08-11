@@ -1,0 +1,278 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Sign in — mynaroda" %}{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Google-style account chooser */
+  .google-card {
+    background: #fff;
+    border-radius: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.12), 0 8px 40px rgba(0,0,0,0.06);
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem 2.5rem 2rem;
+  }
+  .google-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .google-logo-text {
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: #202124;
+    letter-spacing: -0.01em;
+  }
+  .google-logo-text span { color: #5f6368; }
+  .google-heading {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #202124;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+  .google-subtext {
+    font-size: 0.875rem;
+    color: #5f6368;
+    margin-bottom: 1.75rem;
+    line-height: 1.5;
+  }
+  .google-input-group {
+    margin-bottom: 1.25rem;
+  }
+  .google-input-label {
+    font-size: 0.875rem;
+    color: #202124;
+    margin-bottom: 0.375rem;
+    display: block;
+  }
+  .google-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1.5px solid #dadce0;
+    border-radius: 4px;
+    font-size: 1rem;
+    color: #202124;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    font-family: 'Google Sans', Inter, sans-serif;
+  }
+  .google-input:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.15);
+  }
+  .google-input::placeholder { color: #aaa; }
+  .google-dev-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    background: #fef3cd;
+    border: 1px solid #f6d860;
+    color: #856404;
+    border-radius: 4px;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+  .google-btn-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  .google-link {
+    font-size: 0.875rem;
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .google-link:hover { text-decoration: underline; }
+  .google-next-btn {
+    background: #1a73e8;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: background 0.15s, box-shadow 0.15s;
+    font-family: 'Google Sans', Inter, sans-serif;
+  }
+  .google-next-btn:hover {
+    background: #1765cc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .google-divider {
+    border: none;
+    border-top: 1px solid #e8eaed;
+    margin: 1.5rem 0;
+  }
+  .google-footer-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .google-footer-link {
+    font-size: 0.75rem;
+    color: #5f6368;
+    text-decoration: none;
+  }
+  .google-footer-link:hover { text-decoration: underline; }
+  .google-lang {
+    font-size: 0.75rem;
+    color: #5f6368;
+    margin-left: auto;
+  }
+  .google-profile-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border: 1.5px solid #dadce0;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .google-profile-row:hover { background: #f8f9fa; }
+  .google-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4285f4, #34a853);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .google-avatar svg { color: white; }
+  .google-profile-info { flex: 1; min-width: 0; }
+  .google-profile-name { font-size: 0.875rem; color: #202124; font-weight: 500; }
+  .google-profile-email { font-size: 0.75rem; color: #5f6368; }
+  .or-text {
+    text-align: center;
+    position: relative;
+    color: #5f6368;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+  }
+  .or-text::before, .or-text::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 42%;
+    height: 1px;
+    background: #e8eaed;
+  }
+  .or-text::before { left: 0; }
+  .or-text::after { right: 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#f1f3f4] flex flex-col items-center justify-center py-12 px-4" style="margin-top: 6rem;">
+  <div class="google-card">
+    
+    <!-- Google Logo (with "G" svg) -->
+    <div class="google-logo">
+      <svg width="28" height="28" viewBox="0 0 48 48">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        <path fill="none" d="M0 0h48v48H0z"/>
+      </svg>
+      <span class="google-logo-text">{% trans "Goo" %}<span>{% trans "gle" %}</span></span>
+    </div>
+
+    <h1 class="google-heading">{% trans "Sign in" %}</h1>
+    <p class="google-subtext">{% trans "to continue to mynaroda" %}</p>
+
+    <!-- Dev Mode Badge -->
+    <div class="google-dev-badge">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      {% trans "Localhost Development Mode" %}
+    </div>
+
+    <!-- Error messages -->
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'error' %}
+          <div style="background:#fce8e6; border-left:3px solid #d93025; padding:0.75rem 1rem; border-radius:4px; margin-bottom:1rem;">
+            <p style="font-size:0.875rem; color:#d93025; margin:0;">{{ message }}</p>
+          </div>
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+
+    <form method="POST" action="{% url 'google_login' %}">
+      {% csrf_token %}
+
+      <div class="google-input-group">
+        <label for="google-email" class="google-input-label">{% trans "Email or phone" %}</label>
+        <input
+          id="google-email"
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          autofocus
+          placeholder="{% trans 'Enter your email address' %}"
+          class="google-input"
+        >
+      </div>
+
+      <div class="google-input-group">
+        <label for="google-name" class="google-input-label">{% trans "Full name" %} <span style="color:#5f6368; font-weight:400">({% trans "optional" %})</span></label>
+        <input
+          id="google-name"
+          name="full_name"
+          type="text"
+          autocomplete="name"
+          placeholder="{% trans 'Your full name' %}"
+          class="google-input"
+        >
+      </div>
+
+      <p style="font-size:0.75rem; color:#5f6368; margin-bottom:1rem; line-height:1.5;">
+        {% trans "Not your computer? Use a private browsing window to sign in." %}
+        <a href="#" class="google-link" style="font-size:0.75rem;">{% trans "Learn more" %}</a>
+      </p>
+
+      <div class="google-btn-row">
+        <a href="{% url 'account_login' %}" class="google-link">{% trans "Use password instead" %}</a>
+        <button type="submit" class="google-next-btn">{% trans "Next" %}</button>
+      </div>
+    </form>
+
+    <hr class="google-divider">
+
+    <div class="flex justify-between items-center flex-wrap gap-2">
+      <div class="google-footer-links">
+        <a href="/privacy/" class="google-footer-link">{% trans "Privacy" %}</a>
+        <a href="/terms/" class="google-footer-link">{% trans "Terms" %}</a>
+      </div>
+      <span class="google-lang">{% trans "India (English)" %}</span>
+    </div>
+
+  </div>
+
+  <!-- mynaroda branding below card -->
+  <div style="margin-top:1.5rem; text-align:center;">
+    <p style="font-size:0.75rem; color:#5f6368;">
+      {% trans "Official portal of" %} <strong style="color:#202124;">{% trans "mynaroda" %}</strong> &mdash; {% trans "Green Naroda Campaign, Government of Gujarat" %}
+    </p>
+  </div>
+</div>
+{% endblock %}

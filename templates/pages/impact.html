@@ -1,0 +1,221 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Campaign Progress Dashboard" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<div class="bg-[#F8FAF8] min-h-screen pt-[120px] pb-24">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Page Header -->
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="text-[#6B7280] font-semibold tracking-wider text-sm mb-3 uppercase">CAMPAIGN ANALYTICS</div>
+      <h1 class="text-[#111827] font-bold font-serif text-4xl md:text-5xl mb-4">Campaign Progress Dashboard</h1>
+      <p class="text-[#4B5563] text-lg">Track pledges, plantation progress, environmental impact, and community participation in real time.</p>
+    </div>
+
+    <!-- 4 Main KPIs -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      <!-- Trees Planted -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="text-[#6B7280] text-sm font-semibold uppercase mb-2">Trees Planted</div>
+        <div class="text-[#111827] text-4xl font-extrabold font-serif mb-1">{{ total_trees_planted|default:"12,450" }}</div>
+        <div class="text-[#166534] text-sm font-semibold">+12.4% this week</div>
+      </div>
+      <!-- Citizens Joined -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="text-[#6B7280] text-sm font-semibold uppercase mb-2">Citizens Joined</div>
+        <div class="text-[#111827] text-4xl font-extrabold font-serif mb-1">{{ total_citizens_joined|default:"5,230" }}</div>
+        <div class="text-[#166534] text-sm font-semibold">+8.2% this week</div>
+      </div>
+      <!-- CO2 Reduced -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="text-[#6B7280] text-sm font-semibold uppercase mb-2">CO₂ Reduced</div>
+        <div class="text-[#111827] text-4xl font-extrabold font-serif mb-1">2,200T</div>
+        <div class="text-[#166534] text-sm font-semibold">Estimated Impact</div>
+      </div>
+      <!-- Wards Covered -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="text-[#6B7280] text-sm font-semibold uppercase mb-2">Wards Covered</div>
+        <div class="text-[#111827] text-4xl font-extrabold font-serif mb-1">12</div>
+        <div class="text-[#166534] text-sm font-semibold">100% City Coverage</div>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+      <!-- Chart 1 -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-[#111827] font-bold font-serif text-xl">Daily pledges</h3>
+          <span class="bg-green-100 text-[#166534] text-xs font-bold px-3 py-1 rounded-full">LIVE</span>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Pledges submitted during the last 7 days.</p>
+        <div class="relative h-[260px] lg:h-[300px] w-full">
+          <canvas id="growthChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Chart 2 -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="flex justify-between items-center mb-2">
+          <h3 class="text-[#111827] font-bold font-serif text-xl">Ward participation</h3>
+          <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">UPDATED</span>
+        </div>
+        <p class="text-sm text-gray-500 mb-4">Share of pledges across major wards.</p>
+        <div class="relative h-[260px] lg:h-[300px] w-full">
+          <canvas id="wardChart"></canvas>
+        </div>
+      </div>
+      
+      <!-- Chart 3 -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-[#111827] font-bold font-serif text-xl">Gender Distribution</h3>
+          <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">UPDATED</span>
+        </div>
+        <div class="relative h-[260px] lg:h-[300px] w-full">
+          <canvas id="genderChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4 -->
+      <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-[#111827] font-bold font-serif text-xl">Age Group Participation</h3>
+          <span class="bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full">UPDATED</span>
+        </div>
+        <div class="relative h-[260px] lg:h-[300px] w-full">
+          <canvas id="ageChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Real-Time Metrics (Environmental Dashboard) -->
+    <div class="mb-12">
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="text-[#6B7280] font-semibold tracking-wider text-sm mb-3 uppercase">REAL-TIME METRICS</div>
+        <h2 class="text-[#111827] font-bold font-serif text-3xl mb-4">Live Environmental Dashboard</h2>
+        <p class="text-[#4B5563] text-lg">Interactive data visualization of our campaign's progress and environmental impact.</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out text-center">
+          <div class="text-[#111827] text-4xl font-extrabold font-serif mb-2" data-counter="{{ est_carbon|default:'2,450' }}">2,450</div>
+          <div class="text-[#6B7280] text-sm font-semibold uppercase">CO₂ Absorbed (kg/yr)</div>
+        </div>
+        <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out text-center">
+          <div class="text-[#111827] text-4xl font-extrabold font-serif mb-2" data-counter="{{ est_oxygen|default:'1,480' }}">1,480</div>
+          <div class="text-[#6B7280] text-sm font-semibold uppercase">Oxygen Produced (L/day)</div>
+        </div>
+        <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out text-center">
+          <div class="text-[#111827] text-4xl font-extrabold font-serif mb-2" data-counter="{{ est_water|default:'12,400' }}">12,400</div>
+          <div class="text-[#6B7280] text-sm font-semibold uppercase">Rainwater Retained (L/yr)</div>
+        </div>
+        <div class="bg-[#FFFFFF] border border-[#E5E7EB] rounded-[18px] p-6 hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:border-[#D1FAE5] transition-all duration-250 ease-in-out text-center">
+          <div class="text-[#111827] text-4xl font-extrabold font-serif mb-2">{{ temp_reduction|default:'1.2' }}°C</div>
+          <div class="text-[#6B7280] text-sm font-semibold uppercase">Temperature Reduction</div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<!-- Chart.js Injection -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chartPlugins = { 
+        legend: { labels: { color: '#111827', font: { size: 13, weight: '600' } } }, 
+        tooltip: { titleColor: '#111827', bodyColor: '#111827', backgroundColor: '#FFFFFF', borderColor: '#E5E7EB', borderWidth: 1 } 
+    };
+    const chartScales = { 
+        x: { ticks: { color: '#4B5563' }, grid: { color: '#E5E7EB' } }, 
+        y: { ticks: { color: '#4B5563' }, grid: { color: '#E5E7EB' } } 
+    };
+    
+    // 1. Campaign Growth Line Chart
+    const dates = JSON.parse('{{ chart_dates|escapejs|default:"[\"Mon\",\"Tue\",\"Wed\",\"Thu\",\"Fri\",\"Sat\",\"Sun\"]" }}');
+    const pledges = JSON.parse('{{ chart_pledges|escapejs|default:"[42, 58, 76, 64, 88, 104, 96]" }}');
+    
+    if (dates.length > 0) {
+        new Chart(document.getElementById('growthChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: dates,
+                datasets: [
+                    {
+                        label: '{% trans "Pledges" %}',
+                        data: pledges,
+                        backgroundColor: '#166534',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: chartPlugins, scales: chartScales }
+        });
+    }
+
+    // 2. Ward Distribution Donut
+    const wardLabels = JSON.parse('{{ chart_ward_labels|escapejs|default:"[\"Ward 1\",\"Ward 2\",\"Ward 3\",\"Ward 4\",\"Ward 5\"]" }}');
+    const wardData = JSON.parse('{{ chart_ward_data|escapejs|default:"[420, 380, 510, 290, 460]" }}');
+    
+    if (wardLabels.length > 0) {
+        new Chart(document.getElementById('wardChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: wardLabels,
+                datasets: [{
+                    data: wardData,
+                    backgroundColor: ['#166534', '#22C55E', '#84CC16', '#EA580C', '#0F766E'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: chartPlugins }
+        });
+    }
+
+    // 3. Gender Pie Chart
+    const genderLabels = JSON.parse('{{ chart_gender_labels|escapejs|default:"[\"Male\",\"Female\",\"Other\"]" }}');
+    const genderData = JSON.parse('{{ chart_gender_data|escapejs|default:"[60, 38, 2]" }}');
+    
+    if (genderLabels.length > 0) {
+        new Chart(document.getElementById('genderChart').getContext('2d'), {
+            type: 'pie',
+            data: {
+                labels: genderLabels,
+                datasets: [{
+                    data: genderData,
+                    backgroundColor: ['#166534', '#22C55E', '#BBF7D0'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF'
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: chartPlugins }
+        });
+    }
+
+    // 4. Age Group Bar Chart
+    const ageLabels = JSON.parse('{{ chart_age_labels|escapejs|default:"[\"18-24\",\"25-34\",\"35-44\"]" }}');
+    const ageData = JSON.parse('{{ chart_age_data|escapejs|default:"[400, 800, 600]" }}');
+    
+    if (ageLabels.length > 0) {
+        new Chart(document.getElementById('ageChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ageLabels,
+                datasets: [{
+                    label: '{% trans "Citizens" %}',
+                    data: ageData,
+                    backgroundColor: '#166534',
+                    borderRadius: 6
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { tooltip: chartPlugins.tooltip, legend: { display: false } }, scales: chartScales }
+        });
+    }
+});
+</script>
+{% endblock %}

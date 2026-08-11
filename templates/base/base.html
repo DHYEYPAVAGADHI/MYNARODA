@@ -1,0 +1,330 @@
+{% load i18n static %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" class="scroll-smooth">
+<head>
+  <!-- ======================================================
+       GREEN NARODA • CLEAN NARODA
+       Base Template — All pages inherit from this.
+       Every meta tag, font, CSS, and core JS is defined here.
+       ====================================================== -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- ── Primary Meta ── -->
+  <title>{% block title %}mynaroda — Green Naroda Campaign | Government of Gujarat{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Celebrating India's 80th Independence Day by planting 28,855 trees across Naroda, Ahmedabad. Join the Green Naroda movement.{% endblock %}" />
+  <meta name="keywords" content="Green Naroda, Clean Naroda, tree plantation, Naroda Ahmedabad, India Independence Day, environment" />
+  <meta name="author" content="Green Naroda Campaign" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://mynaroda.in{% block canonical_path %}/{% endblock %}" />
+
+  <!-- ── Open Graph ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="mynaroda — Green Naroda Campaign" />
+  <meta property="og:title" content="{% block og_title %}Green Naroda • Clean Naroda{% endblock %}" />
+  <meta property="og:description" content="{% block og_description %}28,855 Days of Independence. 28,855 Trees for Tomorrow.{% endblock %}" />
+  <meta property="og:image" content="{% block og_image %}https://mynaroda.in{% static 'images/og-banner.jpg' %}{% endblock %}" />
+  <meta property="og:url" content="https://mynaroda.in{% block og_url %}/{% endblock %}" />
+
+  <!-- ── Twitter Card ── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{% block twitter_title %}Green Naroda • Clean Naroda{% endblock %}" />
+  <meta name="twitter:description" content="{% block twitter_description %}28,855 Days of Independence. 28,855 Trees for Tomorrow.{% endblock %}" />
+
+  <!-- ── Favicon ── -->
+  <link rel="icon" type="image/png" href="{% static 'images/logo.png' %}" />
+  <link rel="apple-touch-icon" href="{% static 'images/logo.png' %}" />
+
+  <!-- ── Preconnect (Performance) ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://res.cloudinary.com" />
+
+  <!-- ── Google Fonts ── -->
+  <!-- Inter: UI text. Poppins: redesign headings. Playfair Display: legacy hero headings. Noto Sans Gujarati/Devanagari: GU/HI text. -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@300;400;500;600;700&family=Baloo+2:wght@600;700;800&family=Noto+Sans+Gujarati:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ── Tailwind CSS (CDN for development; replace with build in production) ── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+colors: {
+            primary: '#0B5D3B',
+            secondary: '#0B6B3A',
+            accent: '#F47C20',
+            background: '#F8FAF8',
+            dark: '#081B14',
+            text: '#0F172A',
+            'text-secondary': '#475467',
+            'text-muted': '#667085',
+            forest: {
+              50:  '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              300: '#86efac',
+              400: '#4ade80',
+              500: '#22c55e',
+              600: '#0B6B3A', // primary
+              700: '#2E8B57', // secondary
+              800: '#166534',
+              900: '#14532d',
+              950: '#052e16',
+            },
+            saffron: {
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#E66A1F', // accent
+            },
+          },
+          borderRadius: {
+            'xl': '18px',
+            '2xl': '24px',
+          },
+          fontFamily: {
+            sans: ['Hind', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            serif: ['Baloo 2', 'ui-serif', 'Georgia', 'serif'],
+            gujarati: ['Noto Sans Gujarati', 'sans-serif'],
+            hindi: ['Noto Sans Devanagari', 'sans-serif'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'leaf-drift': 'leafDrift 12s linear infinite',
+            'fade-up': 'fadeUp 0.8s ease-out forwards',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            leafDrift: {
+              '0%': { transform: 'translateY(-10vh) rotate(0deg)', opacity: '0' },
+              '10%': { opacity: '1' },
+              '90%': { opacity: '1' },
+              '100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' },
+            },
+            fadeUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- ── Custom CSS ── -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  <style>
+    /* Dynamic Font Loading & Smooth Transition */
+    body[data-lang="en"] { font-family: 'Hind', sans-serif; }
+    body[data-lang="gu"] { font-family: 'Noto Sans Gujarati', sans-serif; }
+    body[data-lang="hi"] { font-family: 'Noto Sans Devanagari', sans-serif; }
+    
+    body {
+      overflow-x: hidden;
+    }
+    
+
+    /* Hide Google Translate UI */
+    .goog-te-banner-frame.skiptranslate, .goog-logo-link, .goog-te-gadget span, .goog-te-gadget img, .goog-tooltip, .goog-tooltip:hover, .goog-text-highlight { display: none !important; }
+    body { top: 0 !important; position: static !important; margin-top: 0 !important; padding-top: 0 !important; }
+    .skiptranslate iframe { display: none !important; }
+    #goog-gt-tt { display: none !important; }
+    
+    /* Loading overlay */
+    #translate-loader {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99999; backdrop-filter: blur(4px);
+      flex-direction: column; align-items: center; justify-content: center; color: white; font-family: 'Hind', sans-serif;
+    }
+    #translate-loader.active { display: flex; }
+    .spinner { border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid #fff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+  
+    .skip-link, .skip-to-content, a[href="#content"], a[href="#main-content"] { display: none !important; }
+    
+    /* Reset body spacing */
+    html { margin: 0 !important; padding: 0 !important; }
+    body { margin: 0 !important; padding: 0 !important; }
+    
+    /* Sticky Navbar */
+    .main-navbar {
+        position: sticky !important;
+        top: 0;
+        z-index: 1000;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    /* Skip link hide fallback */
+    .skip-link, .skip-to-content, a[href="#content"], a[href="#main-content"] { display: none !important; }
+    
+    /* Reset body spacing and prevent horizontal overflow */
+    html { margin: 0 !important; padding: 0 !important; overflow-x: hidden; }
+    body { margin: 0 !important; padding: 0 !important; overflow-x: hidden; width: 100%; max-width: 100vw; }
+    
+    
+</style>
+
+  <!-- ── Page-specific head ── -->
+  {% block extra_head %}{% endblock %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+</head>
+
+<body class="bg-background text-text antialiased" data-lang="{{ LANGUAGE_CODE }}">
+  <div id="site-wrapper" class="show">
+
+  <!-- Translate Loader -->
+  <div id="translate-loader">
+    <div class="spinner"></div>
+    <div class="font-bold text-lg">Translating...</div>
+    <div class="text-sm opacity-80 mt-1">Please wait a moment</div>
+  </div>
+
+
+
+  
+  <!-- ── Navigation ── -->
+  {% include 'components/navbar.html' %}
+
+  <!-- ── Main Content ── -->
+  <main id="main-content" role="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ── -->
+  {% include 'components/footer.html' %}
+
+  <!-- ── Pledge / Tiranga Registration Popup (global, so "Take The Pledge" works on every page) ── -->
+  {% include 'components/registration_popup.html' %}
+
+  <!-- ── Toast Notifications ── -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[9998] flex flex-col gap-3" aria-live="polite"></div>
+
+  <!-- ── Third-Party Libraries ── -->
+  <!-- Lenis Smooth Scroll -->
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" defer></script>
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (document.querySelector('.heroSwiper')) {
+        new Swiper('.heroSwiper', { effect: 'fade', loop: true, autoplay: { delay: 5000, disableOnInteraction: false, }, speed: 1600, });
+      }
+    });
+  </script>
+
+  <!-- ── Core JS Modules ── -->
+  <script src="{% static 'js/components/lenis-scroll.js' %}" defer></script>
+
+  <script src="{% static 'js/components/gsap-animations.js' %}" defer></script>
+
+  <!-- ── Page-specific scripts ── -->
+  {% block extra_scripts %}{% endblock %}
+
+  <!-- ── Django Messages (mapped to toast system) ── -->
+  {% if messages %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      {% for message in messages %}
+      window.showToast("{{ message|escapejs }}", "{{ message.tags }}");
+      {% endfor %}
+    });
+  </script>
+  {% endif %}
+
+
+  <!-- ── Google Translate Hidden Core ── -->
+  <div id="google_translate_element" style="display:none"></div>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        includedLanguages: 'en,hi,gu',
+        autoDisplay: false,
+        multilanguagePage: true
+      }, 'google_translate_element');
+    }
+
+    function showLoader() {
+      const loader = document.getElementById('translate-loader');
+      if(loader) loader.classList.add('active');
+    }
+    
+    function hideLoader() {
+      const loader = document.getElementById('translate-loader');
+      if(loader) loader.classList.remove('active');
+    }
+
+    function resetToEnglish() {
+      showLoader();
+      localStorage.setItem('site_language', 'en');
+      document.cookie = 'googtrans=/en/en;path=/';
+      document.cookie = 'googtrans=/en/en;domain=.mynaroda.in;path=/';
+      setTimeout(() => location.reload(), 300);
+    }
+
+    function setLanguage(lang) {
+      if (lang === 'en') {
+        resetToEnglish();
+        return;
+      }
+      showLoader();
+      
+      const interval = setInterval(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          clearInterval(interval);
+          select.value = lang;
+          select.dispatchEvent(new Event('change'));
+          localStorage.setItem('site_language', lang);
+          updateLanguageLabel(lang);
+          setTimeout(hideLoader, 1000);
+        }
+      }, 300);
+      
+      // Fallback to hide loader if element never appears
+      setTimeout(() => { clearInterval(interval); hideLoader(); }, 5000);
+    }
+
+    function updateLanguageLabel(lang) {
+      const labels = { en: '🇺🇸 English', hi: '🇮🇳 हिंदी', gu: '🇮🇳 ગુજરાતી' };
+      document.querySelectorAll('.current-lang-text').forEach(el => {
+        el.textContent = labels[lang] || '🇺🇸 English';
+      });
+    }
+
+    window.addEventListener('load', () => {
+      const saved = localStorage.getItem('site_language');
+      if (saved && saved !== 'en') {
+        setTimeout(() => setLanguage(saved), 1000);
+      } else {
+        updateLanguageLabel('en');
+      }
+    });
+
+    // Close dropdowns on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.custom-lang-dropdown')) {
+        document.querySelectorAll('.lang-dropdown-menu').forEach(menu => menu.classList.add('hidden'));
+      }
+    });
+
+    function toggleDropdown(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  </div> <!-- End site-wrapper -->
+</body>
+</html>

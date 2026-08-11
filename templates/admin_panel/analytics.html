@@ -1,0 +1,150 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block nav_analytics %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Campaign Analytics</div>
+    <div class="ph-sub">Live mission data — 6-month trend analysis</div>
+  </div>
+  <div class="ph-actions">
+    <a href="{% url 'admin_panel:export_pledges_excel' %}" class="btn btn-outline btn-sm">⬇ Full Export</a>
+  </div>
+</div>
+
+<!-- Summary Numbers -->
+<div class="stat-grid" style="margin-bottom:24px">
+  <div class="stat-card">
+    <div class="stat-icon green">💚</div>
+    <div class="stat-val" style="margin-top:10px">{{ total_pledges }}</div>
+    <div class="stat-lbl">Total Pledges</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue">🎓</div>
+    <div class="stat-val" style="margin-top:10px">{{ total_students }}</div>
+    <div class="stat-lbl">Student Submissions</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon gold">🏢</div>
+    <div class="stat-val" style="margin-top:10px">{{ total_orgs }}</div>
+    <div class="stat-lbl">Organizations</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red">🖼️</div>
+    <div class="stat-val" style="margin-top:10px">{{ total_photos }}</div>
+    <div class="stat-lbl">Gallery Photos</div>
+  </div>
+</div>
+
+<!-- Main 6-month chart -->
+<div class="card" style="margin-bottom:20px">
+  <div class="section-title">Pledges, Students & Organizations — 6-Month Trend</div>
+  <div class="chart-wrap" style="height:260px"><canvas id="mainChart"></canvas></div>
+</div>
+
+<!-- Two column charts -->
+<div class="grid-2" style="margin-bottom:20px">
+  <div class="card">
+    <div class="section-title">Pledge Growth</div>
+    <div class="chart-wrap"><canvas id="pledgeBar"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-title">Organization Participation (Top 10)</div>
+    <div class="chart-wrap"><canvas id="wardBar"></canvas></div>
+  </div>
+</div>
+
+<!-- Mission Forecast -->
+<div class="card">
+  <div class="section-title">Mission 28,855 — Completion Forecast</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;padding:10px 0">
+    <div style="text-align:center;padding:20px;background:var(--green-lt);border-radius:var(--radius-sm)">
+      <div style="font-size:32px;font-weight:800;color:var(--green)">{{ total_pledges }}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px">Pledges To Date</div>
+    </div>
+    <div style="text-align:center;padding:20px;background:#F3F4F6;border-radius:var(--radius-sm)">
+      <div style="font-size:32px;font-weight:800;color:var(--text)">{{ remaining }}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px">Remaining</div>
+    </div>
+    <div style="text-align:center;padding:20px;background:var(--gold-lt);border-radius:var(--radius-sm)">
+      <div style="font-size:32px;font-weight:800;color:#B45309">{{ pct_complete }}%</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:6px">Mission Complete</div>
+    </div>
+  </div>
+  <div style="margin-top:16px">
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text3);margin-bottom:6px">
+      <span>Mission Progress</span>
+      <span>{{ total_pledges }} / 28,855</span>
+    </div>
+    <div class="progress-bar" style="height:12px">
+      <div class="progress-fill" style="width:{{ pct_complete }}%;height:100%"></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#6B7280';
+
+const months = {{ months_json|safe }};
+const pledges = {{ pledge_counts_json|safe }};
+const students = {{ student_counts_json|safe }};
+const orgs = {{ org_counts_json|safe }};
+
+// Main multi-line chart
+new Chart(document.getElementById('mainChart'), {
+  type: 'line',
+  data: {
+    labels: months,
+    datasets: [
+      { label: 'Pledges', data: pledges, borderColor: '#0B5D2A', backgroundColor: 'rgba(11,93,42,.06)', borderWidth: 2.5, fill: true, tension: .4, pointRadius: 4 },
+      { label: 'Students', data: students, borderColor: '#2563EB', backgroundColor: 'rgba(37,99,235,.04)', borderWidth: 2, fill: true, tension: .4, pointRadius: 3 },
+      { label: 'Organizations', data: orgs, borderColor: '#F59E0B', backgroundColor: 'rgba(245,158,11,.04)', borderWidth: 2, fill: true, tension: .4, pointRadius: 3 },
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: true, position: 'top', labels: { boxWidth: 12, padding: 20 } } },
+    scales: {
+      x: { grid: { color: '#F3F4F6' } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { precision: 0 } }
+    }
+  }
+});
+
+// Pledge bar
+new Chart(document.getElementById('pledgeBar'), {
+  type: 'bar',
+  data: {
+    labels: months,
+    datasets: [{ label: 'Pledges', data: pledges, backgroundColor: 'rgba(11,93,42,.18)', borderColor: '#0B5D2A', borderWidth: 2, borderRadius: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { x: { grid: { display: false } }, y: { grid: { color: '#F3F4F6' }, ticks: { precision: 0 } } }
+  }
+});
+
+// Ward/Org bar
+const wLabels = {{ ward_labels_json|safe }};
+const wCounts = {{ ward_counts_json|safe }};
+new Chart(document.getElementById('wardBar'), {
+  type: 'bar',
+  data: {
+    labels: wLabels,
+    datasets: [{ label: 'Pledges', data: wCounts, backgroundColor: 'rgba(245,158,11,.20)', borderColor: '#F59E0B', borderWidth: 2, borderRadius: 6 }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    indexAxis: 'y',
+    plugins: { legend: { display: false } },
+    scales: { x: { grid: { color: '#F3F4F6' }, ticks: { precision: 0 } }, y: { grid: { display: false } } }
+  }
+});
+</script>
+{% endblock %}

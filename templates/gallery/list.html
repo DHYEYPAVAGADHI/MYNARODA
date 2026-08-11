@@ -1,0 +1,264 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Moments of a Greener Tomorrow" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header-premium stagger-item">
+  <div class="container-site relative z-10">
+    <div class="breadcrumb-premium">
+      <a href="{% url 'cms:home' %}">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "Gallery" %}</span>
+    </div>
+    <div class="page-header-eyebrow">{% trans "Community Gallery" %}</div>
+    <h1>{% trans "Moments of a Greener Tomorrow" %}</h1>
+    <p class="page-header-sub">
+      {% trans "A visual journey of plantation drives, cleanliness campaigns, volunteers, schools, and citizens shaping the future of Naroda." %}
+    </p>
+  </div>
+</div>
+
+<div class="bg-[#F8FAF8] min-h-screen pt-16 pb-24 font-sans text-[#111827]">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Controls Row -->
+    <div class="flex flex-col lg:flex-row justify-between items-center mb-10 gap-6 stagger-item">
+      
+      <!-- Category Filter -->
+      <div class="flex items-center gap-2 overflow-x-auto w-full lg:w-auto pb-2 lg:pb-0">
+        <a href="?category=" class="gallery-pill whitespace-nowrap {% if not current_category %}active{% endif %}">
+          All
+        </a>
+        {% for cat in categories %}
+        <a href="?category={{ cat.slug }}" class="gallery-pill whitespace-nowrap {% if current_category.slug == cat.slug %}active{% endif %}">
+          {{ cat.name }}
+        </a>
+        {% endfor %}
+      </div>
+
+      <!-- Search & Sort -->
+      <div class="flex items-center gap-3 w-full lg:w-auto">
+        <form method="GET" action="{% url 'gallery:list' %}" class="flex gap-3 w-full items-center">
+          <!-- Sort Dropdown -->
+          <div class="relative min-w-[140px]">
+            <select name="sort" onchange="this.form.submit()" class="w-full appearance-none bg-white border border-[#E5E7EB] text-[#4B5563] font-semibold text-sm rounded-full pl-4 pr-10 py-2.5 focus:border-[#0E7A37] focus:ring-1 focus:ring-[#0E7A37] outline-none cursor-pointer">
+              <option value="newest" {% if current_sort != 'oldest' %}selected{% endif %}>Newest First</option>
+              <option value="oldest" {% if current_sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-[#6B7280]">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+          <!-- Category Preservation -->
+          {% if current_category %}
+          <input type="hidden" name="category" value="{{ current_category.slug }}">
+          {% endif %}
+          
+          <div class="relative flex-grow lg:flex-grow-0">
+            <input type="text" name="q" value="{{ search_query|default:'' }}" placeholder="Search photos..." class="w-full lg:w-64 bg-white border border-[#E5E7EB] text-[#111827] rounded-full pl-5 pr-12 py-2.5 text-sm focus:border-[#0E7A37] focus:ring-1 focus:ring-[#0E7A37] outline-none">
+            <button type="submit" class="absolute right-4 top-2.5 text-[#6B7280] hover:text-[#0E7A37]">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 gallery-grid">
+      {% for p in photos %}
+        {% if p.local_image and p.local_image.name %}
+          {% with photo_url=p.local_image.url %}
+            {% include 'gallery/photo_card.html' %}
+          {% endwith %}
+        {% elif p.url %}
+          {% with photo_url=p.url %}
+            {% include 'gallery/photo_card.html' %}
+          {% endwith %}
+        {% elif p.image_url %}
+          {% with photo_url=p.image_url %}
+            {% include 'gallery/photo_card.html' %}
+          {% endwith %}
+        {% else %}
+          {% static 'images/gallery-fallback.jpg' as fallback_url %}
+          {% with photo_url=fallback_url %}
+            {% include 'gallery/photo_card.html' %}
+          {% endwith %}
+        {% endif %}
+      {% empty %}
+        <div class="col-span-full text-center py-20 bg-white rounded-[18px] border border-[#E5E7EB] shadow-sm w-full inline-block">
+          <div class="w-16 h-16 bg-[#F8FAF8] rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">📸</div>
+          <h3 class="text-xl font-bold font-serif text-[#111827] mb-2">No photos found</h3>
+          <p class="text-[#6B7280]">There are no approved gallery photos matching your criteria yet.</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if photos.has_other_pages %}
+    <div class="mt-16 flex justify-center stagger-item">
+      <nav class="flex items-center gap-2">
+        {% if photos.has_previous %}
+        <a href="?page={{ photos.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[#E5E7EB] text-[#4B5563] bg-white hover:bg-[#F8FAF8] transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+        </a>
+        {% endif %}
+        
+        {% for i in photos.paginator.page_range %}
+        {% if photos.number == i %}
+        <span class="w-10 h-10 flex items-center justify-center rounded-full bg-[#0E7A37] text-white font-bold shadow-md">{{ i }}</span>
+        {% else %}
+        <a href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[#E5E7EB] text-[#4B5563] bg-white hover:bg-[#F8FAF8] font-medium transition-colors">{{ i }}</a>
+        {% endif %}
+        {% endfor %}
+        
+        {% if photos.has_next %}
+        <a href="?page={{ photos.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if current_category %}&category={{ current_category.slug }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[#E5E7EB] text-[#4B5563] bg-white hover:bg-[#F8FAF8] transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
+        {% endif %}
+      </nav>
+    </div>
+    {% endif %}
+
+    <!-- Upload CTA -->
+    <div class="mt-20 bg-white border border-[#E5E7EB] rounded-[24px] p-10 text-center shadow-lg stagger-item">
+      <div class="text-[#6B7280] font-semibold tracking-wider text-sm mb-3 uppercase">SHARE YOUR CONTRIBUTION</div>
+      <h2 class="text-[#111827] font-bold font-serif text-3xl mb-4">Be Part of the Story</h2>
+      <p class="text-[#4B5563] text-lg max-w-xl mx-auto mb-8">Upload your plantation or cleanliness photos and inspire more citizens to participate.</p>
+      <a href="{% url 'gallery:submit' %}" class="inline-flex items-center gap-2 bg-[#22C55E] hover:bg-[#0E7A37] text-white font-bold font-sans px-8 py-4 rounded-full transition-colors shadow-md">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+        Upload Photo
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center" style="background: rgba(0,0,0,0.92); backdrop-filter: blur(8px);">
+  <div class="absolute inset-0 cursor-pointer" onclick="closeLightbox()"></div>
+  <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white/70 hover:text-white transition-colors z-10 bg-black/20 p-2 rounded-full">
+    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+  </button>
+  
+  <div class="relative z-10 w-full max-w-5xl px-4 flex flex-col items-center pointer-events-none">
+    <img id="lightbox-img" src="" alt="" class="max-h-[75vh] w-auto object-contain rounded-lg shadow-2xl pointer-events-auto transform transition-transform duration-300">
+    <div class="mt-6 text-center w-full bg-black/40 backdrop-blur-md p-4 rounded-xl border border-white/10 pointer-events-auto">
+      <h3 id="lightbox-title" class="text-white font-serif font-bold text-2xl mb-1"></h3>
+      <p class="text-gray-300 text-sm flex items-center justify-center gap-4">
+        <span class="flex items-center gap-1">
+          <svg class="w-4 h-4 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+          <span id="lightbox-author"></span>
+        </span>
+        <span class="flex items-center gap-1">
+          <svg class="w-4 h-4 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+          <span id="lightbox-location"></span>
+        </span>
+        <span class="flex items-center gap-1">
+          <svg class="w-4 h-4 text-[#22C55E]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+          <span id="lightbox-date"></span>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Cinematic Intro
+  const tl = gsap.timeline();
+  tl.from(".stagger-item", {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.1,
+    ease: "power3.out",
+    delay: 0.2
+  });
+
+  // Masonry Grid Fade Up on Scroll
+  gsap.utils.toArray('.gallery-card').forEach((card, i) => {
+    gsap.from(card, {
+      scrollTrigger: {
+        trigger: card,
+        start: "top bottom-=100",
+        toggleActions: "play none none reverse"
+      },
+      y: 40,
+      opacity: 0,
+      duration: 0.6,
+      ease: "power3.out",
+      delay: (i % 4) * 0.08
+    });
+  });
+
+  // Lightbox Logic
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lightbox-img');
+  const lbTitle = document.getElementById('lightbox-title');
+  const lbAuthor = document.getElementById('lightbox-author');
+  const lbLocation = document.getElementById('lightbox-location');
+  const lbDate = document.getElementById('lightbox-date');
+
+  function openLightbox(url, title, author, location, date) {
+    lbImg.src = url;
+    lbTitle.textContent = title || 'Untitled';
+    lbAuthor.textContent = author || 'Citizen';
+    lbLocation.textContent = location || 'Naroda';
+    lbDate.textContent = date || '';
+    
+    lightbox.classList.remove('hidden');
+    lightbox.classList.add('flex');
+    
+    // Zoom in effect
+    gsap.fromTo(lbImg, 
+      { scale: 0.9, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.4, ease: "back.out(1.5)" }
+    );
+    gsap.fromTo(lightbox.querySelector('div.mt-6'),
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.4, delay: 0.1, ease: "power2.out" }
+    );
+    
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    gsap.to(lbImg, { scale: 0.95, opacity: 0, duration: 0.2, ease: "power2.in" });
+    gsap.to(lightbox, { 
+      opacity: 0, 
+      duration: 0.3, 
+      ease: "power2.inOut",
+      onComplete: () => {
+        lightbox.classList.add('hidden');
+        lightbox.classList.remove('flex');
+        lightbox.style.opacity = '1';
+        document.body.style.overflow = '';
+      }
+    });
+  }
+
+  // Keyboard support for ESC key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+      closeLightbox();
+    }
+  });
+</script>
+<style>
+  .group:hover .group-hover\:scale-108 {
+    transform: scale(1.08);
+  }
+</style>
+{% endblock %}

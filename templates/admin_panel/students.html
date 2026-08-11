@@ -1,0 +1,142 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Students{% endblock %}
+{% block nav_students %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Student Registrations</div>
+    <div class="ph-sub">{{ total }} total submissions · {{ total_approved }} approved</div>
+  </div>
+  <div class="ph-actions">
+    <a href="{% url 'admin_panel:export_students_excel' %}" class="btn btn-primary btn-sm">⬇ Excel</a>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="grid-3" style="margin-bottom:20px">
+  <div class="card card-sm" style="text-align:center">
+    <div style="font-size:26px;font-weight:800;color:var(--green)">{{ total }}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:4px">Total Submissions</div>
+  </div>
+  <div class="card card-sm" style="text-align:center">
+    <div style="font-size:26px;font-weight:800;color:var(--gold)">{{ total_approved }}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:4px">Approved</div>
+  </div>
+  <div class="card card-sm" style="text-align:center">
+    <div style="font-size:26px;font-weight:800;color:var(--blue)">3</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:4px">Competition Types</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="card" style="padding:16px;margin-bottom:20px">
+  <form method="get">
+    <div class="tbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-inp" name="q" value="{{ q }}" placeholder="Search name, school, mobile...">
+      </div>
+      <input type="text" class="fsel" name="school" value="{{ school }}" placeholder="School name..." style="min-width:150px">
+      <select class="fsel" name="type" onchange="this.form.submit()">
+        <option value="">All Types</option>
+        {% for val, lbl in type_choices %}
+          <option value="{{ val }}" {% if comp_type == val %}selected{% endif %}>{{ lbl }}</option>
+        {% endfor %}
+      </select>
+      <select class="fsel" name="status" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        {% for val, lbl in status_choices %}
+          <option value="{{ val }}" {% if status == val %}selected{% endif %}>{{ lbl }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+      <a href="{% url 'admin_panel:students' %}" class="btn btn-outline btn-sm">Clear</a>
+    </div>
+  </form>
+</div>
+
+<!-- Table -->
+<div class="card" style="padding:0">
+  <div class="table-wrap">
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Student Name</th>
+          <th>Parent / Guardian</th>
+          <th>Mobile</th>
+          <th>School</th>
+          <th>Grade</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in page_obj %}
+        <tr>
+          <td class="td-mono" style="font-size:11px">{{ s.participation_id }}</td>
+          <td class="td-name">{{ s.student_name }}</td>
+          <td style="color:var(--text2)">{{ s.parent_name }}</td>
+          <td class="td-mono">{{ s.guardian_mobile }}</td>
+          <td style="font-size:12px">{{ s.school_name|truncatechars:28 }}</td>
+          <td style="text-align:center;font-weight:700">{{ s.grade }}</td>
+          <td><span class="badge badge-blue">{{ s.get_competition_type_display }}</span></td>
+          <td>
+            {% if s.status == 'APPROVED' %}
+              <span class="badge badge-green"><span class="bdot"></span>Approved</span>
+            {% elif s.status == 'REJECTED' %}
+              <span class="badge badge-red"><span class="bdot"></span>Rejected</span>
+            {% else %}
+              <span class="badge badge-gold"><span class="bdot"></span>Pending</span>
+            {% endif %}
+          </td>
+          <td style="font-size:11.5px;color:var(--text3)">{{ s.created_at|date:"d M Y" }}</td>
+          <td>
+            <div class="flex gap-2">
+              {% if s.status != 'APPROVED' %}
+              <form method="post" action="{% url 'admin_panel:student_action' s.pk %}" style="display:inline">
+                {% csrf_token %}<input type="hidden" name="action" value="approve">
+                <button type="submit" class="btn btn-primary btn-xs">✓ Approve</button>
+              </form>
+              {% endif %}
+              {% if s.status != 'REJECTED' %}
+              <form method="post" action="{% url 'admin_panel:student_action' s.pk %}" style="display:inline">
+                {% csrf_token %}<input type="hidden" name="action" value="reject">
+                <button type="submit" class="btn btn-danger btn-xs">✕ Reject</button>
+              </form>
+              {% endif %}
+              {% if s.uploaded_file %}
+              <a href="{{ s.uploaded_file.url }}" target="_blank" class="btn btn-outline btn-xs">📎 File</a>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text3)">No student submissions found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="tpag">
+    <span>Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}</span>
+    <div class="pag-btns">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&school={{ school }}&type={{ comp_type }}&status={{ status }}" class="pag-btn">‹</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <span class="pag-btn active">{{ num }}</span>
+        {% elif num == 1 or num == page_obj.paginator.num_pages %}
+          <a href="?page={{ num }}&q={{ q }}&school={{ school }}&type={{ comp_type }}&status={{ status }}" class="pag-btn">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&school={{ school }}&type={{ comp_type }}&status={{ status }}" class="pag-btn">›</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

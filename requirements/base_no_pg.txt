@@ -1,0 +1,60 @@
+# ============================================================
+# GREEN NARODA • CLEAN NARODA
+# Base Requirements — All Environments
+# ============================================================
+
+# Core Framework
+Django>=5.0,<5.2
+djangorestframework==3.15.2
+
+# Database
+
+# Authentication & Social Login
+django-allauth==65.3.0
+PyJWT[crypto]==2.13.0          # required by allauth's Google provider
+
+# Security
+django-axes==8.3.1            # login brute-force protection
+django-ratelimit==4.1.0       # per-view rate limiting
+
+# Configuration Management
+python-decouple==3.8
+
+# Image Processing
+Pillow==10.4.0
+
+# Static Files
+whitenoise==6.7.0
+
+# CORS
+django-cors-headers==4.4.0
+
+# Filtering
+django-filter==24.3
+
+# Storage & Media
+cloudinary==1.41.0
+django-cloudinary-storage==0.3.0
+
+# QR Code Generation
+qrcode[pil]==7.4.2
+
+# PDF Certificate Generation
+reportlab==4.2.5
+
+# Task Queue
+celery==5.4.0
+redis==5.0.8
+django-celery-beat==2.7.0
+django-celery-results==2.5.1
+
+# HTTP Client (for external APIs)
+requests==2.32.3
+
+# Utilities
+Pillow==10.4.0
+python-slugify==8.0.4
+django-unfold
+django-modeltranslation==0.20.3   # multi-language (English / Gujarati / Hindi) fields
+
+openpyxl==3.1.5

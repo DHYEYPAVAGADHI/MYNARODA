@@ -1,0 +1,429 @@
+{% extends 'admin_panel/base.html' %}
+
+{% block title %}Branding Header Logos{% endblock %}
+{% block nav_branding_logos %}active{% endblock %}
+
+{% block extra_head %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+<style>
+  .logo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+  }
+
+  .logo-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #E5E7EB;
+  }
+
+  .logo-preview-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px dashed #D1D5DB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: #F9FAFB;
+    position: relative;
+  }
+
+  .logo-preview-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .logo-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 16px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .btn-upload {
+    background: #2563EB;
+    color: white;
+  }
+
+  .btn-upload:hover {
+    background: #1D4ED8;
+  }
+
+  .btn-remove {
+    background: #FEE2E2;
+    color: #DC2626;
+  }
+
+  .btn-remove:hover {
+    background: #FECACA;
+  }
+
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  .modal-overlay.active {
+    display: flex;
+  }
+
+  .modal-content {
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    padding: 24px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #6B7280;
+  }
+
+  .cropper-container-wrapper {
+    width: 100%;
+    height: 400px;
+    background: #F3F4F6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* Make cropper overlay circular */
+  .cropper-view-box,
+  .cropper-face {
+    border-radius: 50%;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .btn-save {
+    background: #10B981;
+    color: white;
+  }
+
+  .btn-save:hover {
+    background: #059669;
+  }
+
+  .btn-cancel {
+    background: #E5E7EB;
+    color: #374151;
+  }
+
+  .btn-cancel:hover {
+    background: #D1D5DB;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="px-6 py-6" style="padding: 24px;">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900" style="font-size: 24px; font-weight: bold; margin-bottom: 8px;">Header
+      Logos</h1>
+    <p class="text-sm text-gray-500 mt-1" style="color: #6B7280; margin-bottom: 24px;">Manage the branding logos
+      displayed in the public website header. Logos will be perfectly cropped to circles.</p>
+  </div>
+
+  <div class="logo-grid">
+    <!-- My Naroda -->
+    <div class="logo-card">
+      <div class="logo-title">My Naroda Samiti</div>
+      <div class="logo-preview-container">
+        <img id="preview-my_naroda_logo"
+          src="{% if branding_settings.my_naroda_logo %}{{ branding_settings.my_naroda_logo.url }}{% else %}{{ fallbacks.my_naroda_logo }}{% endif %}"
+          alt="My Naroda">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-upload" onclick="triggerUpload('my_naroda_logo')">Upload / Crop</button>
+        <button class="btn btn-remove" onclick="removeLogo('my_naroda_logo')">Remove</button>
+      </div>
+      <input type="file" id="input-my_naroda_logo" accept="image/*" style="display:none;"
+        onchange="handleFileSelect(event, 'my_naroda_logo')">
+    </div>
+
+    <!-- BJP Naroda -->
+    <div class="logo-card">
+      <div class="logo-title">BJP Naroda</div>
+      <div class="logo-preview-container">
+        <img id="preview-bjp_logo"
+          src="{% if branding_settings.bjp_logo %}{{ branding_settings.bjp_logo.url }}{% else %}{{ fallbacks.bjp_logo }}{% endif %}"
+          alt="BJP Naroda">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-upload" onclick="triggerUpload('bjp_logo')">Upload / Crop</button>
+        <button class="btn btn-remove" onclick="removeLogo('bjp_logo')">Remove</button>
+      </div>
+      <input type="file" id="input-bjp_logo" accept="image/*" style="display:none;"
+        onchange="handleFileSelect(event, 'bjp_logo')">
+    </div>
+
+    <!-- Pratham Priority -->
+    <div class="logo-card">
+      <div class="logo-title">Pratham Priority</div>
+      <div class="logo-preview-container">
+        <img id="preview-pratham_logo"
+          src="{% if branding_settings.pratham_logo %}{{ branding_settings.pratham_logo.url }}{% else %}{{ fallbacks.pratham_logo }}{% endif %}"
+          alt="Pratham Priority">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-upload" onclick="triggerUpload('pratham_logo')">Upload / Crop</button>
+        <button class="btn btn-remove" onclick="removeLogo('pratham_logo')">Remove</button>
+      </div>
+      <input type="file" id="input-pratham_logo" accept="image/*" style="display:none;"
+        onchange="handleFileSelect(event, 'pratham_logo')">
+    </div>
+
+    <!-- Green Naroda Clean Naroda -->
+    <div class="logo-card">
+      <div class="logo-title">Green Naroda Clean Naroda</div>
+      <div class="logo-preview-container">
+        <img id="preview-gncn_logo"
+          src="{% if branding_settings.gncn_logo %}{{ branding_settings.gncn_logo.url }}{% else %}{{ fallbacks.gncn_logo }}{% endif %}"
+          alt="GNCN">
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-upload" onclick="triggerUpload('gncn_logo')">Upload / Crop</button>
+        <button class="btn btn-remove" onclick="removeLogo('gncn_logo')">Remove</button>
+      </div>
+      <input type="file" id="input-gncn_logo" accept="image/*" style="display:none;"
+        onchange="handleFileSelect(event, 'gncn_logo')">
+    </div>
+  </div>
+</div>
+
+<!-- Crop Modal -->
+<div class="modal-overlay" id="cropModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">Crop Logo</div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="cropper-container-wrapper">
+      <img id="cropperImage" src="" alt="Image to crop">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-save" id="btnCropSave">Save Logo</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+<script>
+  const CSRF_TOKEN = '{{ csrf_token }}';
+  const fallbacks = {{ fallbacks| safe }};
+  let cropper = null;
+  let currentField = null;
+
+  function triggerUpload(field) {
+    document.getElementById(`input-${field}`).click();
+  }
+
+  function handleFileSelect(event, field) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    currentField = field;
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      document.getElementById('cropperImage').src = e.target.result;
+      document.getElementById('cropModal').classList.add('active');
+
+      if (cropper) {
+        cropper.destroy();
+      }
+
+      const imageElement = document.getElementById('cropperImage');
+      cropper = new Cropper(imageElement, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        autoCropArea: 1,
+        restore: false,
+        guides: false,
+        center: false,
+        highlight: false,
+        cropBoxMovable: false,
+        cropBoxResizable: false,
+        toggleDragModeOnDblclick: false,
+      });
+    };
+    reader.readAsDataURL(file);
+    event.target.value = ''; // Reset input
+  }
+
+  function closeModal() {
+    document.getElementById('cropModal').classList.remove('active');
+    if (cropper) {
+      cropper.destroy();
+      cropper = null;
+    }
+    currentField = null;
+  }
+
+  document.getElementById('btnCropSave').addEventListener('click', function () {
+    if (!cropper || !currentField) return;
+
+    // Get cropped canvas as transparent PNG (512x512)
+    const canvas = cropper.getCroppedCanvas({
+      width: 512,
+      height: 512,
+      fillColor: 'transparent',
+    });
+
+    const base64Data = canvas.toDataURL('image/png');
+
+    const saveBtn = document.getElementById('btnCropSave');
+    const originalText = saveBtn.innerText;
+    saveBtn.innerText = 'Saving...';
+    saveBtn.disabled = true;
+
+    fetch(window.location.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': CSRF_TOKEN
+      },
+      body: JSON.stringify({
+        action: 'save',
+        field: currentField,
+        image_data: base64Data
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById(`preview-${currentField}`).src = data.url;
+          showToast('Logo updated successfully!', 'success');
+          closeModal();
+        } else {
+          showToast(data.error || 'Failed to update logo', 'error');
+        }
+      })
+      .catch(error => {
+        showToast('Error uploading logo', 'error');
+      })
+      .finally(() => {
+        saveBtn.innerText = originalText;
+        saveBtn.disabled = false;
+      });
+  });
+
+  function removeLogo(field) {
+    if (!confirm('Are you sure you want to remove this logo and use the default?')) return;
+
+    fetch(window.location.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': CSRF_TOKEN
+      },
+      body: JSON.stringify({
+        action: 'remove',
+        field: field
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById(`preview-${field}`).src = fallbacks[field];
+          showToast('Logo removed successfully!', 'success');
+        } else {
+          showToast(data.error || 'Failed to remove logo', 'error');
+        }
+      })
+      .catch(error => {
+        showToast('Error removing logo', 'error');
+      });
+  }
+
+  // Simple toast notification
+  function showToast(message, type) {
+    const toast = document.createElement('div');
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '8px';
+    toast.style.color = 'white';
+    toast.style.fontWeight = '500';
+    toast.style.zIndex = '9999';
+    toast.style.boxShadow = '0 4px 6px rgba(0,0,0,0.1)';
+    toast.style.transition = 'opacity 0.3s ease';
+
+    if (type === 'success') {
+      toast.style.background = '#10B981'; // Green
+    } else {
+      toast.style.background = '#EF4444'; // Red
+    }
+
+    toast.innerText = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      setTimeout(() => toast.remove(), 300);
+    }, 3000);
+  }
+</script>
+{% endblock %}

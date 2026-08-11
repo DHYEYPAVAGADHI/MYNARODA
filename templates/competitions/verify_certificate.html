@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Verify Organization Certificate | Green Naroda{% endblock %}
+
+{% block content %}
+<section class="min-h-screen bg-gray-50 flex flex-col justify-center py-20 px-4">
+    <div class="max-w-xl mx-auto w-full">
+        <!-- Certificate Logo / Seal -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-green-50 rounded-full mb-4 shadow-sm border border-green-100">
+                <i class="fa-solid fa-building text-3xl text-[#0B7A3B]"></i>
+            </div>
+            <h1 class="text-3xl font-serif font-bold text-gray-900 mb-2">Certificate Verification</h1>
+            <p class="text-gray-500">Green Naroda • Clean Naroda Mission</p>
+        </div>
+
+        <!-- Verification Card -->
+        <div class="bg-white rounded-3xl p-8 shadow-xl border border-gray-100 relative overflow-hidden">
+            {% if is_valid %}
+                <!-- Background Pattern -->
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-green-50 rounded-full opacity-50 blur-3xl pointer-events-none"></div>
+                
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 text-green-600">
+                        <i class="fa-solid fa-check-circle text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-green-700">Valid Certificate</h2>
+                        <p class="text-sm text-gray-500">This certificate is authentic and recorded in our system.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Organization Name</p>
+                        <p class="text-lg font-bold text-gray-900">{{ registration.organization_name }}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Registration ID</p>
+                            <p class="text-sm font-semibold font-mono text-[#0B7A3B]">{{ registration.registration_id }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Type</p>
+                            <p class="text-sm font-semibold text-gray-700">{{ registration.get_organization_type_display }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">City</p>
+                            <p class="text-sm font-semibold text-gray-700">{{ registration.city }}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Date</p>
+                            <p class="text-sm font-semibold text-gray-700">{{ registration.created_at|date:"d M Y" }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+                        <i class="fa-solid fa-xmark-circle text-3xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-900 mb-2">Certificate Not Valid</h2>
+                    <p class="text-gray-500 mb-6">This certificate could not be verified. It may be invalid, rejected, or not yet generated.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="text-center mt-8">
+            <a href="{% url 'cms:home' %}" class="text-sm font-semibold text-[#0B7A3B] hover:text-[#096831] transition-colors">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Return to Homepage
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

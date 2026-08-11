@@ -1,0 +1,1219 @@
+{% extends 'base/base.html' %}
+{% load static i18n %}
+
+{% block title %}Green Naroda • Clean Naroda | Planting 28,855 Trees for Tomorrow{% endblock %}
+{% block meta_description %}Join the Green Naroda, Clean Naroda mission — Ahmedabad's largest civic campaign to plant
+28,855 trees, clean neighbourhoods, and build a sustainable city for future generations.{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<!-- REGISTRATION POPUP -->
+
+<!-- LIGHTBOX -->
+<div id="lightbox" role="dialog" aria-label="Photo Lightbox">
+  <button id="lightbox-close"
+    class="absolute top-4 right-4 text-white text-3xl w-12 h-12 flex items-center justify-center hover:bg-white/10 rounded-full transition-colors z-10">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  <img id="lightbox-img" src="" alt="Gallery photo" class="max-w-[90vw] max-h-[90vh] object-contain rounded-xl">
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 1. HERO BANNER — Cinematic Swiper                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="home" class="relative z-10">
+  <div class="swiper hero-swiper">
+    <div class="swiper-wrapper">
+
+      <!-- Slide 1: Green Mission -->
+      <div class="swiper-slide">
+        <img src="{% static 'images/redesign/hero-bg-greener-tomorrow.jpg' %}" alt="Green Mission" class="w-full h-auto block">
+      </div>
+
+      <!-- Slide 2: Clean Mission -->
+      <div class="swiper-slide">
+        <img src="{% static 'images/redesign/hero-bg-clean-naroda.jpg' %}" alt="Clean Mission" class="w-full h-auto block">
+      </div>
+
+      <!-- Slide 3: Campaign Progress -->
+      <div class="swiper-slide">
+        <img src="{% static 'images/redesign/hero-bg-trees-progress.jpg' %}" alt="Campaign Progress" class="w-full h-auto block">
+      </div>
+
+    </div><!-- /swiper-wrapper -->
+
+  </div>
+
+  <!-- Pagination Dots (Moved below hero image) -->
+  <div class="w-full flex justify-center pt-3 pb-0 bg-[#F9FBF9]">
+    <div class="swiper-pagination !relative !bottom-0"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 2. VISION & MISSION                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="mission" class="pt-8 pb-16 lg:py-24 bg-[#F9FBF9]">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Left: Mission Image -->
+      <div class="reveal lg:sticky lg:top-28 self-start">
+        <div class="mission-img-card h-[480px]">
+          <img src="{% static 'images/default/green-1.webp' %}" alt="Green Mission" class="w-full h-full object-cover">
+          <div class="mission-play-btn">
+            <i class="fa-solid fa-play ml-1"></i>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 z-10 p-8">
+            <p class="text-white/80 text-sm font-medium">28,855 Trees</p>
+            <h3 class="text-white text-2xl font-serif font-bold">Planted for Independence</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Mission Content -->
+      <div class="reveal reveal-delay-2">
+        <div class="section-leaf-title mb-4">
+          <i class="fa-solid fa-leaf"></i> Introduction
+        </div>
+        <h2 class="text-4xl font-serif font-bold text-[#0F172A] mb-4 leading-tight">A Greener &amp; Cleaner<br><span
+            class="notranslate" translate="no">Naroda</span> for All</h2>
+        <div class="w-12 h-1 bg-[#0E7A37] mb-6 rounded-full"></div>
+        <p class="text-[#4B5563] text-base leading-relaxed mb-8">
+          We aim to create a sustainable environment by planting 28,855 trees, promoting cleanliness, and encouraging
+          community participation across every ward of Naroda.
+        </p>
+
+        <div class="space-y-0 mb-8">
+          <div class="mission-point">
+            <div class="mission-point-icon"><i class="fa-solid fa-eye"></i></div>
+            <div>
+              <h4 class="font-bold text-[#0F172A] mb-1">Our Vision</h4>
+              <p class="text-sm text-[#6B7280] leading-relaxed">A future where Naroda is a model of urban greenery and
+                civic cleanliness for all of India.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-icon"><i class="fa-solid fa-seedling"></i></div>
+            <div>
+              <h4 class="font-bold text-[#0F172A] mb-1">Our Mission</h4>
+              <p class="text-sm text-[#6B7280] leading-relaxed">To plant 28,855 trees and conduct 80 cleanliness drives
+                to mark India's 80th Independence Year.</p>
+            </div>
+          </div>
+          <div class="mission-point">
+            <div class="mission-point-icon"><i class="fa-solid fa-bullseye"></i></div>
+            <div>
+              <h4 class="font-bold text-[#0F172A] mb-1">Our Goal</h4>
+              <p class="text-sm text-[#6B7280] leading-relaxed">Unite every citizen, school, organization, and society
+                to become stewards of their environment.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mission Stats Card -->
+        <div class="mission-stats-card">
+          <div class="mission-stat-item">
+            <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-[#22C55E] flex-shrink-0">
+              <i class="fa-solid fa-tree"></i>
+            </div>
+            <div class="flex-1">
+              <p class="text-white font-bold">28,855 Trees to be Planted</p>
+              <p class="text-white/60 text-xs">Across Naroda</p>
+            </div>
+          </div>
+          <div class="mission-stat-item">
+            <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-[#F59E0B] flex-shrink-0">
+              <i class="fa-regular fa-calendar-days"></i>
+            </div>
+            <div class="flex-1">
+              <p class="text-white font-bold">80 Days of Campaign</p>
+              <p class="text-white/60 text-xs">Celebrating 80 years of independence</p>
+            </div>
+          </div>
+          <div class="mission-stat-item">
+            <div class="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center text-[#22C55E] flex-shrink-0">
+              <i class="fa-solid fa-infinity"></i>
+            </div>
+            <div class="flex-1">
+              <p class="text-white font-bold">1 Mission. Infinite Impact.</p>
+              <p class="text-white/60 text-xs">Building a sustainable tomorrow together</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 3. INSPIRATION — National Visionary Leadership                          -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="inspiration" class="py-24 bg-white">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+
+    <div class="text-center mb-16 reveal">
+      <div class="section-leaf-title justify-center mb-4">
+        <i class="fa-solid fa-leaf"></i> Visionary Leadership <i class="fa-solid fa-leaf"></i>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0F172A] mb-4">Inspirations</h2>
+      <p class="text-[#6B7280] text-base max-w-xl mx-auto">Our campaign is inspired by the vision of India's leaders for
+        a greener, cleaner nation.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <!-- PM Modi Card -->
+      <div
+        class="quote-card-v2 reveal reveal-delay-1 flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start">
+
+        <!-- Left Column -->
+        <div class="flex flex-col items-center flex-shrink-0 w-full lg:w-[220px]">
+          <img src="{% static 'images/redesign/leader-modi.jpg' %}" alt="Narendra Modi ji"
+            class="w-[112px] h-[112px] lg:w-[136px] lg:h-[136px] object-cover object-center rounded-full border-4 border-[#F0FDF4] shadow-md mb-4">
+          <p class="font-bold text-[#0F172A] text-center text-lg leading-tight">Shri Narendra Modi ji</p>
+          <p class="text-sm text-[#6B7280] font-medium text-center mt-1">Prime Minister of India</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-full h-px lg:w-px lg:h-auto lg:self-stretch bg-gray-200 my-2 lg:my-0"></div>
+
+        <!-- Right Column -->
+        <div class="flex-1 w-full flex flex-col items-center lg:items-start">
+          <div
+            class="inline-flex items-center gap-2 text-[#EA580C] bg-[#FFF7ED] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-[#FFEDD5]">
+            <i class="fa-solid fa-quote-left"></i> Message
+          </div>
+          <div class="text-[#4B5563] text-sm lg:text-base leading-relaxed text-justify lg:text-left italic">
+            "Through national initiatives such as Swachh Bharat Mission, Ek Ped Maa Ke Naam, and Mission LiFE (Lifestyle
+            for Environment), the Hon'ble Prime Minister has encouraged environmental responsibility and citizen
+            participation as important elements of nation-building.
+            These public initiatives inspire Mission 28,855 to strengthen environmental awareness and community
+            participation at the local level."
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Amit Shah Card -->
+      <div
+        class="quote-card-v2 reveal reveal-delay-2 flex flex-col lg:flex-row gap-6 lg:gap-8 items-center lg:items-start">
+
+        <!-- Left Column -->
+        <div class="flex flex-col items-center flex-shrink-0 w-full lg:w-[220px]">
+          <img src="{% static 'images/redesign/leader-amit-shah.jpg' %}" alt="Amit Shah ji"
+            class="w-[112px] h-[112px] lg:w-[136px] lg:h-[136px] object-cover object-center rounded-full border-4 border-[#F0FDF4] shadow-md mb-4">
+          <p class="font-bold text-[#0F172A] text-center text-lg leading-tight">Shri Amit Shah ji</p>
+          <p class="text-sm text-[#6B7280] font-medium text-center mt-1">Home Minister of India</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="w-full h-px lg:w-px lg:h-auto lg:self-stretch bg-gray-200 my-2 lg:my-0"></div>
+
+        <!-- Right Column -->
+        <div class="flex-1 w-full flex flex-col items-center lg:items-start">
+          <div
+            class="inline-flex items-center gap-2 text-[#EA580C] bg-[#FFF7ED] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4 border border-[#FFEDD5]">
+            <i class="fa-solid fa-quote-left"></i> Message
+          </div>
+          <div class="text-[#4B5563] text-sm lg:text-base leading-relaxed text-justify lg:text-left italic">
+            "Public initiatives such as Hariyali Gandhinagar Lok Sabha have highlighted the importance of community
+            participation in expanding green cover and promoting environmental stewardship.
+            Mission 28,855 is inspired by this spirit of local participation and collective responsibility, seeking to
+            build a cleaner and greener Naroda through active involvement of citizens and institutions."
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 4. MENTORING LEADERSHIP                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="mentoring-leadership" class="py-24" style="background:#F7F8F5;">
+  <div class="max-w-[1280px] mx-auto px-6 lg:px-12">
+
+    <!-- Section Header -->
+    <div class="text-center mb-16 reveal">
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0F172A] mb-4">Mentoring Leadership</h2>
+      <div class="flex items-center justify-center gap-3 mb-5">
+        <div class="w-10 h-px bg-[#0E7A37]"></div>
+        <i class="fa-solid fa-leaf text-[#0E7A37] text-sm" aria-hidden="true"></i>
+        <div class="w-10 h-px bg-[#0E7A37]"></div>
+      </div>
+      <p class="text-[#6B7280] text-base max-w-2xl mx-auto">Mentors and guiding leaders supporting the Green Naroda
+        &bull; Clean Naroda mission.</p>
+    </div>
+
+    <!-- Row 1: Featured Leader (Alone) -->
+    <div class="flex justify-center mb-10">
+      <div class="ml-card reveal" tabindex="0" style="max-width:320px;width:100%;">
+        <div class="ml-avatar mx-auto mb-5" style="width:112px;height:112px;">
+          {% if leadership_photos and leadership_photos.nitin_nabin_photo %}
+          <img src="{{ leadership_photos.nitin_nabin_photo.url }}" alt="Shri Nitin Nabin"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-4xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name text-lg">Shri Nitin Nabin</h3>
+        <p class="ml-role">Hon&apos;ble National President, BJP</p>
+      </div>
+    </div>
+
+    <!-- Row 2: Four Leaders in One Line -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+      <div class="ml-card reveal reveal-delay-1" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.bhupendrabhai_patel_photo %}
+          <img src="{{ leadership_photos.bhupendrabhai_patel_photo.url }}" alt="Shri Bhupendrabhai Patel"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-3xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Bhupendrabhai Patel</h3>
+        <p class="ml-role">Hon&apos;ble Chief Minister, Gujarat</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-2" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.jagdish_vishwakarma_photo %}
+          <img src="{{ leadership_photos.jagdish_vishwakarma_photo.url }}" alt="Shri Jagdish Vishwakarma"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-3xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Jagdish Vishwakarma</h3>
+        <p class="ml-role">Hon&apos;ble State President, BJP Gujarat</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-3" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.harshbhai_sanghavi_photo %}
+          <img src="{{ leadership_photos.harshbhai_sanghavi_photo.url }}" alt="Shri Harshbhai Sanghavi"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-3xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Harshbhai Sanghavi</h3>
+        <p class="ml-role">Hon&apos;ble Dy. Chief Minister of Gujarat</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-4" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.ratnakarji_photo %}
+          <img src="{{ leadership_photos.ratnakarji_photo.url }}" alt="Shri Ratnakarji"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-3xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Ratnakarji</h3>
+        <p class="ml-role">Hon'ble State Organization General Secretary</p>
+      </div>
+    </div>
+
+    <!-- Row 3: State General Secretaries — 4 cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+      <div class="ml-card reveal reveal-delay-1" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.ajay_brahmbhatt_photo %}
+          <img src="{{ leadership_photos.ajay_brahmbhatt_photo.url }}" alt="Shri Ajay Brahmbhatt"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Ajay Brahmbhatt</h3>
+        <p class="ml-role">State General Secretary, BJP Gujarat</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-2" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.anirudhbhai_dave_photo %}
+          <img src="{{ leadership_photos.anirudhbhai_dave_photo.url }}" alt="Shri Anirudhbhai Dave"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Anirudhbhai Dave</h3>
+        <p class="ml-role">State General Secretary, BJP Gujarat</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-3" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.prashantbhai_korat_photo %}
+          <img src="{{ leadership_photos.prashantbhai_korat_photo.url }}" alt="Dr. Prashantbhai Korat"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Dr. Prashantbhai Korat</h3>
+        <p class="ml-role">State General Secretary, BJP Gujarat</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-4" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.hitendrasinh_chauhan_photo %}
+          <img src="{{ leadership_photos.hitendrasinh_chauhan_photo.url }}" alt="Shri Hitendrasinh Chauhan"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Hitendrasinh Chauhan</h3>
+        <p class="ml-role">State General Secretary, BJP Gujarat</p>
+      </div>
+    </div>
+
+    <!-- Row 4: Karnavati & Parliamentary Leadership — 3 cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 max-w-4xl mx-auto">
+      <div class="ml-card reveal reveal-delay-1" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.prerakbhai_shah_photo %}
+          <img src="{{ leadership_photos.prerakbhai_shah_photo.url }}" alt="Shri Prerakbhai Shah"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Prerakbhai Shah</h3>
+        <p class="ml-role">President, Karnavati Mahanagar BJP</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-2" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.hasmukhbhai_patel_photo %}
+          <img src="{{ leadership_photos.hasmukhbhai_patel_photo.url }}" alt="Shri Hasmukhbhai Patel"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Hasmukhbhai Patel</h3>
+        <p class="ml-role">Hon. Member of Parliament</p>
+      </div>
+      <div class="ml-card reveal reveal-delay-3" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5" style="width:96px;height:96px;">
+          {% if leadership_photos and leadership_photos.dineshbhai_makwana_photo %}
+          <img src="{{ leadership_photos.dineshbhai_makwana_photo.url }}" alt="Shri Dineshbhai Makwana"
+            class="w-full h-full object-cover rounded-full">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF]" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="ml-name">Shri Dineshbhai Makwana</h3>
+        <p class="ml-role">Hon. Member of Parliament</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 4. MENTORING LEADERSHIP & 5. ORGANISER & COMMITTEE                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="leadership" class="py-16 bg-[#F9FBF9]">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+
+
+    <!-- Header -->
+    <div class="text-center mb-16 reveal">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <div class="inline-flex items-center gap-2 bg-[#E8F5EE] text-[#15803D] px-4 py-1.5 rounded-full">
+          <i class="fa-solid fa-sitemap text-sm" aria-hidden="true"></i>
+          <span class="font-bold text-xs tracking-widest uppercase">Organisation &amp; Committee</span>
+        </div>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0F172A] mb-4">Main Planning Committee</h2>
+      <p class="text-[#6B7280] text-base max-w-2xl mx-auto">Core leadership guiding the Green Naroda &bull; Clean Naroda
+        mission</p>
+    </div>
+
+    <!-- Row 1: Standard leadership cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto mb-16">
+      <div class="ml-card reveal reveal-delay-1" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5 w-28 h-28 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.payalben_photo %}
+          <img src="{{ leadership_photos.payalben_photo.url }}" alt="Dr. Payalben Kukrani"
+            class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-4xl text-[#9CA3AF] flex items-center justify-center w-full h-full"
+            aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <div
+          class="inline-block bg-[#15803D] text-white text-[10px] font-bold tracking-widest px-3 py-1 rounded-full mb-3 uppercase">
+          President</div>
+        <h3 class="ml-name text-[18px]">Dr. Payalben Kukrani</h3>
+        <p class="ml-role">MLA, Naroda</p>
+      </div>
+
+      <div class="ml-card reveal reveal-delay-2" tabindex="0">
+        <div class="ml-avatar mx-auto mb-5 w-28 h-28 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.nikunj_photo %}
+          <img src="{{ leadership_photos.nikunj_photo.url }}" alt="Shri Nikunj Rameshbhai Khakhi"
+            class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-4xl text-[#9CA3AF] flex items-center justify-center w-full h-full"
+            aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <div
+          class="inline-block bg-[#15803D] text-white text-[10px] font-bold tracking-widest px-3 py-1 rounded-full mb-3 uppercase">
+          Convener</div>
+        <h3 class="ml-name text-[18px]">Shri Nikunj Rameshbhai Khakhi</h3>
+        <p class="ml-role">President, Pratham Priority Club</p>
+      </div>
+    </div>
+
+    <!-- Row 2: Co-conveners -->
+    <div class="text-center mb-8 reveal">
+      <span
+        class="inline-block bg-[#E8F5EE] text-[#15803D] text-[11px] font-bold tracking-widest px-4 py-1.5 rounded-full uppercase">Co-Conveners</span>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 reveal reveal-delay-1">
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.kiran_raval_photo %}
+          <img src="{{ leadership_photos.kiran_raval_photo.url }}" alt="Shri Kiran Raval" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Kiran Raval</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">President, BJP Naroda Ward</p>
+      </div>
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.nirav_joshi_photo %}
+          <img src="{{ leadership_photos.nirav_joshi_photo.url }}" alt="Shri Nirav Joshi" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Nirav Joshi</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">General Secretary, Naroda Ward</p>
+      </div>
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.gautam_patel_photo %}
+          <img src="{{ leadership_photos.gautam_patel_photo.url }}" alt="Shri Gautam Patel" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Gautam Patel</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">General Secretary, Naroda Ward</p>
+      </div>
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.vipul_patel_photo %}
+          <img src="{{ leadership_photos.vipul_patel_photo.url }}" alt="Shri Vipul Patel" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Vipul Patel</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">Chairman &amp; Municipal Councilor, Naroda AMC</p>
+      </div>
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.jayeshbhai_prajapati_photo %}
+          <img src="{{ leadership_photos.jayeshbhai_prajapati_photo.url }}" alt="Shri Jayeshbhai Prajapati" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Jayeshbhai Prajapati</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">Municipal Councilor, Naroda AMC</p>
+      </div>
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.chandaben_patel_photo %}
+          <img src="{{ leadership_photos.chandaben_patel_photo.url }}" alt="Shri Chandaben Patel" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Chandaben Patel</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">Municipal Councilor, Naroda AMC</p>
+      </div>
+      <div
+        class="bg-white border border-[#E5E7EB] rounded-[32px] p-6 shadow-sm hover:shadow-md transition-shadow text-center flex flex-col items-center justify-center">
+        <div class="ml-avatar mx-auto mb-4 w-20 h-20 rounded-full overflow-hidden">
+          {% if leadership_photos and leadership_photos.divya_nikunj_khakhi_photo %}
+          <img src="{{ leadership_photos.divya_nikunj_khakhi_photo.url }}" alt="Shri Divya Nikunj Khakhi" class="w-full h-full object-cover object-center">
+          {% else %}
+          <i class="fa-solid fa-user-tie text-2xl text-[#9CA3AF] flex items-center justify-center w-full h-full" aria-hidden="true"></i>
+          {% endif %}
+        </div>
+        <h3 class="text-lg font-bold text-[#0F172A] mb-1">Shri Divya Nikunj Khakhi</h3>
+        <p class="text-[13px] text-[#6B7280] font-medium">Dy. Chairman &amp; Municipal Councilor, Naroda AMC</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 5. ORGANIZERS SECTION                                                   -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="organizers" class="py-24 bg-white">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+
+    <div class="text-center mb-16 reveal">
+      <div class="section-leaf-title justify-center mb-4">
+        <i class="fa-solid fa-leaf"></i> Who Runs This Campaign <i class="fa-solid fa-leaf"></i>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0F172A] mb-4">Organizers</h2>
+      <p class="text-[#6B7280] text-base max-w-xl mx-auto">A lead NGO, a co-organizing partner, and a community
+        committee on the ground.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+      <div class="organizer-tier-card tier-1 reveal reveal-delay-1">
+        <span class="tier-badge">Main Organizer</span>
+        <img src="{% static 'images/redesign/organizer-pratham-priority.png' %}" alt="Pratham Priority" class="organizer-logo">
+        <h3 class="notranslate" translate="no">Pratham Priority (NGO)</h3>
+        <p>Lead organizer running and owning the campaign.</p>
+      </div>
+
+      <div class="organizer-tier-card tier-2 reveal reveal-delay-2">
+        <span class="tier-badge">Co-Organizer</span>
+        <img src="{% static 'images/redesign/organizer-bjp-naroda.png' %}" alt="BJP Naroda" class="organizer-logo">
+        <h3 class="notranslate" translate="no">BJP Naroda</h3>
+        <p>Co-organizing partner supporting the drive in Naroda.</p>
+      </div>
+
+      <div class="organizer-tier-card tier-3 reveal reveal-delay-3">
+        <span class="tier-badge">Supporting Group</span>
+        <img src="{% static 'images/redesign/organizer-my-naroda-samiti.png' %}" alt="My Naroda Samiti"
+          class="organizer-logo">
+        <h3 class="notranslate" translate="no">My Naroda Samiti</h3>
+        <p>Community committee helping execute the program on the ground.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 6. COMPETITION                                                          -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="competition" class="py-24 bg-[#F9FBF9]">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+
+    <div class="text-center mb-16 reveal">
+      <div class="section-leaf-title justify-center mb-4">
+        <i class="fa-solid fa-leaf"></i> Join The Competition <i class="fa-solid fa-leaf"></i>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0F172A] mb-4">Compete &amp; Contribute</h2>
+      <p class="text-[#6B7280] text-base max-w-xl mx-auto">Students and residents can register for the Green Naroda
+        competition and win recognition for their environmental contribution.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
+      <!-- Student Corner Card -->
+      <a href="{% url 'competitions:registration' %}"
+        class="group block bg-white border border-[#E5E7EB] rounded-[24px] p-10 shadow-sm hover:shadow-xl hover:border-[#BBF7D0] transition-all reveal reveal-delay-1">
+        <div
+          class="w-16 h-16 bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl flex items-center justify-center text-[#0E7A37] text-2xl mb-6 group-hover:bg-[#0E7A37] group-hover:text-white group-hover:border-[#0E7A37] transition-all">
+          <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+        <h3 class="text-xl font-bold text-[#0F172A] mb-3">Student Corner</h3>
+        <p class="text-[#6B7280] text-sm leading-relaxed mb-6">School &amp; college students can register for essay
+          writing, drawing, and quiz competitions on environment and sustainability.</p>
+        <span class="inline-flex items-center gap-2 text-[#0E7A37] font-bold text-sm group-hover:gap-3 transition-all">
+          Register Now <i class="fa-solid fa-arrow-right text-xs"></i>
+        </span>
+      </a>
+
+      <!-- Resident Registration Card -->
+      <a href="{% url 'competitions:registration' %}"
+        class="group block bg-white border border-[#E5E7EB] rounded-[24px] p-10 shadow-sm hover:shadow-xl hover:border-[#BBF7D0] transition-all reveal reveal-delay-2">
+        <div
+          class="w-16 h-16 bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl flex items-center justify-center text-[#0E7A37] text-2xl mb-6 group-hover:bg-[#0E7A37] group-hover:text-white group-hover:border-[#0E7A37] transition-all">
+          <i class="fa-solid fa-building"></i>
+        </div>
+        <h3 class="text-xl font-bold text-[#0F172A] mb-3">Resident Registration</h3>
+        <p class="text-[#6B7280] text-sm leading-relaxed mb-6">Residential societies and housing complexes can register
+          to participate in Naroda's green mission and compete for the cleanest society award.</p>
+        <span class="inline-flex items-center gap-2 text-[#0E7A37] font-bold text-sm group-hover:gap-3 transition-all">
+          Register Now <i class="fa-solid fa-arrow-right text-xs"></i>
+        </span>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- HAR GHAR TIRANGA                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="har-ghar-tiranga" class="relative overflow-hidden w-full bg-[#F3FBF5]">
+  <!-- Accent bars -->
+  <div class="absolute top-0 left-0 h-1 w-1/3 bg-[#FF9933] z-20"></div>
+  <div class="absolute top-0 right-0 h-1 w-1/3 bg-[#138808] z-20"></div>
+  <div class="absolute bottom-0 left-0 h-1 w-1/3 bg-[#FF9933] z-20"></div>
+  <div class="absolute bottom-0 right-0 h-1 w-1/3 bg-[#138808] z-20"></div>
+
+  <!-- Background Image & Overlay -->
+  <div class="absolute inset-0 z-0">
+    <img src="{% static 'images/har-ghar-tiranga-real.jpg' %}" alt="Har Ghar Tiranga City panorama"
+      class="w-full h-full object-cover object-center">
+    <div class="absolute inset-0 w-full lg:w-[65%]"
+      style="background: linear-gradient(90deg, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); mask-image: linear-gradient(90deg, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(90deg, black 60%, transparent 100%);">
+    </div>
+  </div>
+
+  <div
+    class="relative z-10 max-w-[1440px] mx-auto px-5 md:px-8 lg:px-16 lg:h-[800px] md:h-auto min-h-[700px] flex flex-col lg:flex-row items-center justify-between py-16 lg:py-0">
+
+    <!-- Left Column (45%) -->
+    <div class="w-full lg:w-[45%] flex flex-col justify-center reveal mb-12 lg:mb-0">
+      <h2
+        class="font-serif text-[#0B1020] font-extrabold text-[42px] md:text-5xl lg:text-[56px] leading-tight mb-6 notranslate"
+        translate="no" style="text-shadow: 0 2px 12px rgba(255,255,255,0.65);">
+        Tiranga Yatra • 12 August
+      </h2>
+      <p class="font-sans font-medium text-[#111827] text-[18px] leading-[1.85] mb-6 max-w-[600px]"
+        style="text-shadow: 0 1px 4px rgba(255,255,255,0.35);">
+        Join us in celebrating the spirit of unity, patriotism, and national pride! Let's hoist the Tiranga at our homes and come together for a massive rally across Naroda.
+      </p>
+      <div class="flex flex-col gap-3 mb-10 text-[#0B1020] font-bold text-[17px]">
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center"><i class="fa-regular fa-calendar text-[#FF7A00]"></i></div> 12 August 2026</div>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center"><i class="fa-regular fa-clock text-[#FF7A00]"></i></div> 9:00 AM</div>
+        <div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center"><i class="fa-solid fa-location-dot text-[#FF7A00]"></i></div> Start from: Shalin School, Naroda</div>
+      </div>
+      <a href="{% url 'cms:har_ghar_tiranga_registration' %}"
+        class="bg-[#FF7A00] hover:bg-[#E66E00] hover:-translate-y-1 text-[#FFFFFF] font-bold h-14 px-7 rounded-full shadow-lg transition-all flex items-center justify-center gap-3 w-fit text-lg">
+        <i class="fa-solid fa-flag"></i> Join the Har Ghar Tiranga
+      </a>
+    </div>
+
+    <!-- Right Column (55%) -->
+    <div
+      class="w-full lg:w-[55%] flex flex-col sm:flex-row lg:flex-row lg:justify-end items-center sm:items-stretch lg:items-end lg:pb-16 gap-5 reveal reveal-delay-2 h-full justify-end">
+
+      <!-- Card 1 -->
+      <div
+        class="bg-white/90 backdrop-blur-[10px] rounded-[28px] p-6 shadow-xl w-full sm:w-1/3 lg:w-[210px] h-[240px] flex flex-col items-center justify-center text-center transition-transform hover:-translate-y-2">
+        <div class="w-[60px] h-[60px] rounded-full bg-[#FF9933]/10 flex items-center justify-center mb-5">
+          <i class="fa-regular fa-calendar-days text-[#FF7A00] text-2xl"></i>
+        </div>
+        <h3 class="text-[#0F172A] font-bold text-[18px] mb-2 leading-tight">11–15 August</h3>
+        <p class="text-[#6B7280] text-[14px]">Campaign Duration</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div
+        class="bg-white/90 backdrop-blur-[10px] rounded-[28px] p-6 shadow-xl w-full sm:w-1/3 lg:w-[210px] h-[240px] flex flex-col items-center justify-center text-center transition-transform hover:-translate-y-2">
+        <div class="w-[60px] h-[60px] rounded-full bg-[#15803D]/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-house-flag text-[#15803D] text-2xl"></i>
+        </div>
+        <h3 class="text-[#0F172A] font-bold text-[18px] mb-2 leading-tight">Every Home</h3>
+        <p class="text-[#6B7280] text-[14px]">Flag Hoisted in the Nation</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div
+        class="bg-white/90 backdrop-blur-[10px] rounded-[28px] p-6 shadow-xl w-full sm:w-1/3 lg:w-[210px] h-[240px] flex flex-col items-center justify-center text-center transition-transform hover:-translate-y-2">
+        <div class="w-[60px] h-[60px] rounded-full bg-[#15803D]/10 flex items-center justify-center mb-5">
+          <i class="fa-solid fa-people-group text-[#15803D] text-2xl"></i>
+        </div>
+        <h3 class="text-[#0F172A] font-bold text-[18px] mb-2 leading-tight">12 August</h3>
+        <p class="text-[#6B7280] text-[14px]">Massive Tiranga Yatra</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- CAMPAIGN PROGRESS                                                       -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="progress" class="pt-16 pb-24 bg-[#F3FBF5]">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+
+    <div class="text-center mb-16 reveal">
+      <div class="section-leaf-title justify-center mb-4">
+        <i class="fa-solid fa-leaf"></i> Campaign Progress <i class="fa-solid fa-leaf"></i>
+      </div>
+      <h2 class="text-4xl md:text-5xl font-serif font-bold text-[#0F172A] mb-4">Our Growing Impact</h2>
+      <p class="text-[#6B7280] text-base max-w-xl mx-auto">Real-time data from our ongoing campaign across all wards of
+        Naroda.</p>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="max-w-3xl mx-auto mb-16 reveal">
+      <div class="flex justify-between items-end mb-3">
+        <span class="text-sm font-bold text-[#4B5563]">Tree Plantation Progress</span>
+        <span class="text-2xl font-bold text-[#0E7A37] font-serif">64%</span>
+      </div>
+      <div class="w-full bg-white rounded-full h-4 shadow-inner border border-[#BBF7D0]">
+        <div
+          class="bg-gradient-to-r from-[#0E7A37] to-[#22C55E] h-4 rounded-full shadow-sm transition-all duration-1000"
+          style="width: 64%"></div>
+      </div>
+      <div class="flex justify-between mt-2 text-xs text-[#6B7280]">
+        <span><span class="counter-num font-bold text-[#0F172A]" data-target="18420">0</span> Planted</span>
+        <span class="font-bold text-[#0E7A37]">Target: 28,855</span>
+      </div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+
+      <div class="progress-stat-card reveal reveal-delay-1">
+        <div class="stat-icon"><i class="fa-solid fa-tree"></i></div>
+        <div class="stat-number counter-num" data-target="18420">0</div>
+        <div class="stat-label">Trees Planted</div>
+      </div>
+
+      <div class="progress-stat-card reveal reveal-delay-2">
+        <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+        <div class="stat-number counter-num" data-target="12780">0</div>
+        <div class="stat-label">Citizens Joined</div>
+      </div>
+
+      <div class="progress-stat-card reveal reveal-delay-3">
+        <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-building"></i></div>
+        <div class="stat-number counter-num" data-target="96">0</div>
+        <div class="stat-label">Organizations</div>
+      </div>
+
+      <div class="progress-stat-card reveal reveal-delay-4">
+        <div class="stat-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="stat-number counter-num" data-target="7400">0</div>
+        <div class="stat-label">Students</div>
+      </div>
+
+      <div class="progress-stat-card reveal reveal-delay-1">
+        <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-broom"></i></div>
+        <div class="stat-number counter-num" data-target="212">0</div>
+        <div class="stat-label">Cleanliness Drives</div>
+      </div>
+
+      <div class="progress-stat-card reveal reveal-delay-2">
+        <div class="stat-icon"><i class="fa-solid fa-trash"></i></div>
+        <div class="stat-number counter-num" data-target="64">0</div>
+        <div class="stat-label">Tons Waste Removed</div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 7. PHOTO GALLERY                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="gallery" class="py-24 bg-white">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-6 reveal">
+      <div>
+        <div class="section-leaf-title mb-4">
+          <i class="fa-solid fa-leaf"></i> Gallery
+        </div>
+        <h2 class="text-4xl font-serif font-bold text-[#0F172A] mb-2">Moments of Our Mission</h2>
+        <p class="text-[#6B7280]">Glimpses of the campaign through our community's eyes.</p>
+      </div>
+      <a href="{% url 'gallery:list' %}"
+        class="inline-flex items-center gap-2 bg-[#0E7A37] hover:bg-[#0B5D2A] text-white font-bold py-3 px-7 rounded-full shadow-md transition-all hover:shadow-lg self-start">
+        View All Photos <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="flex flex-wrap gap-3 mb-10 reveal">
+      <button class="gallery-pill active" data-filter="all">All</button>
+      <button class="gallery-pill" data-filter="PLANTATION">Tree Plantation</button>
+      <button class="gallery-pill" data-filter="CLEANUP">Clean Drives</button>
+      <button class="gallery-pill" data-filter="EVENT">Events</button>
+      <button class="gallery-pill" data-filter="AWARENESS">Awareness</button>
+    </div>
+
+    <!-- Gallery Grid -->
+    {% if gallery_photos %}
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+      {% for photo in gallery_photos %}
+      <div class="gallery-grid-item {% if forloop.counter == 1 or forloop.counter == 5 %}row-span-2{% endif %} reveal"
+        data-category="{{ photo.category|default:'OTHER' }}">
+        {% if photo.cloudinary_id %}
+        <img
+          src="https://res.cloudinary.com/{{ cloudinary_cloud_name }}/image/upload/c_fill,w_600,h_600,q_auto,f_webp/{{ photo.cloudinary_id }}"
+          alt="{{ photo.title }}" loading="lazy">
+        {% else %}
+        <img src="{% static 'images/default/gallery-1.webp' %}" alt="{{ photo.title }}" loading="lazy">
+        {% endif %}
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <!-- Fallback gallery with real images -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+      <div class="gallery-grid-item row-span-2 reveal" data-category="PLANTATION">
+        <img src="{% static 'images/default/gallery-1.webp' %}" alt="Tree plantation drive" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item reveal" data-category="PLANTATION">
+        <img src="{% static 'images/default/gallery-2.webp' %}" alt="School tree planting" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item reveal" data-category="CLEANUP">
+        <img src="{% static 'images/default/gallery-3.webp' %}" alt="Cleanliness drive" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item reveal" data-category="EVENT">
+        <img src="{% static 'images/default/gallery-4.webp' %}" alt="Community event" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item row-span-2 reveal" data-category="AWARENESS">
+        <img src="{% static 'images/default/gallery-5.webp' %}" alt="Awareness drive" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item reveal" data-category="PLANTATION">
+        <img src="{% static 'images/default/gallery-6.webp' %}" alt="Volunteer planting" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item reveal" data-category="CLEANUP">
+        <img src="{% static 'images/default/gallery-7.webp' %}" alt="Clean Naroda drive" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+      <div class="gallery-grid-item reveal" data-category="EVENT">
+        <img src="{% static 'images/default/gallery-8.webp' %}" alt="Student participation" loading="lazy">
+        <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Upload CTA -->
+    <div class="mt-16 bg-[#F9FBF9] border border-[#E5E7EB] rounded-[24px] p-10 text-center shadow-lg reveal">
+      <div class="text-[#6B7280] font-semibold tracking-wider text-sm mb-3 uppercase">Share Your Contribution</div>
+      <h2 class="text-[#0F172A] font-bold font-serif text-3xl mb-4">Be Part of the Story</h2>
+      <p class="text-[#4B5563] text-lg max-w-xl mx-auto mb-8">Upload your plantation or cleanliness photos and inspire
+        more citizens to participate.</p>
+      <a href="{% url 'gallery:submit' %}"
+        class="inline-flex items-center gap-2 bg-[#22C55E] hover:bg-[#0E7A37] text-white font-bold font-sans px-8 py-4 rounded-full transition-colors shadow-md">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+        </svg>
+        Upload Photo
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- NEWS AND EVENTS SECTION -->
+<section id="news" class="py-24 bg-[#F9FBF9]">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- Left: Latest News -->
+      <div>
+        <div class="flex items-center justify-between mb-8 reveal">
+          <div>
+            <div class="section-leaf-title mb-3"><i class="fa-solid fa-leaf"></i> Latest News</div>
+            <h2 class="text-3xl font-serif font-bold text-[#0F172A]">Updates &amp; Press</h2>
+          </div>
+          <a href="{% url 'news:list' %}"
+            class="text-sm font-bold text-[#0E7A37] hover:text-[#0B5D2A] flex items-center gap-1 transition-colors">
+            View All <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+
+        <div class="space-y-5">
+          {% if news_articles %}
+          {% for article in news_articles %}
+          <a href="{% url 'news:list' %}"
+            class="news-card flex flex-row gap-0 overflow-hidden reveal reveal-delay-{{ forloop.counter }}">
+            <div class="w-[110px] flex-shrink-0">
+              {% if article.cover_image_id %}
+              <img
+                src="https://res.cloudinary.com/{{ cloudinary_cloud_name }}/image/upload/c_fill,w_220,h_160,q_auto,f_webp/{{ article.cover_image_id }}"
+                alt="{{ article.title }}" class="w-full h-full object-cover">
+              {% else %}
+              <img src="{% static 'images/default/news-1.webp' %}" alt="{{ article.title }}"
+                class="w-full h-full object-cover">
+              {% endif %}
+            </div>
+            <div class="flex-1 py-4 px-4">
+              {% if article.published_at %}<p
+                class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">{{
+                article.published_at|date:"d M Y" }}</p>{% endif %}
+              <h3 class="font-bold text-sm text-[#0F172A] mb-1 leading-snug line-clamp-2">{{ article.title }}</h3>
+              <p class="text-[12px] text-[#6B7280] line-clamp-2">{{
+                article.summary|default:article.content|truncatewords:18 }}</p>
+            </div>
+          </a>
+          {% endfor %}
+          {% else %}
+          <!-- Static fallback news cards -->
+          <a href="{% url 'news:list' %}" class="news-card flex flex-row gap-0 overflow-hidden reveal reveal-delay-1">
+            <img src="{% static 'images/default/news-1.webp' %}" class="w-[110px] flex-shrink-0 object-cover"
+              alt="news">
+            <div class="flex-1 p-4">
+              <p class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Campaign Update</p>
+              <h3 class="font-bold text-sm text-[#0F172A] mb-1 leading-snug">Mass Plantation Drive Across Naroda Wards
+              </h3>
+              <p class="text-[12px] text-[#6B7280]">Over 500 citizens joined in a historic plantation event across 14
+                wards.</p>
+            </div>
+          </a>
+          <a href="{% url 'news:list' %}" class="news-card flex flex-row gap-0 overflow-hidden reveal reveal-delay-2">
+            <img src="{% static 'images/default/news-2.webp' %}" class="w-[110px] flex-shrink-0 object-cover"
+              alt="news">
+            <div class="flex-1 p-4">
+              <p class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Clean Drive</p>
+              <h3 class="font-bold text-sm text-[#0F172A] mb-1 leading-snug">80 Cleanliness Drives Completed
+                Successfully</h3>
+              <p class="text-[12px] text-[#6B7280]">Waste collected from all 14 wards of Naroda in record time.</p>
+            </div>
+          </a>
+          <a href="{% url 'news:list' %}" class="news-card flex flex-row gap-0 overflow-hidden reveal reveal-delay-3">
+            <img src="{% static 'images/default/news-3.webp' %}" class="w-[110px] flex-shrink-0 object-cover"
+              alt="news">
+            <div class="flex-1 p-4">
+              <p class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Milestone</p>
+              <h3 class="font-bold text-sm text-[#0F172A] mb-1 leading-snug">Students Celebrate Green India with 2400
+                Trees</h3>
+              <p class="text-[12px] text-[#6B7280]">Schools across Naroda participated in the Green India Student Drive.
+              </p>
+            </div>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right: Upcoming Events -->
+      <div>
+        <div class="flex items-center justify-between mb-8 reveal">
+          <div>
+            <div class="section-leaf-title mb-3"><i class="fa-solid fa-leaf"></i> Upcoming Events</div>
+            <h2 class="text-3xl font-serif font-bold text-[#0F172A]">Join the Drive</h2>
+          </div>
+          <a href="{% url 'events:list' %}"
+            class="text-sm font-bold text-[#0E7A37] hover:text-[#0B5D2A] flex items-center gap-1 transition-colors">
+            All Events <i class="fa-solid fa-arrow-right text-xs"></i>
+          </a>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
+          {% if upcoming_events %}
+          {% for event in upcoming_events %}
+          <div class="event-timeline-item reveal reveal-delay-{{ forloop.counter }}">
+            <div class="event-date-badge">
+              <span class="day">{{ event.starts_at|date:"d" }}</span>
+              <span class="month">{{ event.starts_at|date:"M" }}</span>
+            </div>
+            <div class="flex-1">
+              <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1
+                {% if event.event_type == 'PLANTATION' %}bg-green-50 text-green-700
+                {% elif event.event_type == 'CLEANUP' %}bg-orange-50 text-orange-700
+                {% else %}bg-blue-50 text-blue-700{% endif %}">
+                {{ event.get_event_type_display }}
+              </span>
+              <h4 class="font-bold text-[#0F172A] text-sm mb-1 leading-snug">{{ event.title }}</h4>
+              <p class="text-xs text-[#6B7280] flex items-center gap-1">
+                <i class="fa-solid fa-location-dot text-[#0E7A37]"></i> {{ event.location_name }}
+                &nbsp;•&nbsp;
+                <i class="fa-regular fa-clock"></i> {{ event.starts_at|date:"g:i A" }}
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+          {% else %}
+          <!-- Fallback static events -->
+          <div class="event-timeline-item reveal reveal-delay-1">
+            <div class="event-date-badge">
+              <span class="day">15</span>
+              <span class="month">Aug</span>
+            </div>
+            <div class="flex-1">
+              <span
+                class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1 bg-green-50 text-green-700">Plantation</span>
+              <h4 class="font-bold text-[#0F172A] text-sm mb-1">Independence Day Mass Plantation</h4>
+              <p class="text-xs text-[#6B7280]"><i class="fa-solid fa-location-dot text-[#0E7A37]"></i> Naroda Town Hall
+                &nbsp;•&nbsp; <i class="fa-regular fa-clock"></i> 8:00 AM</p>
+            </div>
+          </div>
+          <div class="event-timeline-item reveal reveal-delay-2">
+            <div class="event-date-badge">
+              <span class="day">22</span>
+              <span class="month">Aug</span>
+            </div>
+            <div class="flex-1">
+              <span
+                class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1 bg-orange-50 text-orange-700">Clean
+                Drive</span>
+              <h4 class="font-bold text-[#0F172A] text-sm mb-1">Ward-Level Cleanliness Campaign</h4>
+              <p class="text-xs text-[#6B7280]"><i class="fa-solid fa-location-dot text-[#0E7A37]"></i> All 14 Wards
+                &nbsp;•&nbsp; <i class="fa-regular fa-clock"></i> 7:00 AM</p>
+            </div>
+          </div>
+          <div class="event-timeline-item reveal reveal-delay-3">
+            <div class="event-date-badge">
+              <span class="day">05</span>
+              <span class="month">Sep</span>
+            </div>
+            <div class="flex-1">
+              <span
+                class="inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full mb-1 bg-blue-50 text-blue-700">Student
+                Event</span>
+              <h4 class="font-bold text-[#0F172A] text-sm mb-1">Green Naroda Student Awareness Rally</h4>
+              <p class="text-xs text-[#6B7280]"><i class="fa-solid fa-location-dot text-[#0E7A37]"></i> Naroda Schools
+                &nbsp;•&nbsp; <i class="fa-regular fa-clock"></i> 10:00 AM</p>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- 8. CONTACT US                                                           -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section id="contact" class="py-24 bg-white">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+
+      <!-- Left: Contact Info -->
+      <div class="reveal">
+        <div class="section-leaf-title mb-4">
+          <i class="fa-solid fa-leaf"></i> Contact Us
+        </div>
+        <h2 class="text-4xl font-serif font-bold text-[#0F172A] mb-4">Get in Touch</h2>
+        <p class="text-[#6B7280] mb-10 leading-relaxed">
+          Have a question, suggestion, or want to collaborate? Our team is ready to assist you.
+        </p>
+
+        <div class="space-y-6 mb-10">
+          <div class="flex items-start gap-4">
+            <div
+              class="w-12 h-12 bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl flex items-center justify-center text-[#0E7A37] flex-shrink-0">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div>
+              <p class="font-bold text-[#0F172A] mb-1">Address</p>
+              <p class="text-[#6B7280] text-sm">Naroda, Ahmedabad<br>Gujarat — 382 330, India</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div
+              class="w-12 h-12 bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl flex items-center justify-center text-[#0E7A37] flex-shrink-0">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <div>
+              <p class="font-bold text-[#0F172A] mb-1">Phone</p>
+              <a href="tel:+917912345678" class="text-[#6B7280] text-sm hover:text-[#0E7A37] transition-colors">+91 79
+                1234 5678</a>
+            </div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div
+              class="w-12 h-12 bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl flex items-center justify-center text-[#0E7A37] flex-shrink-0">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+              <p class="font-bold text-[#0F172A] mb-1">Email</p>
+              <a href="mailto:info@mynaroda.in"
+                class="text-[#6B7280] text-sm hover:text-[#0E7A37] transition-colors">info@mynaroda.in</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Links -->
+        <div>
+          <p class="font-bold text-[#0F172A] mb-4 text-sm">Follow the Campaign</p>
+          <div class="flex gap-3">
+            <a href="{{ site_settings.facebook_url|default:'#' }}"
+              class="w-10 h-10 bg-white border border-[#E5E7EB] hover:bg-[#0E7A37] hover:border-[#0E7A37] text-[#6B7280] hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm">
+              <i class="fa-brands fa-facebook-f text-sm"></i>
+            </a>
+            <a href="{{ site_settings.instagram_url|default:'#' }}"
+              class="w-10 h-10 bg-white border border-[#E5E7EB] hover:bg-[#0E7A37] hover:border-[#0E7A37] text-[#6B7280] hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm">
+              <i class="fa-brands fa-instagram text-sm"></i>
+            </a>
+            <a href="{{ site_settings.twitter_url|default:'#' }}"
+              class="w-10 h-10 bg-white border border-[#E5E7EB] hover:bg-[#0E7A37] hover:border-[#0E7A37] text-[#6B7280] hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm">
+              <i class="fa-brands fa-x-twitter text-sm"></i>
+            </a>
+            <a href="{{ site_settings.youtube_url|default:'#' }}"
+              class="w-10 h-10 bg-white border border-[#E5E7EB] hover:bg-[#0E7A37] hover:border-[#0E7A37] text-[#6B7280] hover:text-white rounded-full flex items-center justify-center transition-all shadow-sm">
+              <i class="fa-brands fa-youtube text-sm"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Contact Form -->
+      <div class="reveal reveal-delay-2">
+        <div class="bg-white rounded-3xl p-8 shadow-xl border border-[#E5E7EB]">
+          <h3 class="text-xl font-bold text-[#0F172A] mb-6">Send Us a Message</h3>
+          <form id="homepage-contact-form" method="post" action="{% url 'cms:contact' %}" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-[#4B5563] mb-2">Full Name *</label>
+                <input type="text" name="name" required placeholder="Your name" class="contact-input">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-[#4B5563] mb-2">Mobile Number *</label>
+                <input type="tel" name="phone" placeholder="+91 99999 99999" class="contact-input">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#4B5563] mb-2">Email *</label>
+              <input type="email" name="email" required placeholder="your@email.com" class="contact-input">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#4B5563] mb-2">Subject *</label>
+              <input type="text" name="subject" required placeholder="How can we help?" class="contact-input">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-[#4B5563] mb-2">Message *</label>
+              <textarea name="message" required rows="4" placeholder="Write your message here..."
+                class="contact-input resize-none"></textarea>
+            </div>
+            <button type="submit"
+              class="w-full bg-[#0E7A37] hover:bg-[#0B5D2A] text-white font-bold py-4 rounded-2xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 text-sm">
+              <i class="fa-solid fa-paper-plane"></i> Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/landing-premium.js' %}" defer></script>
+
+{% endblock %}

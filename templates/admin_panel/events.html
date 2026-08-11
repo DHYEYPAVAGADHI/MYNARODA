@@ -1,0 +1,102 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Events{% endblock %}
+{% block nav_events %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Events Manager</div>
+    <div class="ph-sub">{{ total }} total events · {{ upcoming }} upcoming</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="card" style="padding:16px;margin-bottom:20px">
+  <form method="get">
+    <div class="tbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-inp" name="q" value="{{ q }}" placeholder="Search events...">
+      </div>
+      <select class="fsel" name="status" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        {% for val, lbl in status_choices %}
+          <option value="{{ val }}" {% if status == val %}selected{% endif %}>{{ lbl }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+      <a href="{% url 'admin_panel:events' %}" class="btn btn-outline btn-sm">Clear</a>
+    </div>
+  </form>
+</div>
+
+<!-- Events Table -->
+<div class="card" style="padding:0">
+  <div class="table-wrap">
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Location</th>
+          <th>Date & Time</th>
+          <th>Status</th>
+          <th>Published</th>
+          <th>Target Trees</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ev in page_obj %}
+        <tr>
+          <td class="td-name">{{ ev.title }}</td>
+          <td><span class="badge badge-blue">{{ ev.get_event_type_display }}</span></td>
+          <td style="font-size:12px;color:var(--text3)">{{ ev.location_name|truncatechars:30 }}</td>
+          <td style="font-size:11.5px;color:var(--text3)">
+            {{ ev.starts_at|date:"d M Y" }}<br>{{ ev.starts_at|date:"g:i A" }} – {{ ev.ends_at|date:"g:i A" }}
+          </td>
+          <td>
+            {% if ev.status == 'UPCOMING' %}<span class="badge badge-blue">Upcoming</span>
+            {% elif ev.status == 'ONGOING' %}<span class="badge badge-green">Ongoing</span>
+            {% elif ev.status == 'COMPLETED' %}<span class="badge badge-gray">Completed</span>
+            {% else %}<span class="badge badge-red">Cancelled</span>{% endif %}
+          </td>
+          <td>
+            <form method="post" action="{% url 'admin_panel:event_toggle' ev.pk %}">
+              {% csrf_token %}
+              <button type="submit" class="tog {% if ev.is_published %}on{% endif %}" title="{% if ev.is_published %}Click to unpublish{% else %}Click to publish{% endif %}"></button>
+            </form>
+          </td>
+          <td style="text-align:center;font-weight:700;color:var(--green)">{{ ev.trees_target }}</td>
+          <td>
+            <div class="flex gap-2">
+              <a href="/events/{{ ev.slug }}/" target="_blank" class="btn btn-outline btn-xs">👁 View</a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text3)">No events found.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="tpag">
+    <span>Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}</span>
+    <div class="pag-btns">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&status={{ status }}" class="pag-btn">‹</a>
+      {% endif %}
+      {% for num in page_obj.paginator.page_range %}
+        {% if num == page_obj.number %}
+          <span class="pag-btn active">{{ num }}</span>
+        {% elif num == 1 or num == page_obj.paginator.num_pages %}
+          <a href="?page={{ num }}&q={{ q }}&status={{ status }}" class="pag-btn">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&status={{ status }}" class="pag-btn">›</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

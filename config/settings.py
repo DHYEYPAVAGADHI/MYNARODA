@@ -1,0 +1,3 @@
+SESSION_COOKIE_AGE = 15 * 60  # 15 minutes session timeout
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True

@@ -1,0 +1,112 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Gallery Moderation{% endblock %}
+{% block nav_gallery %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Gallery Moderation</div>
+    <div class="ph-sub">Review and moderate photo submissions</div>
+  </div>
+  <div class="ph-actions">
+    <form method="post" id="bulkForm" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" name="action" value="approve" class="btn btn-primary btn-sm">✓ Approve Selected</button>
+      <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">✕ Reject Selected</button>
+      <button type="submit" name="action" value="feature" class="btn btn-gold btn-sm">★ Feature Selected</button>
+    </form>
+  </div>
+</div>
+
+<!-- Status Tabs -->
+<div style="display:flex;gap:4px;background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px;width:fit-content;margin-bottom:20px">
+  {% for status_val, status_label, count in status_tabs %}
+  <a href="?status={{ status_val }}"
+     style="padding:7px 18px;border-radius:7px;font-size:12.5px;font-weight:600;transition:.15s ease;display:flex;align-items:center;gap:5px;
+            {% if status_filter == status_val %}background:var(--green);color:#fff{% else %}color:var(--text3){% endif %}">
+    {{ status_label }}
+    <span style="font-size:10px;{% if status_filter == status_val %}color:rgba(255,255,255,.75){% else %}color:var(--text3){% endif %}">{{ count }}</span>
+  </a>
+  {% endfor %}
+</div>
+
+<!-- Tab Links (simpler approach) -->
+<div style="display:flex;gap:6px;margin-bottom:20px">
+  <a href="?status=PENDING" class="btn {% if status_filter == 'PENDING' %}btn-gold{% else %}btn-outline{% endif %} btn-sm">⏳ Pending ({{ pending_count }})</a>
+  <a href="?status=APPROVED" class="btn {% if status_filter == 'APPROVED' %}btn-primary{% else %}btn-outline{% endif %} btn-sm">✓ Approved ({{ approved_count }})</a>
+  <a href="?status=REJECTED" class="btn {% if status_filter == 'REJECTED' %}btn-danger{% else %}btn-outline{% endif %} btn-sm">✕ Rejected ({{ rejected_count }})</a>
+</div>
+
+<form method="post" id="photoForm">
+  {% csrf_token %}
+  {% if page_obj.object_list %}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px">
+    {% for photo in page_obj %}
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:.18s ease;box-shadow:var(--shadow)">
+      <div style="position:relative">
+        <div style="height:150px;background:linear-gradient(135deg,var(--green-lt),#F0F9F0);display:flex;align-items:center;justify-content:center;overflow:hidden">
+          {% if photo.cloudinary_id %}
+            <img src="https://res.cloudinary.com/{{ CLOUDINARY_NAME }}/image/upload/w_400,h_300,c_fill/{{ photo.cloudinary_id }}"
+                 alt="{{ photo.caption }}" style="width:100%;height:100%;object-fit:cover" loading="lazy">
+          {% else %}
+            <span style="font-size:48px;opacity:.3">🖼️</span>
+          {% endif %}
+        </div>
+        <div style="position:absolute;top:8px;left:8px">
+          <input type="checkbox" name="photo_ids" value="{{ photo.id }}" style="accent-color:var(--green);width:16px;height:16px">
+        </div>
+        {% if photo.is_featured %}
+        <div style="position:absolute;top:8px;right:8px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px">★ Featured</div>
+        {% endif %}
+      </div>
+      <div style="padding:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px">{{ photo.caption|default:"Untitled"|truncatechars:36 }}</div>
+        <div style="font-size:11px;color:var(--text3);margin-bottom:4px">{{ photo.photographer.full_name|default:"Unknown" }}</div>
+        <div style="font-size:10.5px;color:var(--text3);margin-bottom:10px">{{ photo.created_at|date:"d M Y, H:i" }}</div>
+        <div class="flex gap-2" style="flex-wrap:wrap">
+          <form method="post" style="display:inline">
+            {% csrf_token %}<input type="hidden" name="photo_ids" value="{{ photo.id }}">
+            <button type="submit" name="action" value="approve" class="btn btn-primary btn-xs">✓</button>
+          </form>
+          <form method="post" action="{% url 'admin_panel:photo_action' photo.id %}" style="display:inline">
+            {% csrf_token %}<input type="hidden" name="action" value="reject">
+            <button type="submit" class="btn btn-danger btn-xs">✕</button>
+          </form>
+          <form method="post" action="{% url 'admin_panel:photo_action' photo.id %}" style="display:inline">
+            {% csrf_token %}<input type="hidden" name="action" value="feature">
+            <button type="submit" class="btn btn-gold btn-xs">★</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="card" style="text-align:center;padding:60px;color:var(--text3)">
+    No photos in this category.
+  </div>
+  {% endif %}
+</form>
+
+<!-- Pagination -->
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="tpag" style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-top:20px;border-radius:var(--radius)">
+  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+  <div class="pag-btns">
+    {% if page_obj.has_previous %}
+      <a href="?status={{ status_filter }}&page={{ page_obj.previous_page_number }}" class="pag-btn">‹</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="pag-btn active">{{ num }}</span>
+      {% elif num == 1 or num == page_obj.paginator.num_pages %}
+        <a href="?status={{ status_filter }}&page={{ num }}" class="pag-btn">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?status={{ status_filter }}&page={{ page_obj.next_page_number }}" class="pag-btn">›</a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

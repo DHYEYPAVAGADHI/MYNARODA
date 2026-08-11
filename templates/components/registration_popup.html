@@ -1,0 +1,472 @@
+{% load volunteer_tags %}
+<!-- Har Ghar Tiranga Popup Component -->
+<div id="registration-popup" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+  <div id="modal-box" class="bg-white rounded-2xl w-full max-w-[420px] max-h-[85vh] overflow-y-auto relative shadow-2xl custom-scrollbar" style="transform: scale(0.95); opacity: 0;">
+    
+    <button type="button" onclick="closePopup()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 z-10 transition-colors">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+
+    <!-- Intro Card (Inside Modal) -->
+    <div class="p-6 pb-2 text-center">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#FF9933]/10 mb-3 text-[#FF9933]">
+        <i class="fa-solid fa-flag text-2xl"></i>
+      </div>
+      <h2 class="font-serif text-xl font-bold text-[#0B1020] mb-2">Get a Tiranga for Your Home</h2>
+      <p class="text-[#4B5563] text-xs leading-relaxed mb-3">
+        Let us hoist the Tiranga at our homes. Submit details and collect from pickup point.
+      </p>
+      <div class="inline-flex items-center gap-1.5 bg-[#F0FDF4] px-3 py-1.5 rounded-full text-[10px] font-semibold text-[#15803D]">
+        <i class="fa-regular fa-clock"></i> Pickup timing: 10:00 AM – 6:00 PM
+      </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div id="tiranga-form-container" class="p-6 pt-2">
+      <form id="tiranga-popup-form" class="space-y-4">
+        {% csrf_token %}
+        
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Full Name <span class="text-red-500">*</span></label>
+            <input type="text" name="name" required minlength="3" class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-3 text-sm focus:ring-1 focus:ring-[#15803D] focus:border-[#15803D] outline-none" placeholder="Enter your full name">
+        </div>
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Mobile Number <span class="text-red-500">*</span></label>
+            <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-medium">+91</span>
+                <input type="tel" name="mobile_number" required pattern="[0-9]{10}" maxlength="10" class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg pl-10 pr-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none" placeholder="9876543210">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Address <span class="text-red-500">*</span></label>
+            <textarea name="address" required rows="2" class="w-full bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg p-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none resize-none" placeholder="House no, Society, Landmark..."></textarea>
+        </div>
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Live Location <span class="text-gray-500 font-normal">(Optional)</span></label>
+            <button type="button" id="btn-popup-location" class="w-full h-10 flex items-center justify-center gap-2 bg-[#F0FDF4] border border-[#BBF7D0] text-[#15803D] text-xs font-semibold rounded-lg hover:bg-[#DCFCE7]">
+                <i class="fa-solid fa-location-crosshairs"></i> Use My Current Location
+            </button>
+            <div id="popup-location-status" class="mt-1 text-xs hidden flex items-center gap-1 text-green-600"></div>
+            <input type="hidden" id="popup_latitude" name="latitude">
+            <input type="hidden" id="popup_longitude" name="longitude">
+        </div>
+
+        <button type="submit" id="btn-popup-submit" class="w-full h-12 bg-[#FF7A00] hover:bg-[#E66E00] text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 mt-4 text-sm">
+            <i class="fa-solid fa-flag"></i> Submit Details
+        </button>
+        <div id="popup-form-error" class="text-red-500 text-xs text-center hidden"></div>
+      </form>
+    </div>
+
+    <!-- Success Card (Hidden initially) -->
+    <div id="tiranga-success-container" class="hidden p-6 text-center">
+        <div class="w-12 h-12 rounded-full bg-[#F0FDF4] text-[#15803D] flex items-center justify-center mx-auto mb-3">
+            <i class="fa-solid fa-check text-2xl"></i>
+        </div>
+        <h2 class="font-serif text-lg font-bold text-[#0B1020] mb-1">Success!</h2>
+        <p class="text-[#4B5563] text-xs mb-4">Please present this token at a pickup point.</p>
+        
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4 relative overflow-hidden" id="token-print-area">
+            <!-- QR Code Container -->
+            <div id="qrcode" class="flex justify-center mb-3"></div>
+            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">YOUR TOKEN ID</div>
+            <div class="font-mono text-lg font-bold text-[#111827] tracking-tight bg-white py-2 rounded-lg border border-gray-200" id="popup-token-display">HGT-NRD-2026-00000</div>
+        </div>
+
+        <div class="flex gap-2 mb-4">
+            <button type="button" onclick="copyToken()" class="flex-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-regular fa-copy"></i> Copy
+            </button>
+            <button type="button" onclick="printToken()" class="flex-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-2">
+                <i class="fa-solid fa-print"></i> Print
+            </button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Green Naroda • Clean Naroda Tree Pledge Popup Component -->
+<div id="pledge-popup" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+  <div id="pledge-modal-box" class="bg-white rounded-2xl w-full max-w-[420px] max-h-[85vh] overflow-y-auto relative shadow-2xl custom-scrollbar" style="transform: scale(0.95); opacity: 0;">
+
+    <button type="button" onclick="closePledgePopup()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 z-10 transition-colors">
+      <i class="fa-solid fa-xmark text-lg"></i>
+    </button>
+
+    <div class="p-6 pb-2 text-center">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#15803D]/10 mb-3 text-[#15803D]">
+        <i class="fa-solid fa-seedling text-2xl"></i>
+      </div>
+      <h2 class="font-serif text-xl font-bold text-[#0B1020] mb-2">Take the Green Naroda • Clean Naroda Pledge</h2>
+      <p class="text-[#4B5563] text-xs leading-relaxed mb-3">
+        Pledge to protect and nurture trees for a greener Naroda and receive your official participation certificate instantly.
+      </p>
+    </div>
+
+    <div id="pledge-form-container" class="p-6 pt-2">
+      <form id="pledge-popup-form" class="space-y-4">
+        {% csrf_token %}
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Full Name <span class="text-red-500">*</span></label>
+            <input type="text" name="full_name" required minlength="3" class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-3 text-sm focus:ring-1 focus:ring-[#15803D] focus:border-[#15803D] outline-none" placeholder="Enter your full name">
+        </div>
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Mobile Number <span class="text-red-500">*</span></label>
+            <div class="relative">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm font-medium">+91</span>
+                <input type="tel" name="mobile_number" required pattern="[0-9]{10}" maxlength="10" class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg pl-10 pr-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none" placeholder="9876543210">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Email <span class="text-gray-500 font-normal">(Optional)</span></label>
+            <input type="email" name="email" class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none" placeholder="you@example.com">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-xs font-semibold text-[#111827] mb-1">Gender <span class="text-red-500">*</span></label>
+                <select name="gender" required class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none">
+                    <option value="" disabled selected>Select</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="OTHER">Other</option>
+                    <option value="PREFER_NOT">Prefer Not to Say</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-[#111827] mb-1">Date of Birth <span class="text-red-500">*</span></label>
+                <input type="date" name="date_of_birth" required class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-xs font-semibold text-[#111827] mb-1">Associate Organization <span class="text-red-500">*</span></label>
+            <select name="organization" required class="w-full h-10 bg-[#F9FAFB] border border-[#E5E7EB] rounded-lg px-3 text-sm focus:ring-1 focus:ring-[#15803D] outline-none">
+                <option value="" disabled selected>Select organization</option>
+                {% get_pledge_organizations as pledge_orgs %}
+                {% for org in pledge_orgs %}
+                <option value="{{ org.id }}">{{ org.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="flex items-start gap-2">
+            <input type="checkbox" name="pledge_consent" id="pledge_consent" required class="mt-1">
+            <label for="pledge_consent" class="text-xs text-[#4B5563] leading-relaxed">I officially pledge to protect, nurture, and support tree plantation for a greener and cleaner Naroda. <span class="text-red-500">*</span></label>
+        </div>
+
+        <button type="submit" id="btn-pledge-submit" class="w-full h-12 bg-[#15803D] hover:bg-[#166534] text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2 mt-4 text-sm">
+            <i class="fa-solid fa-seedling"></i> Submit Pledge
+        </button>
+        <div id="pledge-form-error" class="text-red-500 text-xs text-center hidden"></div>
+      </form>
+    </div>
+
+    <!-- Success Card (Hidden initially) -->
+    <div id="pledge-success-container" class="hidden p-6 text-center">
+        <div class="w-12 h-12 rounded-full bg-[#F0FDF4] text-[#15803D] flex items-center justify-center mx-auto mb-3">
+            <i class="fa-solid fa-check text-2xl"></i>
+        </div>
+        <h2 class="font-serif text-lg font-bold text-[#0B1020] mb-1">Pledge Successful!</h2>
+        <p class="text-[#4B5563] text-xs mb-4">Your official certificate is ready to download.</p>
+
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 mb-4">
+            <img id="pledge-certificate-image" src="" alt="Certificate" class="w-full rounded-lg border border-gray-200 mb-2">
+            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">CERTIFICATE ID</div>
+            <div class="font-mono text-sm font-bold text-[#111827]" id="pledge-certificate-id-display"></div>
+        </div>
+
+        <a id="pledge-download-link" href="#" download target="_blank" class="w-full bg-[#15803D] hover:bg-[#166534] text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2">
+            <i class="fa-solid fa-download"></i> Download Certificate
+        </a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+// Mobile-safe body scroll lock. `overflow:hidden` on <body> alone does not
+// reliably block background touch-scroll on iOS Safari, which is why the
+// page behind a popup could still scroll — this pins the body in place
+// instead and restores the exact scroll position on close.
+let _scrollLockY = 0;
+function lockBodyScroll() {
+    _scrollLockY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${_scrollLockY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.classList.add('overflow-hidden');
+}
+function unlockBodyScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.classList.remove('overflow-hidden');
+    window.scrollTo(0, _scrollLockY);
+}
+
+// Safety net: if a popup was left open when the user navigated away (a link
+// inside it, browser back/forward, etc.), the lock above never gets released
+// and the whole page is stuck unable to scroll. Force-clear it on every page
+// (re)entry, including back/forward-cache restores, so this can't linger.
+function forceUnlockBodyScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.classList.remove('overflow-hidden');
+}
+forceUnlockBodyScroll();
+window.addEventListener('pageshow', forceUnlockBodyScroll);
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Show after 20 seconds
+    const popupEnabled = true;
+    if (popupEnabled && sessionStorage.getItem('hgt_popup_seen') !== 'true') {
+        setTimeout(() => {
+            const popup = document.getElementById('registration-popup');
+            const box = document.getElementById('modal-box');
+            if(popup && box) {
+                popup.classList.remove('hidden');
+                popup.classList.add('flex');
+                
+                // Animation trigger
+                setTimeout(() => {
+                    box.style.transform = 'scale(1)';
+                    box.style.opacity = '1';
+                    box.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                }, 10);
+                
+                lockBodyScroll();
+            }
+        }, 20000); // 20 seconds
+    }
+
+    const locBtn = document.getElementById('btn-popup-location');
+    if (locBtn) {
+        locBtn.addEventListener('click', function() {
+            if (navigator.geolocation) {
+                locBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Getting...';
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        document.getElementById('popup_latitude').value = position.coords.latitude;
+                        document.getElementById('popup_longitude').value = position.coords.longitude;
+                        locBtn.style.display = 'none';
+                        const status = document.getElementById('popup-location-status');
+                        status.innerHTML = '<i class="fa-solid fa-check-circle"></i> Location saved';
+                        status.classList.remove('hidden');
+                    },
+                    function(error) {
+                        locBtn.innerHTML = '<i class="fa-solid fa-location-crosshairs"></i> Use My Current Location';
+                        alert('Could not get location. You can still submit the form.');
+                    }
+                );
+            }
+        });
+    }
+
+    const form = document.getElementById('tiranga-popup-form');
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('btn-popup-submit');
+            const errorDiv = document.getElementById('popup-form-error');
+            
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+            errorDiv.classList.add('hidden');
+
+            try {
+                const formData = new FormData(this);
+                const response = await fetch('{% url "cms:har_ghar_tiranga_registration" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('tiranga-form-container').classList.add('hidden');
+                    document.getElementById('tiranga-success-container').classList.remove('hidden');
+                    document.getElementById('popup-token-display').innerText = data.token_id;
+                    
+                    // Generate QR Code
+                    new QRCode(document.getElementById("qrcode"), {
+                        text: data.token_id,
+                        width: 100,
+                        height: 100,
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H
+                    });
+
+                    // Mark as seen so they don't get the popup again on refresh
+                    sessionStorage.setItem('hgt_popup_seen', 'true');
+                } else {
+                    errorDiv.innerText = data.message || 'An error occurred. Please try again.';
+                    errorDiv.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-flag"></i> Submit Details';
+                }
+            } catch (err) {
+                errorDiv.innerText = 'Network error. Please try again.';
+                errorDiv.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-flag"></i> Submit Details';
+            }
+        });
+    }
+});
+
+function openPopup() {
+    const popup = document.getElementById('registration-popup');
+    const box = document.getElementById('modal-box');
+    if(popup && box) {
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+        lockBodyScroll();
+        setTimeout(() => {
+            box.style.transform = 'scale(1)';
+            box.style.opacity = '1';
+        }, 10);
+    }
+}
+
+function closePopup() {
+    const popup = document.getElementById('registration-popup');
+    const box = document.getElementById('modal-box');
+    
+    if(box) {
+        box.style.transform = 'scale(0.95)';
+        box.style.opacity = '0';
+    }
+    
+    setTimeout(() => {
+        if(popup) {
+            popup.classList.add('hidden');
+            popup.classList.remove('flex');
+        }
+        unlockBodyScroll();
+    }, 300);
+    
+    sessionStorage.setItem('hgt_popup_seen', 'true');
+}
+
+function copyToken() {
+    const token = document.getElementById('popup-token-display').innerText;
+    navigator.clipboard.writeText(token).then(() => {
+        alert('Token ID copied to clipboard!');
+    });
+}
+
+function printToken() {
+    const printContent = document.getElementById('token-print-area').innerHTML;
+    const originalContent = document.body.innerHTML;
+    document.body.innerHTML = '<div style="text-align:center; padding: 50px; font-family: sans-serif;">' + printContent + '</div>';
+    window.print();
+    document.body.innerHTML = originalContent;
+    window.location.reload();
+}
+
+function openPledgePopup() {
+    const popup = document.getElementById('pledge-popup');
+    const box = document.getElementById('pledge-modal-box');
+    if (popup && box) {
+        popup.classList.remove('hidden');
+        popup.classList.add('flex');
+        lockBodyScroll();
+        setTimeout(() => {
+            box.style.transform = 'scale(1)';
+            box.style.opacity = '1';
+            box.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+        }, 10);
+    }
+}
+
+function closePledgePopup() {
+    const popup = document.getElementById('pledge-popup');
+    const box = document.getElementById('pledge-modal-box');
+
+    if (box) {
+        box.style.transform = 'scale(0.95)';
+        box.style.opacity = '0';
+    }
+
+    setTimeout(() => {
+        if (popup) {
+            popup.classList.add('hidden');
+            popup.classList.remove('flex');
+        }
+        unlockBodyScroll();
+    }, 300);
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const pledgeForm = document.getElementById('pledge-popup-form');
+    if (pledgeForm) {
+        pledgeForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('btn-pledge-submit');
+            const errorDiv = document.getElementById('pledge-form-error');
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+            errorDiv.classList.add('hidden');
+
+            try {
+                const formData = new FormData(this);
+                const response = await fetch('{% url "volunteers:pledge_submit" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.status === 'success') {
+                    document.getElementById('pledge-form-container').classList.add('hidden');
+                    document.getElementById('pledge-success-container').classList.remove('hidden');
+                    document.getElementById('pledge-certificate-id-display').innerText = data.certificate_id || '';
+                    if (data.certificate_image_url) {
+                        document.getElementById('pledge-certificate-image').src = data.certificate_image_url;
+                    }
+                    if (data.certificate_pdf_url) {
+                        document.getElementById('pledge-download-link').href = data.certificate_pdf_url;
+                    }
+                } else {
+                    errorDiv.innerText = data.message || 'An error occurred. Please try again.';
+                    errorDiv.classList.remove('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-seedling"></i> Submit Pledge';
+                }
+            } catch (err) {
+                errorDiv.innerText = 'Network error. Please try again.';
+                errorDiv.classList.remove('hidden');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-seedling"></i> Submit Pledge';
+            }
+        });
+    }
+});
+</script>
+
+<style>
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: #f9fafb; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
+/* Keep scroll gestures inside the popup from chaining to the page behind it. */
+#modal-box, #pledge-modal-box { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+</style>

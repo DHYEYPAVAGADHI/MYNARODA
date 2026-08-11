@@ -1,0 +1,172 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Tree Details" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <div class="breadcrumb justify-center mb-4">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <a href="{% url 'trees:list' %}">{% trans "Trees" %}</a>
+      <span>/</span>
+      <span>{% trans "Tree Details" %}</span>
+    </div>
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "Tree Lifecycle Tracker" %}</h1>
+    <p class="mt-2 text-forest-200 text-sm md:text-base max-w-xl mx-auto">
+      {% trans "Detailed timeline, health tracking, and maintenance records of this tree." %}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site">
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      
+      <!-- Core Info and Media Gallery -->
+      <div class="lg:col-span-2 space-y-8 reveal">
+        
+        <!-- Primary Info Header -->
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 flex flex-col sm:flex-row justify-between gap-6">
+          <div>
+            <span class="text-xs text-saffron-600 font-bold uppercase tracking-wider block mb-1">
+              {% trans "QR Code Number:" %} GN-TREE-{{ tree.id|stringformat:"s"|slice:":8"|upper }}
+            </span>
+            <h2 class="font-serif text-3xl font-bold text-forest-900 leading-snug">
+              {{ tree.species.name }}
+            </h2>
+            <p class="text-sm text-gray-500 mt-1">
+              {% trans "Scientific Name:" %} <em>{{ tree.species.scientific_name|default:"-" }}</em>
+            </p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="badge badge-green">{{ tree.get_growth_stage_display }}</span>
+            <span class="badge badge-saffron">{{ tree.get_health_status_display }}</span>
+            <span class="badge badge-amber">{{ tree.get_verification_status_display }}</span>
+          </div>
+        </div>
+
+        <!-- Photos Gallery Timeline -->
+        <div>
+          <h3 class="font-serif text-xl font-bold text-forest-950 mb-6">{% trans "Growth Photos & Timeline" %}</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            {% for photo in photos %}
+              <div class="group relative rounded-xl overflow-hidden shadow-sm aspect-square bg-gray-100 border border-gray-250">
+                <img src="{{ photo.cloudinary_url }}" alt="Growth photo" class="object-cover w-full h-full group-hover:scale-105 transition-transform" />
+                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3 text-white text-xs">
+                  <p class="font-semibold">{{ photo.created_at|date:"M d, Y" }}</p>
+                  <p class="text-white/80 mt-1">{{ photo.caption|default:_("Growth check-in") }}</p>
+                </div>
+              </div>
+            {% empty %}
+              <div class="col-span-full bg-gray-50 border border-gray-100 p-8 rounded-xl text-center text-gray-400 text-sm">
+                {% trans "No photographs have been uploaded for this tree yet." %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Add Photo Log Form -->
+          {% if request.user.is_authenticated %}
+            <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 mt-8">
+              <h4 class="font-semibold text-gray-900 mb-4">{% trans "Log Growth Photograph" %}</h4>
+              <form method="POST" action="{% url 'trees:detail' tree.id %}" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_photo" />
+                <div class="sm:col-span-2">
+                  <label for="image_url" class="form-label text-xs">{% trans "Image URL" %}</label>
+                  <input type="url" id="image_url" name="image_url" required placeholder="https://images.unsplash.com/photo-example" class="form-input text-xs" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label for="notes" class="form-label text-xs">{% trans "Notes" %}</label>
+                  <input type="text" id="notes" name="notes" placeholder="{% trans 'Height progress, fresh leaves visible, etc.' %}" class="form-input text-xs" />
+                </div>
+                <button type="submit" class="btn-primary text-xs justify-center sm:col-span-2" style="padding: 0.5rem 1rem;">
+                  {% trans "Submit Growth Log" %}
+                </button>
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Sidebar Status & Maintenance Details -->
+      <div class="space-y-6 reveal">
+        <!-- Contributor Details -->
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+          <h3 class="font-serif text-lg font-bold text-forest-950 mb-4 border-b border-gray-200 pb-2">
+            {% trans "Tree Ledger Info" %}
+          </h3>
+          <ul class="space-y-3 text-sm text-gray-600">
+            <li>
+              <strong>{% trans "Planted Date:" %}</strong> {{ tree.planted_at }}
+            </li>
+            <li>
+              <strong>{% trans "Location Desk:" %}</strong> {{ tree.location_name|default:tree.ward }}
+            </li>
+            <li>
+              <strong>{% trans "Ward Region:" %}</strong> {{ tree.ward }}
+            </li>
+            <li>
+              <strong>{% trans "Planted By:" %}</strong> {{ tree.planted_by.full_name|default:_("Campaign Volunteer") }}
+            </li>
+            <li>
+              <strong>{% trans "Contributor Sponsor:" %}</strong> {{ tree.contributor.full_name|default:_("Citizen Sponsor") }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Maintenance Logs -->
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+          <h3 class="font-serif text-lg font-bold text-forest-950 mb-4 border-b border-gray-200 pb-2">
+            {% trans "Maintenance Log" %}
+          </h3>
+          <ul class="space-y-3 max-h-60 overflow-y-auto pr-2">
+            {% for log in maintenance_logs %}
+              <li class="bg-white p-3 rounded-lg border border-gray-200 text-xs">
+                <div class="flex justify-between font-bold text-gray-800">
+                  <span>{{ log.get_issue_type_display }}</span>
+                  <span class="{% if log.is_resolved %}text-green-600{% else %}text-red-500{% endif %}">
+                    {% if log.is_resolved %}{% trans "Resolved" %}{% else %}{% trans "Open" %}{% endif %}
+                  </span>
+                </div>
+                <p class="text-gray-500 mt-1">{{ log.description }}</p>
+                <span class="text-gray-400 block mt-1 text-[10px]">{{ log.created_at|date:"M d, Y H:i" }}</span>
+              </li>
+            {% empty %}
+              <li class="text-center text-gray-400 text-xs py-4">{% trans "No maintenance items reported." %}</li>
+            {% endfor %}
+          </ul>
+
+          <!-- Log Maintenance Form -->
+          {% if request.user.is_authenticated %}
+            <div class="mt-6 pt-6 border-t border-gray-200">
+              <h4 class="font-semibold text-gray-900 text-sm mb-3">{% trans "Report Care / Maintenance Issue" %}</h4>
+              <form method="POST" action="{% url 'trees:detail' tree.id %}" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="report_maintenance" />
+                <div>
+                  <select name="issue_type" required class="form-input text-xs" style="padding: 0.4rem 0.6rem;">
+                    <option value="">{% trans "Select Issue Type" %}</option>
+                    {% for val, label in maintenance_types %}
+                      <option value="{{ val }}">{{ label }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div>
+                  <textarea name="description" rows="2" placeholder="{% trans 'Additional details (e.g. broken branch)' %}" class="form-input text-xs" style="padding: 0.4rem 0.6rem;"></textarea>
+                </div>
+                <button type="submit" class="btn-saffron w-full text-xs justify-center" style="padding: 0.45rem 1rem;">
+                  {% trans "File Maintenance Report" %}
+                </button>
+              </form>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+{% endblock %}

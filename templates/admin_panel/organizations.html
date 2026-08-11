@@ -1,0 +1,133 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Organizations{% endblock %}
+{% block nav_orgs %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Organization Management</div>
+    <div class="ph-sub">{{ total }} total · {{ approved }} approved · {{ pending }} pending review</div>
+  </div>
+  <div class="ph-actions">
+    <a href="{% url 'admin_panel:export_orgs_excel' %}" class="btn btn-primary btn-sm">⬇ Excel</a>
+  </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="grid-3" style="margin-bottom:20px">
+  <div class="stat-card">
+    <div class="stat-icon green">🏢</div>
+    <div class="stat-val" style="margin-top:10px">{{ total }}</div>
+    <div class="stat-lbl">Total Registered</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon gold">✅</div>
+    <div class="stat-val" style="margin-top:10px">{{ approved }}</div>
+    <div class="stat-lbl">Approved</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red">⏳</div>
+    <div class="stat-val" style="margin-top:10px">{{ pending }}</div>
+    <div class="stat-lbl">Pending Review</div>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="card" style="padding:16px;margin-bottom:20px">
+  <form method="get">
+    <div class="tbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-inp" name="q" value="{{ q }}" placeholder="Search organization or contact person...">
+      </div>
+      <select class="fsel" name="type" onchange="this.form.submit()">
+        <option value="">All Types</option>
+        {% for val, lbl in type_choices %}
+          <option value="{{ val }}" {% if org_type == val %}selected{% endif %}>{{ lbl }}</option>
+        {% endfor %}
+      </select>
+      <select class="fsel" name="status" onchange="this.form.submit()">
+        <option value="">All Status</option>
+        {% for val, lbl in status_choices %}
+          <option value="{{ val }}" {% if status == val %}selected{% endif %}>{{ lbl }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+      <a href="{% url 'admin_panel:organizations' %}" class="btn btn-outline btn-sm">Clear</a>
+    </div>
+  </form>
+</div>
+
+<!-- Cards Grid -->
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px">
+  {% for org in page_obj %}
+  <div class="card" style="padding:20px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:0;left:0;right:0;height:3px;background:{% if org.status == 'APPROVED' %}var(--green){% elif org.status == 'REJECTED' %}var(--red){% else %}var(--gold){% endif %}"></div>
+    
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--text)">{{ org.organization_name }}</div>
+        <span class="badge badge-blue mt-2">{{ org.get_organization_type_display }}</span>
+      </div>
+      <span class="badge {% if org.status == 'APPROVED' %}badge-green{% elif org.status == 'REJECTED' %}badge-red{% else %}badge-gold{% endif %}">
+        {{ org.get_status_display }}
+      </span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:14px">
+      <div style="font-size:12px;color:var(--text3)">👤 {{ org.authorized_person_name }} — {{ org.designation|default:"—" }}</div>
+      <div style="font-size:12px;color:var(--text3)">📞 {{ org.mobile_number }}</div>
+      <div style="font-size:12px;color:var(--text3)">✉ {{ org.email }}</div>
+      <div style="font-size:12px;color:var(--text3)">📍 {{ org.city }}{% if org.pincode %} — {{ org.pincode }}{% endif %}</div>
+      <div style="font-size:11px;color:var(--text3)">Registered: {{ org.created_at|date:"d M Y" }}</div>
+    </div>
+
+    {% if org.registration_number %}<div style="font-size:11px;color:var(--text3);margin-bottom:10px">Reg. No: {{ org.registration_number }}</div>{% endif %}
+    {% if org.members_participating %}<div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:10px">👥 {{ org.members_participating }} members participating</div>{% endif %}
+
+    <div class="flex gap-2" style="flex-wrap:wrap">
+      {% if org.status != 'APPROVED' %}
+      <form method="post" action="{% url 'admin_panel:org_action' org.pk %}" style="display:inline">
+        {% csrf_token %}<input type="hidden" name="action" value="approve">
+        <button type="submit" class="btn btn-primary btn-xs">✓ Approve</button>
+      </form>
+      {% endif %}
+      {% if org.status != 'REJECTED' %}
+      <form method="post" action="{% url 'admin_panel:org_action' org.pk %}" style="display:inline">
+        {% csrf_token %}<input type="hidden" name="action" value="reject">
+        <button type="submit" class="btn btn-danger btn-xs">✕ Reject</button>
+      </form>
+      {% endif %}
+      {% if org.supporting_file %}
+      <a href="{{ org.supporting_file.url }}" target="_blank" class="btn btn-outline btn-xs">📎 Evidence</a>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <div class="card" style="text-align:center;padding:48px;grid-column:1/-1;color:var(--text3)">
+    No organizations found for the current filters.
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if page_obj.paginator.num_pages > 1 %}
+<div style="display:flex;justify-content:center;margin-top:20px">
+  <div class="pag-btns">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}&q={{ q }}&type={{ org_type }}&status={{ status }}" class="pag-btn">‹</a>
+    {% endif %}
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="pag-btn active">{{ num }}</span>
+      {% elif num == 1 or num == page_obj.paginator.num_pages %}
+        <a href="?page={{ num }}&q={{ q }}&type={{ org_type }}&status={{ status }}" class="pag-btn">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}&q={{ q }}&type={{ org_type }}&status={{ status }}" class="pag-btn">›</a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

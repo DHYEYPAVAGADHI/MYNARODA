@@ -1,0 +1,326 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Center — Green Naroda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/admin_premium.css' %}">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.44.0/dist/apexcharts.min.js"></script>
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #F5F7FA; }
+    .dashboard-wrap { padding: 1.5rem 2rem 3rem; max-width: 1400px; margin: 0 auto; }
+    a { text-decoration: none; }
+    * { box-sizing: border-box; }
+    .text-muted { color: #6B7280; }
+    .text-sm { font-size: 0.8125rem; }
+    .fw-600 { font-weight: 600; }
+    .fw-700 { font-weight: 700; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-4 { margin-top: 1rem; }
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .gap-3 { gap: 0.75rem; }
+    .gap-2 { gap: 0.5rem; }
+    .justify-between { justify-content: space-between; }
+    .w-full { width: 100%; }
+    .rounded-full { border-radius: 9999px; }
+    
+    /* Progress bar */
+    .progress-bar-bg { background: #E5E7EB; border-radius: 9999px; height: 8px; overflow: hidden; }
+    .progress-bar-fill { background: linear-gradient(90deg, #0B7A3B, #22C55E); border-radius: 9999px; height: 100%; transition: width 1s ease; }
+    
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    .data-table th { text-align: left; padding: 0.75rem 1rem; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #9CA3AF; border-bottom: 1px solid #F3F4F6; }
+    .data-table td { padding: 0.75rem 1rem; color: #374151; border-bottom: 1px solid #F9FAFB; }
+    .data-table tr:hover td { background: #F8FAFC; }
+    .data-table tr:last-child td { border-bottom: none; }
+    
+    /* Upcoming event item */
+    .event-item { display: flex; align-items: flex-start; gap: 1rem; padding: 0.875rem 0; border-bottom: 1px solid #F3F4F6; }
+    .event-item:last-child { border-bottom: none; }
+    .event-date-box { min-width: 52px; background: var(--admin-green-light); border-radius: 10px; text-align: center; padding: 0.5rem 0.35rem; }
+    .event-day { font-size: 1.25rem; font-weight: 800; color: #0B7A3B; line-height: 1; }
+    .event-mon { font-size: 0.65rem; font-weight: 700; color: #16A34A; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    /* Count-up JS target */
+    [data-count] { display: inline-block; }
+  </style>
+</head>
+<body>
+{% block content %}
+<div class="dashboard-wrap">
+
+  <!-- ── Welcome Hero ─────────────────────────────────────────── -->
+  <div class="welcome-card" style="margin-bottom:1.5rem;">
+    <div style="position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <div class="welcome-title">
+          {% now "H" as current_hour %}
+          {% if current_hour|add:"0" < 12 %}Good Morning{% elif current_hour|add:"0" < 17 %}Good Afternoon{% else %}Good Evening{% endif %},
+          {{ admin_user.full_name|default:admin_user.email|truncatechars:20 }} 👋
+        </div>
+        <div class="welcome-subtitle">Green Naroda • Clean Naroda — Command Center</div>
+        <div style="margin-top:0.75rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+          <a href="/admin/volunteers/pledgeregistration/" class="quick-btn" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.3);">📋 All Pledges</a>
+          <a href="/admin/competitions/competitionregistration/" class="quick-btn" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.3);">🏢 Registrations</a>
+          <a href="/admin/gallery/photo/?approval_status__exact=PENDING" class="quick-btn" style="background:rgba(255,255,255,0.15);color:white;border-color:rgba(255,255,255,0.3);">🖼️ Photo Queue</a>
+        </div>
+      </div>
+      <div style="text-align:right;opacity:0.85;">
+        <div style="font-size:2.5rem;">🌿</div>
+        <div style="font-size:0.75rem;opacity:0.8;margin-top:0.25rem;">{% now "d M Y, H:i" %}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KPI Cards ─────────────────────────────────────────────── -->
+  <div class="kpi-grid">
+    
+    <div class="kpi-card green">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="kpi-number" data-count="{{ total_pledges }}">0</div>
+          <div class="kpi-label">Total Pledges</div>
+          {% if today_pledges %}
+          <div class="kpi-trend up">↑ +{{ today_pledges }} today</div>
+          {% else %}
+          <div class="kpi-trend neutral">— No new today</div>
+          {% endif %}
+        </div>
+        <div class="kpi-icon-wrap green">🌱</div>
+      </div>
+      <a href="/admin/volunteers/pledgeregistration/" style="display:block;margin-top:1rem;font-size:0.75rem;color:#16A34A;font-weight:600;">View all →</a>
+    </div>
+
+    <div class="kpi-card saffron">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="kpi-number" data-count="{{ comp_total }}">0</div>
+          <div class="kpi-label">Orgs Registered</div>
+          {% if comp_pending %}
+          <div class="kpi-trend up" style="background:#FFF7ED;color:#EA580C;">⚠ {{ comp_pending }} pending</div>
+          {% else %}
+          <div class="kpi-trend neutral">All reviewed ✓</div>
+          {% endif %}
+        </div>
+        <div class="kpi-icon-wrap saffron">🏢</div>
+      </div>
+      <a href="/admin/competitions/competitionregistration/" style="display:block;margin-top:1rem;font-size:0.75rem;color:#EA580C;font-weight:600;">View all →</a>
+    </div>
+
+    <div class="kpi-card teal">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="kpi-number" data-count="{{ certificates_total }}">0</div>
+          <div class="kpi-label">Certificates Issued</div>
+          <div class="kpi-trend up" style="background:#F0FDFA;color:#0D9488;">✓ Generated</div>
+        </div>
+        <div class="kpi-icon-wrap teal">🏅</div>
+      </div>
+      <a href="/admin/certificates/certificate/" style="display:block;margin-top:1rem;font-size:0.75rem;color:#0D9488;font-weight:600;">View all →</a>
+    </div>
+
+    <div class="kpi-card blue">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="kpi-number" data-count="{{ approved_photos }}">0</div>
+          <div class="kpi-label">Photos Approved</div>
+          {% if pending_photos %}
+          <div class="kpi-trend" style="background:#FFF7ED;color:#EA580C;">📷 {{ pending_photos }} in queue</div>
+          {% else %}
+          <div class="kpi-trend up">Queue clear ✓</div>
+          {% endif %}
+        </div>
+        <div class="kpi-icon-wrap blue">📸</div>
+      </div>
+      <a href="/admin/gallery/photo/?approval_status__exact=PENDING" style="display:block;margin-top:1rem;font-size:0.75rem;color:#2563EB;font-weight:600;">Review queue →</a>
+    </div>
+
+    <div class="kpi-card purple">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <div class="kpi-number" data-count="{{ events_published }}">0</div>
+          <div class="kpi-label">Events Published</div>
+          <div class="kpi-trend neutral">Active calendar</div>
+        </div>
+        <div class="kpi-icon-wrap purple">📅</div>
+      </div>
+      <a href="/admin/events/event/" style="display:block;margin-top:1rem;font-size:0.75rem;color:#7C3AED;font-weight:600;">Manage events →</a>
+    </div>
+
+
+
+  </div>
+
+  <!-- ── Charts Row ──────────────────────────────────────────── -->
+  <div class="chart-grid">
+
+    <!-- Area Chart: Daily Pledges -->
+    <div class="chart-card">
+      <div class="chart-title">📈 Pledge Registrations — Last 14 Days</div>
+      <div class="chart-subtitle">Daily count of new pledge registrations</div>
+      <div id="chart-pledges" style="min-height:250px;"></div>
+    </div>
+
+    <!-- Donut Chart: Organization Types -->
+    <div class="chart-card">
+      <div class="chart-title">🏢 Registration by Type</div>
+      <div class="chart-subtitle">Competition registration breakdown</div>
+      <div id="chart-orgs" style="min-height:250px;"></div>
+    </div>
+
+  </div>
+
+  <!-- ── Bottom Row: Activity + Table ───────────────────────── -->
+  <div class="bottom-grid">
+
+    <!-- Recent Pledges Table -->
+    <div class="chart-card" style="padding:0;overflow:hidden;">
+      <div style="padding:1.25rem 1.5rem 1rem;border-bottom:1px solid #F3F4F6;display:flex;justify-content:space-between;align-items:center;">
+        <div class="chart-title" style="margin-bottom:0;">🌱 Recent Pledges</div>
+        <a href="/admin/volunteers/pledgeregistration/" class="quick-btn outline" style="font-size:0.7rem;padding:0.35rem 0.75rem;">View all</a>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mobile</th>
+              <th>Organization</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pledge in recent_pledges %}
+            <tr>
+              <td style="font-weight:600;color:#111827;">{{ pledge.full_name|truncatechars:20 }}</td>
+              <td>{{ pledge.mobile_number }}</td>
+              <td style="color:#6B7280;">{{ pledge.organization.name|truncatechars:18|default:"—" }}</td>
+              <td style="color:#9CA3AF;font-size:0.75rem;">{{ pledge.created_at|date:"d M, H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4" style="text-align:center;color:#9CA3AF;padding:2rem;">No pledges yet.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="chart-card" style="padding:0;overflow:hidden;">
+      <div style="padding:1.25rem 1.5rem 1rem;border-bottom:1px solid #F3F4F6;display:flex;justify-content:space-between;align-items:center;">
+        <div class="chart-title" style="margin-bottom:0;">⚡ Live Activity Feed</div>
+        <span style="font-size:0.7rem;color:#16A34A;font-weight:700;background:#DCFCE7;padding:0.2rem 0.6rem;border-radius:999px;">LIVE</span>
+      </div>
+      <div class="activity-feed">
+        {% for item in activity_feed %}
+        <div class="activity-item">
+          <div class="activity-dot {{ item.color }}"></div>
+          <div>
+            <div class="activity-text">{{ item.icon }} {{ item.text|safe }}</div>
+            <div class="activity-time">{{ item.time }}</div>
+          </div>
+        </div>
+        {% empty %}
+        <div style="padding:2rem;text-align:center;color:#9CA3AF;font-size:0.8125rem;">No recent activity.</div>
+        {% endfor %}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Photo Approval Bar Chart ───────────────────────────── -->
+  <div class="chart-card" style="margin-top:1.25rem;">
+    <div class="chart-title">📷 Gallery Photo Status</div>
+    <div class="chart-subtitle">Count of pending, approved, and rejected gallery photos</div>
+    <div id="chart-photos" style="min-height:220px;"></div>
+  </div>
+
+  <!-- ── Quick Actions Row ──────────────────────────────────── -->
+  <div style="margin-top:1.5rem;background:white;border-radius:var(--admin-radius);border:1px solid var(--admin-border);box-shadow:var(--admin-shadow);padding:1.5rem;">
+    <div class="section-heading">⚡ Quick Actions</div>
+    <div style="display:flex;flex-wrap:wrap;gap:0.75rem;">
+      <a href="/admin/volunteers/pledgeregistration/" class="quick-btn primary">🌱 All Pledges</a>
+      <a href="/admin/competitions/competitionregistration/?organization_type__exact=SCHOOL" class="quick-btn outline">🏫 Schools</a>
+      <a href="/admin/competitions/competitionregistration/?organization_type__exact=COLLEGE" class="quick-btn outline">🎓 Colleges</a>
+      <a href="/admin/competitions/competitionregistration/?organization_type__exact=SOCIETY" class="quick-btn outline">🏘️ Societies</a>
+      <a href="/admin/competitions/competitionregistration/?organization_type__exact=NGO" class="quick-btn outline">🤝 NGOs</a>
+      <a href="/admin/gallery/photo/?approval_status__exact=PENDING" class="quick-btn outline">⏳ Pending Photos</a>
+
+      <a href="/admin/events/event/add/" class="quick-btn outline">📅 Add Event</a>
+      <a href="/admin/cms/campaignprogress/" class="quick-btn outline">📊 Update Counters</a>
+      <a href="/admin/cms/sitesettings/" class="quick-btn outline">⚙️ Site Settings</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── ApexCharts Init ─────────────────────────────────────────── -->
+<script>
+// Count-up animation
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = parseInt(el.getAttribute('data-count')) || 0;
+    const duration = 1200;
+    const step = Math.ceil(duration / target) || 1;
+    let current = 0;
+    const increment = Math.max(1, Math.floor(target / 60));
+    const timer = setInterval(() => {
+      current = Math.min(current + increment, target);
+      el.textContent = current.toLocaleString();
+      if (current >= target) clearInterval(timer);
+    }, 20);
+  });
+});
+
+// Chart 1 — Daily Pledges Area
+const pledgeData = {{ chart_pledge_counts_json|safe }};
+const pledgeDates = {{ chart_dates_json|safe }};
+new ApexCharts(document.getElementById('chart-pledges'), {
+  chart: { type: 'area', height: 250, toolbar: { show: false }, sparkline: { enabled: false } },
+  series: [{ name: 'Pledges', data: pledgeData }],
+  xaxis: { categories: pledgeDates, labels: { style: { fontSize: '11px', colors: '#9CA3AF' } } },
+  yaxis: { labels: { style: { fontSize: '11px', colors: '#9CA3AF' } } },
+  stroke: { curve: 'smooth', width: 3 },
+  fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 100] } },
+  colors: ['#0B7A3B'],
+  grid: { borderColor: '#F3F4F6', strokeDashArray: 4 },
+  tooltip: { theme: 'light' },
+  dataLabels: { enabled: false },
+}).render();
+
+// Chart 2 — Org Type Donut
+const orgLabels = {{ chart_comp_labels_json|safe }};
+const orgData = {{ chart_comp_data_json|safe }};
+new ApexCharts(document.getElementById('chart-orgs'), {
+  chart: { type: 'donut', height: 250 },
+  series: orgData.length ? orgData : [1],
+  labels: orgLabels.length ? orgLabels : ['No data yet'],
+  colors: ['#0B7A3B', '#F97316', '#2563EB', '#7C3AED'],
+  legend: { position: 'bottom', fontSize: '12px' },
+  plotOptions: { pie: { donut: { size: '65%', labels: { show: true, total: { show: true, label: 'Total', fontSize: '13px', fontWeight: 700 } } } } },
+  dataLabels: { enabled: false },
+  tooltip: { theme: 'light' },
+}).render();
+
+// Chart 3 — Photo Bar Chart
+const photoLabels = {{ chart_photo_labels_json|safe }};
+const photoData = {{ chart_photo_data_json|safe }};
+new ApexCharts(document.getElementById('chart-photos'), {
+  chart: { type: 'bar', height: 220, toolbar: { show: false } },
+  series: [{ name: 'Photos', data: photoData }],
+  xaxis: { categories: photoLabels, labels: { style: { fontSize: '12px', colors: '#6B7280' } } },
+  colors: ['#EA580C', '#16A34A', '#DC2626'],
+  plotOptions: { bar: { borderRadius: 6, distributed: true, columnWidth: '45%' } },
+  grid: { borderColor: '#F3F4F6', strokeDashArray: 4 },
+  legend: { show: false },
+  dataLabels: { enabled: true, style: { fontSize: '12px', fontWeight: 700 } },
+  tooltip: { theme: 'light' },
+}).render();
+</script>
+{% endblock %}
+</body>
+</html>

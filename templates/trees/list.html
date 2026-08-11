@@ -1,0 +1,186 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Campaign Tree Map" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<!-- Leaflet CSS for Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+  #map {
+    height: 480px;
+    width: 100%;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-gray-200);
+    z-index: 10;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <div class="breadcrumb justify-center mb-4">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "Trees" %}</span>
+    </div>
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "Interactive Tree Map" %}</h1>
+    <p class="mt-2 text-forest-200 text-sm md:text-base max-w-xl mx-auto">
+      {% trans "Explore the geographic distribution and verification status of all campaign trees in Naroda." %}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site">
+    
+    <!-- Map Container -->
+    <div class="mb-12 reveal">
+      <div id="map"></div>
+    </div>
+
+    <!-- Filters & Trees Table -->
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <!-- Left Filters Sidebar -->
+      <div class="space-y-6 reveal">
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100">
+          <h3 class="font-serif text-lg font-bold text-forest-950 mb-4 border-b border-gray-200 pb-2">
+            {% trans "Filter Trees" %}
+          </h3>
+          
+          <form method="GET" action="{% url 'trees:list' %}" class="space-y-4">
+            <div>
+              <label for="species" class="form-label">{% trans "Species" %}</label>
+              <select name="species" id="species" class="form-input text-xs">
+                <option value="">{% trans "All Species" %}</option>
+                {% for sp in species_list %}
+                  <option value="{{ sp.id }}" {% if selected_species == sp.id|slugify %}selected{% endif %}>{{ sp.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="ward" class="form-label">{% trans "Ward" %}</label>
+              <select name="ward" id="ward" class="form-input text-xs">
+                <option value="">{% trans "All Wards" %}</option>
+                {% for w in wards %}
+                  <option value="{{ w }}" {% if selected_ward == w %}selected{% endif %}>{{ w }}</option>
+                {% endfor %}
+              </select>
+            </div>
+
+            <div>
+              <label for="status" class="form-label">{% trans "Verification Status" %}</label>
+              <select name="status" id="status" class="form-input text-xs">
+                <option value="">{% trans "All Statuses" %}</option>
+                <option value="PENDING" {% if selected_status == "PENDING" %}selected{% endif %}>{% trans "Pending Verification" %}</option>
+                <option value="VERIFIED" {% if selected_status == "VERIFIED" %}selected{% endif %}>{% trans "Verified" %}</option>
+                <option value="REJECTED" {% if selected_status == "REJECTED" %}selected{% endif %}>{% trans "Rejected" %}</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn-primary w-full justify-center text-xs" style="padding: 0.5rem 1rem;">
+              {% trans "Apply Filters" %}
+            </button>
+            <a href="{% url 'trees:list' %}" class="block text-center text-xs text-gray-500 hover:text-forest-750 underline">
+              {% trans "Reset" %}
+            </a>
+          </form>
+        </div>
+
+        <div class="text-center">
+          <a href="{% url 'trees:plant' %}" class="btn-saffron w-full justify-center">
+            {% trans "Plant & Log a Tree" %} +
+          </a>
+        </div>
+      </div>
+
+      <!-- Right Trees List -->
+      <div class="lg:col-span-3 space-y-6 reveal">
+        <h3 class="font-serif text-xl font-bold text-forest-950">{% trans "Planted Trees Log" %}</h3>
+        
+        <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-gray-50 text-gray-700 text-xs font-semibold uppercase border-b border-gray-200">
+                <th class="p-4">{% trans "Species" %}</th>
+                <th class="p-4">{% trans "Location" %}</th>
+                <th class="p-4">{% trans "Planted Date" %}</th>
+                <th class="p-4">{% trans "Status" %}</th>
+                <th class="p-4">{% trans "Action" %}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 text-sm text-gray-600">
+              {% for tree in trees %}
+                <tr>
+                  <td class="p-4 font-semibold text-gray-900">{{ tree.species.name }}</td>
+                  <td class="p-4">{{ tree.location_name|default:tree.ward }}</td>
+                  <td class="p-4">{{ tree.planted_at|date:"M d, Y" }}</td>
+                  <td class="p-4">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-semibold">
+                      <span class="tree-status-dot {% if tree.verification_status == 'VERIFIED' %}verified{% elif tree.verification_status == 'PENDING' %}pending{% else %}rejected{% endif %}"></span>
+                      {{ tree.get_verification_status_display }}
+                    </span>
+                  </td>
+                  <td class="p-4">
+                    <a href="{% url 'trees:detail' tree.id %}" class="text-xs font-bold text-forest-750 hover:text-forest-900">
+                      {% trans "View Details" %} &rarr;
+                    </a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="5" class="p-8 text-center text-gray-400">
+                    {% trans "No trees matching current criteria." %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var mapData = {{ map_data_json|safe }};
+    
+    // Center at Naroda, Ahmedabad coordinates
+    var defaultLat = 23.0722;
+    var defaultLng = 72.6582;
+    
+    // Init Leaflet map
+    var map = L.map('map').setView([defaultLat, defaultLng], 13);
+    
+    // Add OpenStreetMap tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">{% trans "OpenStreetMap" %}</a>'
+    }).addTo(map);
+
+    // Loop coordinates and add markers
+    mapData.forEach(function (t) {
+      if (t.lat && t.lng) {
+        var markerColor = t.status === 'Verified' ? 'green' : 'orange';
+        var popupContent = `
+          <div style="font-family: sans-serif; padding: 2px;">
+            <h4 style="margin: 0 0 4px 0; color: #15803d;">\uD83C\uDF33 ${t.species}</h4>
+            <p style="margin: 0 0 6px 0; font-size: 11px; color: #6b7280;">${t.location}</p>
+            <p style="margin: 0 0 6px 0; font-size: 11px;">{% trans "Status:" %} <strong>${t.status}</strong> {% trans "&bull; Health:" %} <strong>${t.health}</strong></p>
+            <a href="${t.url}" style="font-size: 11px; font-weight: bold; color: #15803d; text-decoration: none;">{% trans "View Timeline &rarr;" %}</a>
+          </div>
+        `;
+        L.marker([t.lat, t.lng]).addTo(map).bindPopup(popupContent);
+      }
+    });
+  });
+</script>
+{% endblock %}

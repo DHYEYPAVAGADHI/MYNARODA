@@ -1,0 +1,57 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Verify Phone Number" %} — Green Naroda{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-earth-50 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-earth-100 text-center">
+    
+    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-forest-100">
+      <svg class="h-8 w-8 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+      </svg>
+    </div>
+
+    <div>
+      <h2 class="text-3xl font-playfair font-bold text-forest-900 mt-6">
+        {% trans "Verify Phone Number" %}
+      </h2>
+      <p class="mt-4 text-earth-600 leading-relaxed text-sm">
+        {% trans "Please enter the 6-digit OTP sent to" %} <strong>{{ request.user.phone }}</strong>.
+      </p>
+    </div>
+    
+    <form method="post" action="{% url 'accounts:verify_phone' %}" class="mt-8 space-y-6">
+      {% csrf_token %}
+      
+      {% if messages %}
+        {% for message in messages %}
+          <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-md text-left">
+            <p class="text-sm text-red-700">{{ message }}</p>
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div>
+        <label for="otp" class="sr-only">{% trans "OTP Code" %}</label>
+        <input type="text" name="otp" id="otp" required maxlength="6" pattern="\d{6}" placeholder="------" class="text-center tracking-widest text-2xl appearance-none block w-full px-3 py-3 border border-earth-300 rounded-md shadow-sm placeholder-earth-400 focus:outline-none focus:ring-forest-500 focus:border-forest-500">
+      </div>
+      
+      <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-forest-700 hover:bg-forest-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-forest-500 transition-colors">
+        {% trans "Verify" %}
+      </button>
+    </form>
+    
+    <div class="mt-6">
+      <form method="post" action="{% url 'accounts:resend_otp' %}">
+        {% csrf_token %}
+        <button type="submit" class="text-sm font-medium text-forest-700 hover:text-forest-600">
+          {% trans "Didn't receive the code? Resend OTP." %}
+        </button>
+      </form>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

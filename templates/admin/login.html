@@ -1,0 +1,383 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Green Naroda • Clean Naroda</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #020D07;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* ── Dark Cinematic Background ────────────────────────── */
+    .bg-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(11, 122, 59, 0.45) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(249, 115, 22, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(34, 197, 94, 0.08) 0%, transparent 70%),
+        linear-gradient(135deg, #020D07 0%, #041A0C 40%, #071F10 100%);
+      z-index: 0;
+    }
+
+    /* Animated grid lines */
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(11,122,59,0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(11,122,59,0.08) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridFloat 20s linear infinite;
+      z-index: 1;
+    }
+    @keyframes gridFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(60px); }
+    }
+
+    /* Floating leaves */
+    .leaf {
+      position: absolute;
+      font-size: 1.5rem;
+      opacity: 0.12;
+      animation: floatLeaf linear infinite;
+      z-index: 2;
+    }
+    @keyframes floatLeaf {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.12; }
+      90% { opacity: 0.12; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Glassmorphism Card ───────────────────────────────── */
+    .login-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 440px;
+      padding: 0 1.5rem;
+    }
+
+    .glass-card {
+      background: rgba(11, 25, 17, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+      animation: cardEnter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    @keyframes cardEnter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Logo area */
+    .logo-area {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .logo-icon {
+      width: 54px;
+      height: 54px;
+      background: linear-gradient(135deg, #0B7A3B, #22C55E);
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 8px 24px rgba(11,122,59,0.4);
+      margin-bottom: 1rem;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .brand-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    .brand-title span.orange { color: #F47C20; }
+    .brand-title span.green { color: #4ADE80; }
+    .brand-subtitle {
+      font-size: 0.85rem;
+      color: #9CA3AF;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    /* Form fields */
+    .field-group {
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .field-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #D1D5DB;
+      margin-bottom: 0.5rem;
+    }
+    .field-input {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.8rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      font-size: 0.95rem;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+      outline: none;
+    }
+    .field-input:focus {
+      border-color: #4ADE80;
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.15);
+    }
+    .field-input::placeholder { color: #6B7280; }
+    
+    .field-icon {
+      position: absolute;
+      left: 1rem;
+      top: 2.15rem;
+      color: #9CA3AF;
+      font-size: 1.1rem;
+      pointer-events: none;
+    }
+
+    /* Show/hide password */
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 2.15rem;
+      color: #9CA3AF;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .password-toggle:hover { color: #FFFFFF; }
+
+    /* Remember me */
+    .remember-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 0.5rem;
+    }
+    .remember-checkbox {
+      accent-color: #22C55E;
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .remember-label {
+      font-size: 0.85rem;
+      color: #D1D5DB;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* Submit Button */
+    .login-btn {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      background: linear-gradient(135deg, #0B7A3B, #16A34A);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 16px rgba(11, 122, 59, 0.4);
+    }
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(11, 122, 59, 0.6);
+      background: linear-gradient(135deg, #096831, #15803d);
+    }
+    .login-btn:active { transform: translateY(0); }
+    
+    .spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Error Messages */
+    .error-box {
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.3);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 1.5rem;
+      color: #FCA5A5;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      animation: shake 0.4s ease-in-out;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .footer-text {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #6B7280;
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Layer -->
+  <div class="bg-gradient"></div>
+  <div class="grid-lines"></div>
+  
+  <!-- Floating leaves -->
+  <div class="leaf" style="left:10%;animation-duration:14s;animation-delay:0s;">🌿</div>
+  <div class="leaf" style="left:30%;animation-duration:18s;animation-delay:4s;">🍃</div>
+  <div class="leaf" style="left:55%;animation-duration:12s;animation-delay:8s;">🌱</div>
+  <div class="leaf" style="left:75%;animation-duration:16s;animation-delay:2s;">🍃</div>
+  <div class="leaf" style="left:85%;animation-duration:20s;animation-delay:6s;">🌿</div>
+
+  <!-- Login Card -->
+  <div class="login-container">
+    <div class="glass-card">
+      
+      <div class="logo-area">
+        <div class="logo-icon"><img src="{% static 'images/logo.png' %}" alt="Logo" style="height: 64px; width: 64px; object-fit: contain;"></div>
+        <h1 class="brand-title"><span class="green">Green Naroda</span> • <span class="orange">Clean Naroda</span></h1>
+        <div class="brand-subtitle">Administrative Control Room</div>
+      </div>
+
+      <!-- Errors -->
+      {% if form.errors %}
+      <div class="error-box">
+        <span>⚠️</span>
+        <span>
+          {% for field in form %}
+            {% for error in field.errors %}{{ error }}<br>{% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}{{ error }}<br>{% endfor %}
+        </span>
+      </div>
+      {% endif %}
+
+      <form method="post" id="login-form">
+        {% csrf_token %}
+        {% if next %}
+        <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        <div class="field-group">
+          <label class="field-label" for="id_username">Email or Username</label>
+          <span class="field-icon">👤</span>
+          <input 
+            type="text" 
+            name="username" 
+            id="id_username" 
+            class="field-input" 
+            placeholder="admin@mynaroda.in" 
+            autofocus 
+            required>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="id_password">Password</label>
+          <span class="field-icon">🔒</span>
+          <input 
+            type="password" 
+            name="password" 
+            id="id_password" 
+            class="field-input" 
+            placeholder="Enter password" 
+            required>
+          <button type="button" class="password-toggle" id="toggle-password" tabindex="-1">
+            👁️
+          </button>
+        </div>
+
+        <div class="remember-row">
+          <input type="checkbox" id="remember" class="remember-checkbox" checked>
+          <label for="remember" class="remember-label">Remember me for 30 days</label>
+        </div>
+
+        <button type="submit" class="login-btn" id="submit-btn">
+          <span id="btn-text">Sign in to Dashboard</span>
+          <div class="spinner" id="btn-spinner"></div>
+        </button>
+
+      </form>
+
+      <div class="footer-text">
+        Secure Access Portal • Green Naroda Initiative
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Show/Hide Password
+    const togglePassword = document.getElementById('toggle-password');
+    const passwordInput = document.getElementById('id_password');
+    
+    togglePassword.addEventListener('click', () => {
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      // Toggle emoji (optional, could use eye/eye-slash icons)
+    });
+
+    // Loading State
+    const form = document.getElementById('login-form');
+    const btnText = document.getElementById('btn-text');
+    const btnSpinner = document.getElementById('btn-spinner');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', () => {
+      btnText.style.display = 'none';
+      btnSpinner.style.display = 'block';
+      submitBtn.style.pointerEvents = 'none';
+      submitBtn.style.opacity = '0.9';
+    });
+  </script>
+</body>
+</html>

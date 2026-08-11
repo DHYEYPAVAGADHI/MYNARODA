@@ -1,0 +1,4754 @@
+# mynaroda — Green Naroda Campaign — Gujarati Translation
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-07-28 13:43+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Gujarati <gu@mynaroda.in>\n"
+"Language: gu\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: apps/accounts/admin.py:48
+msgid "Personal info"
+msgstr "ব্যক্তিগত তথ্য"
+
+#: apps/accounts/admin.py:52
+msgid "Permissions & Roles"
+msgstr "অনুমতি ও ভূমিকা"
+
+#: apps/accounts/admin.py:65
+msgid "Important dates"
+msgstr "গুরুত্বপূর্ণ তারিখ"
+
+#: apps/accounts/admin_auth.py:65
+#, fuzzy
+#| msgid "Verification No:"
+msgid "Verification Code"
+msgstr "ચકાસણી ક્રમ:"
+
+#: apps/accounts/forms.py:19 apps/accounts/models.py:40
+#: templates/account/signup.html:86
+msgid "Citizen"
+msgstr "નાગરિક"
+
+#: apps/accounts/forms.py:20 apps/accounts/models.py:41
+#: templates/account/signup.html:87
+msgid "Volunteer"
+msgstr "સ્વયંસેવક"
+
+#: apps/accounts/forms.py:21 apps/accounts/models.py:42
+#: templates/account/signup.html:88 templates/gallery/list.html:142
+msgid "Photographer"
+msgstr ""
+
+#: apps/accounts/forms.py:27 templates/account/profile.html:38
+#: templates/account/signup.html:64
+#: templates/components/registration_popup.html:66
+#: templates/pages/contact.html:116
+msgid "Full Name"
+msgstr ""
+
+#: apps/accounts/forms.py:28
+msgid "E.g. John Doe"
+msgstr ""
+
+#: apps/accounts/forms.py:33 templates/account/signup.html:73
+msgid "Phone Number (Optional)"
+msgstr ""
+
+#: apps/accounts/forms.py:34
+msgid "+91XXXXXXXXXX"
+msgstr ""
+
+#: apps/accounts/forms.py:40 templates/account/signup.html:82
+msgid "Register As"
+msgstr ""
+
+#: apps/accounts/models.py:39
+msgid "Guest"
+msgstr ""
+
+#: apps/accounts/models.py:43
+msgid "Coordinator"
+msgstr ""
+
+#: apps/accounts/models.py:44
+msgid "Organizer"
+msgstr ""
+
+#: apps/accounts/models.py:45
+msgid "Admin"
+msgstr "প্রশাসন"
+
+#: apps/accounts/models.py:46
+msgid "Super Admin"
+msgstr ""
+
+#: apps/accounts/models.py:53
+msgid "Seed Volunteer"
+msgstr ""
+
+#: apps/accounts/models.py:54
+msgid "Green Volunteer"
+msgstr ""
+
+#: apps/accounts/models.py:55
+msgid "Tree Guardian"
+msgstr ""
+
+#: apps/accounts/models.py:56
+msgid "Nature Champion"
+msgstr ""
+
+#: apps/accounts/models.py:57
+msgid "Green Ambassador"
+msgstr ""
+
+#: apps/accounts/models.py:74
+msgid "An email address is required."
+msgstr ""
+
+#: apps/accounts/models.py:97
+msgid "Superuser must have is_staff=True."
+msgstr ""
+
+#: apps/accounts/models.py:99
+msgid "Superuser must have is_superuser=True."
+msgstr ""
+
+#: apps/accounts/models.py:123 core/models.py:171
+msgid "UUID"
+msgstr ""
+
+#: apps/accounts/models.py:126 apps/cms/models.py:144
+#: apps/volunteers/models.py:80
+msgid "email address"
+msgstr ""
+
+#: apps/accounts/models.py:129
+msgid "Primary login identifier. Must be unique."
+msgstr ""
+
+#: apps/accounts/models.py:132
+msgid "phone number"
+msgstr ""
+
+#: apps/accounts/models.py:138
+msgid "Optional. Indian mobile number in E.164 format (+91XXXXXXXXXX)."
+msgstr ""
+
+#: apps/accounts/models.py:141 apps/cms/models.py:143
+#: apps/volunteers/models.py:74
+msgid "full name"
+msgstr ""
+
+#: apps/accounts/models.py:143
+msgid "User's display name."
+msgstr ""
+
+#: apps/accounts/models.py:149 apps/cms/models.py:88
+msgid "avatar Cloudinary ID"
+msgstr ""
+
+#: apps/accounts/models.py:153
+msgid "Cloudinary public_id for the profile picture."
+msgstr ""
+
+#: apps/accounts/models.py:156
+msgid "bio"
+msgstr ""
+
+#: apps/accounts/models.py:160
+msgid "Short user biography (max 500 characters)."
+msgstr ""
+
+#: apps/accounts/models.py:163
+msgid "city"
+msgstr ""
+
+#: apps/accounts/models.py:166
+msgid "User's city. Defaults to Naroda."
+msgstr ""
+
+#: apps/accounts/models.py:172
+msgid "volunteer level"
+msgstr ""
+
+#: apps/accounts/models.py:178
+msgid "total volunteer hours"
+msgstr ""
+
+#: apps/accounts/models.py:182 apps/cms/models.py:21 apps/cms/models.py:248
+#: apps/events/models.py:132
+msgid "trees planted"
+msgstr ""
+
+#: apps/accounts/models.py:189 apps/cms/models.py:81
+msgid "role"
+msgstr ""
+
+#: apps/accounts/models.py:194
+msgid "User's access role."
+msgstr ""
+
+#: apps/accounts/models.py:197
+msgid "email verified"
+msgstr ""
+
+#: apps/accounts/models.py:199
+msgid "True when the user has confirmed their email address."
+msgstr ""
+
+#: apps/accounts/models.py:202
+msgid "phone verified"
+msgstr ""
+
+#: apps/accounts/models.py:204
+msgid "True when the user has confirmed their mobile phone number."
+msgstr ""
+
+#: apps/accounts/models.py:207 apps/cms/models.py:93 apps/cms/models.py:111
+#: apps/cms/models.py:128
+msgid "active"
+msgstr ""
+
+#: apps/accounts/models.py:209
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: apps/accounts/models.py:213
+msgid "staff status"
+msgstr ""
+
+#: apps/accounts/models.py:215
+msgid "Designates whether the user can log into the admin site."
+msgstr ""
+
+#: apps/accounts/models.py:220
+msgid "joined"
+msgstr ""
+
+#: apps/accounts/models.py:221
+msgid "last updated"
+msgstr ""
+
+#: apps/accounts/models.py:223
+msgid "last login at"
+msgstr ""
+
+#: apps/accounts/models.py:226
+msgid "Timestamp of user's most recent successful login."
+msgstr ""
+
+#: apps/accounts/models.py:232
+msgid "email notifications"
+msgstr ""
+
+#: apps/accounts/models.py:234
+msgid "Whether to send notification emails to this user."
+msgstr ""
+
+#: apps/accounts/models.py:237
+msgid "SMS notifications"
+msgstr ""
+
+#: apps/accounts/models.py:239
+msgid "Whether to send SMS notifications to this user."
+msgstr ""
+
+#: apps/accounts/models.py:250 apps/accounts/models.py:328
+#: apps/certificates/models.py:17 apps/notifications/models.py:25
+msgid "user"
+msgstr ""
+
+#: apps/accounts/models.py:251
+msgid "users"
+msgstr ""
+
+#: apps/accounts/models.py:298
+msgid "Phone Login"
+msgstr ""
+
+#: apps/accounts/models.py:299
+msgid "Email Verification"
+msgstr ""
+
+#: apps/accounts/models.py:300
+msgid "Password Reset"
+msgstr ""
+
+#: apps/accounts/models.py:301
+msgid "Admin 2FA Login"
+msgstr ""
+
+#: apps/accounts/models.py:318
+msgid "OTP token"
+msgstr ""
+
+#: apps/accounts/models.py:319
+msgid "OTP tokens"
+msgstr ""
+
+#: apps/accounts/models.py:331
+msgid "purpose"
+msgstr ""
+
+#: apps/accounts/models.py:336
+msgid "OTP code"
+msgstr ""
+
+#: apps/accounts/models.py:338
+msgid "6-digit one-time password."
+msgstr ""
+
+#: apps/accounts/models.py:341
+msgid "is used"
+msgstr ""
+
+#: apps/accounts/models.py:343
+msgid "True once this token has been successfully verified."
+msgstr ""
+
+#: apps/accounts/models.py:346
+msgid "expires at"
+msgstr ""
+
+#: apps/accounts/models.py:347
+msgid "Token is invalid after this timestamp."
+msgstr ""
+
+#: apps/accounts/models.py:349 core/models.py:58
+msgid "created at"
+msgstr ""
+
+#: apps/accounts/models.py:370 apps/accounts/models.py:403
+#, fuzzy
+#| msgid "Email address"
+msgid "IP address"
+msgstr "ઇ-મેઇલ સરનામું"
+
+#: apps/accounts/models.py:371 apps/accounts/models.py:404
+msgid "user agent"
+msgstr ""
+
+#: apps/accounts/models.py:372
+msgid "last login"
+msgstr ""
+
+#: apps/accounts/models.py:373
+msgid "is trusted"
+msgstr ""
+
+#: apps/accounts/models.py:376
+msgid "device fingerprint"
+msgstr ""
+
+#: apps/accounts/models.py:377
+msgid "device fingerprints"
+msgstr ""
+
+#: apps/accounts/models.py:388
+msgid "Login"
+msgstr ""
+
+#: apps/accounts/models.py:389
+msgid "Logout"
+msgstr ""
+
+#: apps/accounts/models.py:390
+msgid "Create"
+msgstr ""
+
+#: apps/accounts/models.py:391
+#, fuzzy
+#| msgid "News & Updates"
+msgid "Update"
+msgstr "সমাচার ও আপডেট"
+
+#: apps/accounts/models.py:392
+msgid "Delete"
+msgstr ""
+
+#: apps/accounts/models.py:393
+msgid "Publish"
+msgstr ""
+
+#: apps/accounts/models.py:394
+msgid "OTP Failure"
+msgstr ""
+
+#: apps/accounts/models.py:395
+#, fuzzy
+#| msgid "Password"
+msgid "Password Change"
+msgstr "પાસવર્ડ"
+
+#: apps/accounts/models.py:398
+msgid "action"
+msgstr ""
+
+#: apps/accounts/models.py:399
+#, fuzzy
+#| msgid "Full name"
+msgid "model name"
+msgstr "પૂર્ણ નામ"
+
+#: apps/accounts/models.py:400
+msgid "object ID"
+msgstr ""
+
+#: apps/accounts/models.py:401
+#, fuzzy
+#| msgid "View Details"
+msgid "details"
+msgstr "વિગત જુઓ"
+
+#: apps/accounts/models.py:406
+msgid "timestamp"
+msgstr ""
+
+#: apps/accounts/models.py:409
+msgid "audit log"
+msgstr ""
+
+#: apps/accounts/models.py:410
+msgid "audit logs"
+msgstr ""
+
+#: apps/accounts/views.py:87
+msgid "Profile updated successfully."
+msgstr "প্রোফাইল সফলভাবে আপডেট হয়েছে।"
+
+#: apps/accounts/views.py:106
+msgid "Phone number verified successfully."
+msgstr "ফোন নম্বর সফলভাবে যাচাই হয়েছে।"
+
+#: apps/accounts/views.py:109
+msgid "Invalid OTP. Please try again."
+msgstr "অবৈধ OTP। পুনরায় চেষ্টা করুন।"
+
+#: apps/accounts/views.py:117
+msgid "A new OTP has been sent to your phone."
+msgstr ""
+
+#: apps/accounts/views.py:143
+msgid "Please enter a valid email address."
+msgstr "કૃपया वैध ईमेल पता दर्ज करें।"
+
+#: apps/accounts/views.py:187
+#, python-format
+msgid "Welcome! You are now signed in as %(name)s."
+msgstr "સ્વાગત! તમે %(name)s તરીકે સાઈન ઇન કર્યું."
+
+#: apps/admin_panel/views.py:40
+msgid "Please sign in to access the admin panel."
+msgstr ""
+
+#: apps/admin_panel/views.py:119
+msgid "No photos selected."
+msgstr ""
+
+#: apps/admin_panel/views.py:130
+#, python-format
+msgid "%(count)s photo(s) approved successfully."
+msgstr ""
+
+#: apps/admin_panel/views.py:133
+#, python-format
+msgid "%(count)s photo(s) rejected."
+msgstr ""
+
+#: apps/admin_panel/views.py:136
+#, python-format
+msgid "%(count)s photo(s) marked as featured."
+msgstr ""
+
+#: apps/admin_panel/views.py:155
+msgid "Photo approved and is now visible in the public gallery."
+msgstr ""
+
+#: apps/admin_panel/views.py:159
+#, fuzzy
+#| msgid "Rejected"
+msgid "Photo rejected."
+msgstr "नकारायेल"
+
+#: apps/admin_panel/views.py:163 apps/gallery/models.py:201
+msgid "featured"
+msgstr ""
+
+#: apps/admin_panel/views.py:163
+msgid "unfeatured"
+msgstr ""
+
+#: apps/admin_panel/views.py:164
+#, python-format
+msgid "Photo %(status)s."
+msgstr ""
+
+#: apps/admin_panel/views.py:207
+msgid "Only a Super Admin can assign Admin or Super Admin roles."
+msgstr ""
+
+#: apps/admin_panel/views.py:213
+#, python-format
+msgid "%(name)s's role updated to %(role)s."
+msgstr ""
+
+#: apps/admin_panel/views.py:218
+msgid "Invalid role selected."
+msgstr ""
+
+#: apps/admin_panel/views.py:261
+#, python-format
+msgid "Certificate regenerated successfully for %(name)s."
+msgstr ""
+
+#: apps/admin_panel/views.py:263
+#, python-format
+msgid "Failed to regenerate certificate: %(error)s"
+msgstr ""
+
+#: apps/certificates/apps.py:7 apps/cms/models_media.py:18
+#: templates/account/dashboard.html:136 templates/certificates/list.html:12
+#: templates/certificates/verify.html:12
+msgid "Certificates"
+msgstr "પ્રમાણપત્રો"
+
+#: apps/certificates/models.py:8
+msgid "Volunteer Excellence"
+msgstr ""
+
+#: apps/certificates/models.py:9
+msgid "Tree Plantation Certificate"
+msgstr ""
+
+#: apps/certificates/models.py:10
+msgid "Event Participation"
+msgstr ""
+
+#: apps/certificates/models.py:11
+msgid "General Campaign Participation"
+msgstr ""
+
+#: apps/certificates/models.py:20
+msgid "certificate type"
+msgstr ""
+
+#: apps/certificates/models.py:26 apps/volunteers/models.py:105
+msgid "certificate number"
+msgstr ""
+
+#: apps/certificates/models.py:37 apps/events/models.py:93
+#: apps/events/models.py:121
+msgid "event"
+msgstr ""
+
+#: apps/certificates/models.py:45 apps/trees/models.py:224
+#: apps/trees/models.py:262 apps/trees/models.py:329 apps/trees/models.py:379
+msgid "tree"
+msgstr ""
+
+#: apps/certificates/models.py:47
+msgid "issued at"
+msgstr ""
+
+#: apps/certificates/models.py:50
+msgid "certificate"
+msgstr ""
+
+#: apps/certificates/models.py:51
+msgid "certificates"
+msgstr ""
+
+#: apps/cms/models.py:22
+msgid "volunteers count"
+msgstr ""
+
+#: apps/cms/models.py:23
+msgid "events count"
+msgstr ""
+
+#: apps/cms/models.py:24
+msgid "photos count"
+msgstr ""
+
+#: apps/cms/models.py:27
+msgid "popup enabled"
+msgstr ""
+
+#: apps/cms/models.py:28
+msgid "popup delay (seconds)"
+msgstr ""
+
+#: apps/cms/models.py:29
+#, fuzzy
+#| msgid "Campaign"
+msgid "campaign title"
+msgstr "ઝुंबेश"
+
+#: apps/cms/models.py:30
+#, fuzzy
+#| msgid "Important dates"
+msgid "registration dates"
+msgstr "গুরুত্বপূর্ণ তারিখ"
+
+#: apps/cms/models.py:31
+msgid "max trees per registrant"
+msgstr ""
+
+#: apps/cms/models.py:32
+msgid "popup message"
+msgstr ""
+
+#: apps/cms/models.py:35
+msgid "Once per session"
+msgstr ""
+
+#: apps/cms/models.py:36
+msgid "On every visit"
+msgstr ""
+
+#: apps/cms/models.py:39
+msgid "popup frequency"
+msgstr ""
+
+#: apps/cms/models.py:48
+msgid "hero tagline"
+msgstr ""
+
+#: apps/cms/models.py:54
+msgid "Facebook URL"
+msgstr ""
+
+#: apps/cms/models.py:55
+msgid "Instagram URL"
+msgstr ""
+
+#: apps/cms/models.py:56
+msgid "Twitter/X URL"
+msgstr ""
+
+#: apps/cms/models.py:57
+msgid "YouTube URL"
+msgstr ""
+
+#: apps/cms/models.py:60
+msgid "contact email"
+msgstr ""
+
+#: apps/cms/models.py:61
+msgid "contact phone"
+msgstr ""
+
+#: apps/cms/models.py:64 apps/cms/models.py:65
+msgid "site settings"
+msgstr ""
+
+#: apps/cms/models.py:79 apps/cms/models.py:108 apps/gallery/models.py:23
+#: apps/gallery/models.py:40 apps/news/models.py:13
+msgid "name"
+msgstr ""
+
+#: apps/cms/models.py:84
+msgid "e.g. 'Tree Plantation Volunteer' or 'Naroda Resident'"
+msgstr ""
+
+#: apps/cms/models.py:86
+msgid "quote"
+msgstr ""
+
+#: apps/cms/models.py:94 apps/cms/models.py:112 apps/cms/models.py:129
+#: apps/cms/models_pages.py:56 apps/cms/models_pages.py:70
+#: apps/cms/models_pages.py:84 apps/cms/models_pages.py:97
+#: apps/cms/models_pages.py:112 apps/gallery/models.py:26
+msgid "sort order"
+msgstr ""
+
+#: apps/cms/models.py:97
+msgid "testimonial"
+msgstr ""
+
+#: apps/cms/models.py:98
+msgid "testimonials"
+msgstr ""
+
+#: apps/cms/models.py:109
+msgid "logo Cloudinary ID"
+msgstr ""
+
+#: apps/cms/models.py:110
+msgid "website"
+msgstr ""
+
+#: apps/cms/models.py:115
+msgid "partner"
+msgstr ""
+
+#: apps/cms/models.py:116
+msgid "partners"
+msgstr ""
+
+#: apps/cms/models.py:126
+msgid "question"
+msgstr ""
+
+#: apps/cms/models.py:127
+msgid "answer"
+msgstr ""
+
+#: apps/cms/models.py:132 templates/components/navbar.html:31
+#: templates/components/navbar.html:61 templates/pages/faq.html:12
+msgid "FAQ"
+msgstr "સામાન્ય પ્રશ્નો"
+
+#: apps/cms/models.py:133
+msgid "FAQs"
+msgstr ""
+
+#: apps/cms/models.py:145
+msgid "subject"
+msgstr ""
+
+#: apps/cms/models.py:146 apps/notifications/models.py:34
+msgid "message"
+msgstr ""
+
+#: apps/cms/models.py:147 apps/trees/models.py:399
+msgid "resolved"
+msgstr ""
+
+#: apps/cms/models.py:150
+msgid "contact message"
+msgstr ""
+
+#: apps/cms/models.py:151
+msgid "contact messages"
+msgstr ""
+
+#: apps/cms/models.py:165 apps/cms/models_pages.py:14
+msgid "hero title"
+msgstr ""
+
+#: apps/cms/models.py:166 apps/cms/models_pages.py:15
+msgid "hero subtitle"
+msgstr ""
+
+#: apps/cms/models.py:167 apps/cms/models_pages.py:16
+msgid "hero description"
+msgstr ""
+
+#: apps/cms/models.py:170 apps/cms/models_pages.py:19
+msgid "hero background"
+msgstr ""
+
+#: apps/cms/models.py:174
+msgid "green card title"
+msgstr ""
+
+#: apps/cms/models.py:175
+msgid "green card description"
+msgstr ""
+
+#: apps/cms/models.py:178
+#, fuzzy
+#| msgid "Green Naroda"
+msgid "green card image"
+msgstr "ગ્રીન નારોદા"
+
+#: apps/cms/models.py:181
+msgid "clean card title"
+msgstr ""
+
+#: apps/cms/models.py:182
+msgid "clean card description"
+msgstr ""
+
+#: apps/cms/models.py:185
+msgid "clean card image"
+msgstr ""
+
+#: apps/cms/models.py:189 apps/cms/models.py:190
+msgid "homepage content"
+msgstr ""
+
+#: apps/cms/models.py:209
+#, fuzzy
+#| msgid "Mission"
+msgid "Green Mission"
+msgstr "મિશન"
+
+#: apps/cms/models.py:210
+#, fuzzy
+#| msgid "Mission"
+msgid "Clean Mission"
+msgstr "મિશન"
+
+#: apps/cms/models.py:214 apps/cms/models_media.py:23
+#: apps/cms/models_pages.py:53 apps/cms/models_pages.py:67
+#: apps/cms/models_pages.py:80 apps/cms/models_pages.py:108
+#: apps/events/models.py:30 apps/gallery/models.py:125
+#: apps/gallery/models.py:230 apps/news/models.py:27 apps/news/models.py:48
+#: apps/notifications/models.py:33
+msgid "title"
+msgstr ""
+
+#: apps/cms/models.py:215
+msgid "subtitle"
+msgstr ""
+
+#: apps/cms/models.py:216 apps/cms/models_pages.py:54
+#: apps/cms/models_pages.py:68 apps/cms/models_pages.py:81
+#: apps/cms/models_pages.py:109 apps/events/models.py:38
+#: apps/gallery/models.py:25 apps/gallery/models.py:232 apps/trees/models.py:53
+#: apps/trees/models.py:394
+msgid "description"
+msgstr ""
+
+#: apps/cms/models.py:220 apps/cms/models_media.py:24
+msgid "image"
+msgstr ""
+
+#: apps/cms/models.py:224
+#, fuzzy
+#| msgid "Mission"
+msgid "mission type"
+msgstr "મિશન"
+
+#: apps/cms/models.py:227
+msgid "button 1 text"
+msgstr ""
+
+#: apps/cms/models.py:228
+msgid "button 1 URL"
+msgstr ""
+
+#: apps/cms/models.py:230
+msgid "button 2 text"
+msgstr ""
+
+#: apps/cms/models.py:231
+msgid "button 2 URL"
+msgstr ""
+
+#: apps/cms/models.py:233 apps/volunteers/models.py:15
+#: apps/volunteers/models.py:28 apps/volunteers/models.py:52
+msgid "is active"
+msgstr ""
+
+#: apps/cms/models.py:234
+msgid "display order"
+msgstr ""
+
+#: apps/cms/models.py:237
+msgid "hero slide"
+msgstr ""
+
+#: apps/cms/models.py:238
+msgid "hero slides"
+msgstr ""
+
+#: apps/cms/models.py:247
+msgid "target trees"
+msgstr ""
+
+#: apps/cms/models.py:249
+msgid "citizens joined"
+msgstr ""
+
+#: apps/cms/models.py:250
+msgid "wards covered"
+msgstr ""
+
+#: apps/cms/models.py:251
+msgid "CO2 saved (kg)"
+msgstr ""
+
+#: apps/cms/models.py:254 apps/cms/models.py:255
+#, fuzzy
+#| msgid "Campaign Contribution Progress"
+msgid "campaign progress"
+msgstr "ઝુંબેશ યોગદાન પ્રગતિ"
+
+#: apps/cms/models_media.py:13
+msgid "Hero Images"
+msgstr ""
+
+#: apps/cms/models_media.py:14
+#, fuzzy
+#| msgid "Mission"
+msgid "Mission Images"
+msgstr "મિશન"
+
+#: apps/cms/models_media.py:15
+#, fuzzy
+#| msgid "Gallery"
+msgid "Gallery Images"
+msgstr "ફોટો ગેલરી"
+
+#: apps/cms/models_media.py:16
+#, fuzzy
+#| msgid "Campaign"
+msgid "Campaign Images"
+msgstr "ઝुंबेश"
+
+#: apps/cms/models_media.py:17
+msgid "Background Images"
+msgstr ""
+
+#: apps/cms/models_media.py:19
+#, fuzzy
+#| msgid "News & Updates"
+msgid "News Images"
+msgstr "সমাচার ও আপডেট"
+
+#: apps/cms/models_media.py:20 apps/events/models.py:22
+#: apps/trees/models.py:373 apps/volunteers/models.py:70
+#: templates/components/registration_popup.html:98
+msgid "Other"
+msgstr ""
+
+#: apps/cms/models_media.py:22 apps/gallery/models.py:144
+msgid "category"
+msgstr ""
+
+#: apps/cms/models_media.py:23
+msgid "Internal title or caption"
+msgstr ""
+
+#: apps/cms/models_media.py:25
+msgid "alt text"
+msgstr ""
+
+#: apps/cms/models_media.py:25
+msgid "For SEO and Accessibility"
+msgstr ""
+
+#: apps/cms/models_media.py:26
+msgid "credits"
+msgstr ""
+
+#: apps/cms/models_media.py:27 apps/gallery/models.py:150
+msgid "tags"
+msgstr ""
+
+#: apps/cms/models_media.py:27
+msgid "Comma separated tags for search"
+msgstr ""
+
+#: apps/cms/models_media.py:30
+msgid "file size (bytes)"
+msgstr ""
+
+#: apps/cms/models_media.py:33
+msgid "media asset"
+msgstr ""
+
+#: apps/cms/models_media.py:34
+msgid "media library"
+msgstr ""
+
+#: apps/cms/models_pages.py:10
+msgid "page title"
+msgstr ""
+
+#: apps/cms/models_pages.py:11 apps/events/models.py:31
+#: apps/gallery/models.py:24 apps/gallery/models.py:41
+#: apps/gallery/models.py:231 apps/news/models.py:14 apps/news/models.py:28
+msgid "slug"
+msgstr ""
+
+#: apps/cms/models_pages.py:23
+msgid "intro title"
+msgstr ""
+
+#: apps/cms/models_pages.py:24
+msgid "intro paragraph 1"
+msgstr ""
+
+#: apps/cms/models_pages.py:25
+msgid "intro paragraph 2"
+msgstr ""
+
+#: apps/cms/models_pages.py:28
+msgid "intro image"
+msgstr ""
+
+#: apps/cms/models_pages.py:32
+msgid "vision title"
+msgstr ""
+
+#: apps/cms/models_pages.py:33
+msgid "vision description"
+msgstr ""
+
+#: apps/cms/models_pages.py:36
+msgid "vision image"
+msgstr ""
+
+#: apps/cms/models_pages.py:40
+msgid "meta title"
+msgstr ""
+
+#: apps/cms/models_pages.py:41
+msgid "meta description"
+msgstr ""
+
+#: apps/cms/models_pages.py:44
+#, fuzzy
+#| msgid "Mission"
+msgid "mission page"
+msgstr "મિશન"
+
+#: apps/cms/models_pages.py:45
+#, fuzzy
+#| msgid "Permissions & Roles"
+msgid "mission pages"
+msgstr "অনুমতি ও ভূমিকা"
+
+#: apps/cms/models_pages.py:60
+msgid "objective"
+msgstr ""
+
+#: apps/cms/models_pages.py:61
+msgid "objectives"
+msgstr ""
+
+#: apps/cms/models_pages.py:66
+msgid "badge text"
+msgstr ""
+
+#: apps/cms/models_pages.py:74
+msgid "mission highlight"
+msgstr ""
+
+#: apps/cms/models_pages.py:75
+msgid "mission highlights"
+msgstr ""
+
+#: apps/cms/models_pages.py:82
+msgid "button text"
+msgstr ""
+
+#: apps/cms/models_pages.py:88
+#, fuzzy
+#| msgid "Recent Activity"
+msgid "campaign activity"
+msgstr "તાજેતરની પ્રવૃત્તિ"
+
+#: apps/cms/models_pages.py:89
+msgid "campaign activities"
+msgstr ""
+
+#: apps/cms/models_pages.py:94
+msgid "value (e.g. 100%)"
+msgstr ""
+
+#: apps/cms/models_pages.py:95
+msgid "label"
+msgstr ""
+
+#: apps/cms/models_pages.py:101
+msgid "impact statistic"
+msgstr ""
+
+#: apps/cms/models_pages.py:102
+msgid "impact statistics"
+msgstr ""
+
+#: apps/cms/models_pages.py:107
+msgid "step number"
+msgstr ""
+
+#: apps/cms/models_pages.py:110
+msgid "is active step"
+msgstr ""
+
+#: apps/cms/models_pages.py:116
+msgid "timeline step"
+msgstr ""
+
+#: apps/cms/models_pages.py:117
+msgid "timeline steps"
+msgstr ""
+
+#: apps/cms/views.py:39 apps/events/models.py:127
+msgid "volunteer"
+msgstr ""
+
+#: apps/cms/views.py:39
+msgid "citizen"
+msgstr ""
+
+#: apps/cms/views.py:42
+#, python-brace-format
+msgid "New {role} {name} joined the movement."
+msgstr ""
+
+#: apps/cms/views.py:49
+msgid "A citizen"
+msgstr ""
+
+#: apps/cms/views.py:49 apps/cms/views.py:59
+msgid "Anonymous"
+msgstr ""
+
+#: apps/cms/views.py:52
+#, python-brace-format
+msgid "{planter} planted a {species} tree in Ward {ward}."
+msgstr ""
+
+#: apps/cms/views.py:52
+msgid "Naroda"
+msgstr ""
+
+#: apps/cms/views.py:62
+#, python-brace-format
+msgid "New photograph approved from photographer {photographer}."
+msgstr ""
+
+#: apps/cms/views.py:151
+msgid "All fields are required. Please try again."
+msgstr ""
+
+#: apps/cms/views.py:160
+msgid "Thank you for reaching out! Your message has been sent successfully."
+msgstr ""
+
+#: apps/cms/views.py:180
+msgid "Other / Naroda"
+msgstr ""
+
+#: apps/events/models.py:18
+msgid "Tree Plantation Drive"
+msgstr ""
+
+#: apps/events/models.py:19
+msgid "Awareness Campaign"
+msgstr ""
+
+#: apps/events/models.py:20
+msgid "Clean-up Drive"
+msgstr ""
+
+#: apps/events/models.py:21
+msgid "Celebration"
+msgstr ""
+
+#: apps/events/models.py:25
+msgid "Upcoming"
+msgstr ""
+
+#: apps/events/models.py:26
+msgid "Ongoing"
+msgstr ""
+
+#: apps/events/models.py:27
+msgid "Completed"
+msgstr ""
+
+#: apps/events/models.py:28 templates/account/dashboard.html:400
+msgid "Cancelled"
+msgstr "રદ"
+
+#: apps/events/models.py:33
+msgid "event type"
+msgstr ""
+
+#: apps/events/models.py:39 apps/trees/models.py:171
+msgid "location name"
+msgstr ""
+
+#: apps/events/models.py:41 apps/trees/models.py:161
+msgid "latitude"
+msgstr ""
+
+#: apps/events/models.py:47 apps/trees/models.py:166
+msgid "longitude"
+msgstr ""
+
+#: apps/events/models.py:52
+msgid "starts at"
+msgstr ""
+
+#: apps/events/models.py:53
+msgid "ends at"
+msgstr ""
+
+#: apps/events/models.py:55
+msgid "max volunteers"
+msgstr ""
+
+#: apps/events/models.py:58
+msgid "Maximum number of volunteer registrations (null = unlimited)."
+msgstr ""
+
+#: apps/events/models.py:61
+msgid "cover image Cloudinary ID"
+msgstr ""
+
+#: apps/events/models.py:72
+msgid "organiser"
+msgstr ""
+
+#: apps/events/models.py:75 apps/gallery/models.py:241 apps/news/models.py:33
+msgid "published"
+msgstr ""
+
+#: apps/events/models.py:80
+msgid "status"
+msgstr ""
+
+#: apps/events/models.py:87
+msgid "trees target"
+msgstr ""
+
+#: apps/events/models.py:89
+msgid "Number of trees planned for this event."
+msgstr ""
+
+#: apps/events/models.py:94
+msgid "events"
+msgstr ""
+
+#: apps/events/models.py:129
+msgid "cancelled"
+msgstr ""
+
+#: apps/events/models.py:130
+msgid "attended"
+msgstr ""
+
+#: apps/events/models.py:134
+msgid "Trees planted by this volunteer at this event."
+msgstr ""
+
+#: apps/events/models.py:136 apps/trees/models.py:211
+msgid "notes"
+msgstr ""
+
+#: apps/events/models.py:139
+msgid "event registration"
+msgstr ""
+
+#: apps/events/models.py:140
+msgid "event registrations"
+msgstr ""
+
+#: apps/events/views.py:61
+msgid "This event is already full!"
+msgstr ""
+
+#: apps/events/views.py:73
+msgid ""
+"You have successfully registered for this event! Your QR pass has been "
+"generated in your Dashboard."
+msgstr ""
+
+#: apps/events/views.py:80
+msgid "Your registration has been cancelled."
+msgstr ""
+
+#: apps/events/views.py:82
+msgid "You are not registered for this event."
+msgstr ""
+
+#: apps/gallery/models.py:29
+msgid "gallery category"
+msgstr ""
+
+#: apps/gallery/models.py:30
+msgid "gallery categories"
+msgstr ""
+
+#: apps/gallery/models.py:44
+msgid "photo tag"
+msgstr ""
+
+#: apps/gallery/models.py:45
+msgid "photo tags"
+msgstr ""
+
+#: apps/gallery/models.py:68 templates/account/dashboard.html:212
+msgid "Pending Review"
+msgstr "समीक्षा बाकी"
+
+#: apps/gallery/models.py:69
+msgid "Approved"
+msgstr "मंजूर"
+
+#: apps/gallery/models.py:70 apps/trees/models.py:87
+#: templates/account/dashboard.html:223 templates/trees/list.html:79
+msgid "Rejected"
+msgstr "नकारायेल"
+
+#: apps/gallery/models.py:73
+msgid "Image"
+msgstr ""
+
+#: apps/gallery/models.py:74
+msgid "Drone Photo"
+msgstr ""
+
+#: apps/gallery/models.py:75
+msgid "Video"
+msgstr ""
+
+#: apps/gallery/models.py:76
+msgid "360 Panorama"
+msgstr ""
+
+#: apps/gallery/models.py:79
+msgid "media type"
+msgstr ""
+
+#: apps/gallery/models.py:88 apps/trees/models.py:272
+msgid "Cloudinary ID"
+msgstr ""
+
+#: apps/gallery/models.py:92
+msgid "Cloudinary public_id for the original image."
+msgstr ""
+
+#: apps/gallery/models.py:95
+msgid "URL"
+msgstr ""
+
+#: apps/gallery/models.py:98
+msgid "Cloudinary delivery URL for the full-size image."
+msgstr ""
+
+#: apps/gallery/models.py:101
+msgid "uploaded image"
+msgstr ""
+
+#: apps/gallery/models.py:105
+msgid ""
+"Direct file upload stored locally (used when Cloudinary is not configured)."
+msgstr ""
+
+#: apps/gallery/models.py:108
+msgid "thumbnail URL"
+msgstr ""
+
+#: apps/gallery/models.py:111
+msgid "Cloudinary URL for 400px thumbnail (auto-generated)."
+msgstr ""
+
+#: apps/gallery/models.py:114
+msgid "WebP URL"
+msgstr ""
+
+#: apps/gallery/models.py:117
+msgid "Cloudinary WebP format URL for modern browsers."
+msgstr ""
+
+#: apps/gallery/models.py:119
+msgid "width"
+msgstr ""
+
+#: apps/gallery/models.py:120
+msgid "height"
+msgstr ""
+
+#: apps/gallery/models.py:136
+msgid "photographer"
+msgstr ""
+
+#: apps/gallery/models.py:158
+msgid "associated event"
+msgstr ""
+
+#: apps/gallery/models.py:161
+msgid "location"
+msgstr ""
+
+#: apps/gallery/models.py:167 apps/trees/models.py:287
+msgid "taken on"
+msgstr ""
+
+#: apps/gallery/models.py:172
+msgid "EXIF data"
+msgstr ""
+
+#: apps/gallery/models.py:175
+msgid "Raw EXIF metadata extracted at upload time."
+msgstr ""
+
+#: apps/gallery/models.py:181
+msgid "approval status"
+msgstr ""
+
+#: apps/gallery/models.py:193
+msgid "approved by"
+msgstr ""
+
+#: apps/gallery/models.py:196
+msgid "approved at"
+msgstr ""
+
+#: apps/gallery/models.py:204
+msgid "Featured photos appear in homepage preview."
+msgstr ""
+
+#: apps/gallery/models.py:207
+msgid "view count"
+msgstr ""
+
+#: apps/gallery/models.py:209
+msgid "Number of times this photo has been viewed."
+msgstr ""
+
+#: apps/gallery/models.py:213
+msgid "photo"
+msgstr ""
+
+#: apps/gallery/models.py:214 apps/gallery/models.py:246
+msgid "photos"
+msgstr ""
+
+#: apps/gallery/models.py:239
+msgid "cover photo"
+msgstr ""
+
+#: apps/gallery/models.py:250
+msgid "gallery collection"
+msgstr ""
+
+#: apps/gallery/models.py:251
+msgid "gallery collections"
+msgstr ""
+
+#: apps/gallery/views.py:62
+msgid "Please provide a title for the photograph."
+msgstr ""
+
+#: apps/gallery/views.py:66
+msgid "Please select a category."
+msgstr ""
+
+#: apps/gallery/views.py:70
+msgid "Please select an image file to upload."
+msgstr ""
+
+#: apps/gallery/views.py:76
+msgid "Only JPEG, PNG, WebP, and GIF images are accepted."
+msgstr ""
+
+#: apps/gallery/views.py:82
+msgid "Image file must be smaller than 10 MB."
+msgstr ""
+
+#: apps/gallery/views.py:100
+msgid ""
+"Your photograph has been submitted for review. It will appear in the public "
+"gallery once approved by an administrator."
+msgstr ""
+
+#: apps/news/models.py:17
+msgid "news category"
+msgstr ""
+
+#: apps/news/models.py:18
+msgid "news categories"
+msgstr ""
+
+#: apps/news/models.py:30
+msgid "summary"
+msgstr ""
+
+#: apps/news/models.py:31
+msgid "content"
+msgstr ""
+
+#: apps/news/models.py:32
+msgid "published at"
+msgstr ""
+
+#: apps/news/models.py:34
+msgid "cover image ID"
+msgstr ""
+
+#: apps/news/models.py:37
+msgid "news article"
+msgstr ""
+
+#: apps/news/models.py:38
+msgid "news articles"
+msgstr ""
+
+#: apps/news/models.py:49
+msgid "file URL"
+msgstr ""
+
+#: apps/news/models.py:50
+msgid "public"
+msgstr ""
+
+#: apps/news/models.py:53
+msgid "document"
+msgstr ""
+
+#: apps/news/models.py:54
+msgid "documents"
+msgstr ""
+
+#: apps/notifications/apps.py:7 templates/account/dashboard.html:68
+#: templates/account/dashboard.html:418
+msgid "Notifications"
+msgstr "સૂચનાઓ"
+
+#: apps/notifications/models.py:16
+msgid "Information"
+msgstr "তথ্য"
+
+#: apps/notifications/models.py:17
+msgid "Success"
+msgstr ""
+
+#: apps/notifications/models.py:18
+msgid "Warning"
+msgstr ""
+
+#: apps/notifications/models.py:19
+msgid "Error"
+msgstr ""
+
+#: apps/notifications/models.py:28
+msgid "type"
+msgstr ""
+
+#: apps/notifications/models.py:35
+msgid "link"
+msgstr ""
+
+#: apps/notifications/models.py:36
+msgid "read"
+msgstr ""
+
+#: apps/notifications/models.py:39
+msgid "notification"
+msgstr ""
+
+#: apps/notifications/models.py:40
+msgid "notifications"
+msgstr ""
+
+#: apps/trees/models.py:40
+msgid "common name"
+msgstr ""
+
+#: apps/trees/models.py:43
+msgid "Common name of the species (e.g. Neem, Peepal)."
+msgstr ""
+
+#: apps/trees/models.py:46
+msgid "scientific name"
+msgstr ""
+
+#: apps/trees/models.py:50
+msgid "Binomial scientific name (e.g. Azadirachta indica)."
+msgstr ""
+
+#: apps/trees/models.py:56
+msgid "Brief ecological description and care notes."
+msgstr ""
+
+#: apps/trees/models.py:59
+msgid "native to Gujarat"
+msgstr ""
+
+#: apps/trees/models.py:61
+msgid "True if this species is native to the Gujarat region."
+msgstr ""
+
+#: apps/trees/models.py:64
+msgid "image Cloudinary ID"
+msgstr ""
+
+#: apps/trees/models.py:71 apps/trees/models.py:72
+msgid "tree species"
+msgstr ""
+
+#: apps/trees/models.py:85 templates/trees/list.html:77
+msgid "Pending Verification"
+msgstr ""
+
+#: apps/trees/models.py:86 templates/account/dashboard.html:201
+#: templates/account/profile.html:62 templates/trees/list.html:78
+msgid "Verified"
+msgstr "ચકાસાયેલ"
+
+#: apps/trees/models.py:91
+msgid "Sapling"
+msgstr ""
+
+#: apps/trees/models.py:92
+msgid "Young Tree"
+msgstr ""
+
+#: apps/trees/models.py:93
+msgid "Mature Tree"
+msgstr ""
+
+#: apps/trees/models.py:97
+msgid "Excellent"
+msgstr ""
+
+#: apps/trees/models.py:98
+msgid "Good"
+msgstr ""
+
+#: apps/trees/models.py:99
+msgid "Average"
+msgstr ""
+
+#: apps/trees/models.py:100
+msgid "Poor"
+msgstr ""
+
+#: apps/trees/models.py:101
+msgid "Dead"
+msgstr ""
+
+#: apps/trees/models.py:129
+msgid "species"
+msgstr ""
+
+#: apps/trees/models.py:137
+msgid "contributor"
+msgstr ""
+
+#: apps/trees/models.py:138
+msgid "The person who sponsored/registered this tree."
+msgstr ""
+
+#: apps/trees/models.py:146
+msgid "planted by"
+msgstr ""
+
+#: apps/trees/models.py:147
+msgid "The volunteer who physically planted the tree."
+msgstr ""
+
+#: apps/trees/models.py:155
+msgid "planting event"
+msgstr ""
+
+#: apps/trees/models.py:163
+msgid "GPS latitude of planting location."
+msgstr ""
+
+#: apps/trees/models.py:168
+msgid "GPS longitude of planting location."
+msgstr ""
+
+#: apps/trees/models.py:175
+msgid "Human-readable location description (e.g. Near Naroda Patiya)."
+msgstr ""
+
+#: apps/trees/models.py:178 apps/volunteers/models.py:18
+#: apps/volunteers/models.py:26 apps/volunteers/models.py:91
+msgid "ward"
+msgstr ""
+
+#: apps/trees/models.py:182
+msgid "Ahmedabad Municipal Corporation ward number/name."
+msgstr ""
+
+#: apps/trees/models.py:188
+msgid "planted on"
+msgstr ""
+
+#: apps/trees/models.py:189
+msgid "The date this tree was physically planted."
+msgstr ""
+
+#: apps/trees/models.py:192
+msgid "QR code URL"
+msgstr ""
+
+#: apps/trees/models.py:195
+msgid "URL to the generated QR code image for this tree."
+msgstr ""
+
+#: apps/trees/models.py:198
+msgid "verification status"
+msgstr ""
+
+#: apps/trees/models.py:205
+msgid "growth stage"
+msgstr ""
+
+#: apps/trees/models.py:214
+msgid "Optional notes about this tree (e.g. care instructions, soil type)."
+msgstr ""
+
+#: apps/trees/models.py:217
+msgid "health status"
+msgstr ""
+
+#: apps/trees/models.py:225
+msgid "trees"
+msgstr ""
+
+#: apps/trees/models.py:269
+msgid "uploaded by"
+msgstr ""
+
+#: apps/trees/models.py:274
+msgid "Cloudinary public_id for the photo."
+msgstr ""
+
+#: apps/trees/models.py:277
+msgid "Cloudinary URL"
+msgstr ""
+
+#: apps/trees/models.py:278
+msgid "Optimised delivery URL from Cloudinary."
+msgstr ""
+
+#: apps/trees/models.py:281
+msgid "caption"
+msgstr ""
+
+#: apps/trees/models.py:290
+msgid "Date the photograph was taken (from EXIF if available)."
+msgstr ""
+
+#: apps/trees/models.py:293
+msgid "is primary"
+msgstr ""
+
+#: apps/trees/models.py:295
+msgid "The primary display photo for this tree."
+msgstr ""
+
+#: apps/trees/models.py:299
+msgid "tree photo"
+msgstr ""
+
+#: apps/trees/models.py:300
+msgid "tree photos"
+msgstr ""
+
+#: apps/trees/models.py:336
+msgid "verified by"
+msgstr ""
+
+#: apps/trees/models.py:339
+msgid "decision"
+msgstr ""
+
+#: apps/trees/models.py:344
+msgid "verification notes"
+msgstr ""
+
+#: apps/trees/models.py:347
+msgid "Coordinator's field notes about this verification."
+msgstr ""
+
+#: apps/trees/models.py:351
+msgid "tree verification"
+msgstr ""
+
+#: apps/trees/models.py:352
+msgid "tree verifications"
+msgstr ""
+
+#: apps/trees/models.py:368
+msgid "Needs Water"
+msgstr ""
+
+#: apps/trees/models.py:369
+msgid "Needs Support"
+msgstr ""
+
+#: apps/trees/models.py:370
+msgid "Disease Reported"
+msgstr ""
+
+#: apps/trees/models.py:371
+msgid "Fence Broken"
+msgstr ""
+
+#: apps/trees/models.py:372
+msgid "Replacement Needed"
+msgstr ""
+
+#: apps/trees/models.py:386
+msgid "reported by"
+msgstr ""
+
+#: apps/trees/models.py:389
+msgid "issue type"
+msgstr ""
+
+#: apps/trees/models.py:403
+msgid "resolved at"
+msgstr ""
+
+#: apps/trees/models.py:413
+msgid "resolved by"
+msgstr ""
+
+#: apps/trees/models.py:417
+msgid "maintenance log"
+msgstr ""
+
+#: apps/trees/models.py:418
+msgid "maintenance logs"
+msgstr ""
+
+#: apps/trees/views.py:89
+msgid "You must be logged in to submit updates."
+msgstr ""
+
+#: apps/trees/views.py:96
+msgid "Please specify the issue type."
+msgstr ""
+
+#: apps/trees/views.py:105
+msgid ""
+"Maintenance issue reported successfully. A coordinator will review it "
+"shortly."
+msgstr ""
+
+#: apps/trees/views.py:111
+msgid "Please provide an image URL."
+msgstr ""
+
+#: apps/trees/views.py:125
+msgid "Growth photo added successfully."
+msgstr ""
+
+#: apps/trees/views.py:152
+msgid "Species and GPS coordinates are required."
+msgstr ""
+
+#: apps/trees/views.py:183
+msgid "Initial planting photo."
+msgstr ""
+
+#: apps/trees/views.py:187
+msgid "Tree logged successfully! It is pending coordinator field verification."
+msgstr ""
+
+#: apps/volunteers/models.py:14
+#, fuzzy
+#| msgid "Full name"
+msgid "ward name"
+msgstr "પૂર્ણ નામ"
+
+#: apps/volunteers/models.py:19
+msgid "wards"
+msgstr ""
+
+#: apps/volunteers/models.py:27
+#, fuzzy
+#| msgid "Full name"
+msgid "area name"
+msgstr "પૂર્ણ નામ"
+
+#: apps/volunteers/models.py:31 apps/volunteers/models.py:92
+msgid "area"
+msgstr ""
+
+#: apps/volunteers/models.py:32
+msgid "areas"
+msgstr ""
+
+#: apps/volunteers/models.py:40
+#, fuzzy
+#| msgid "Join Movement"
+msgid "Government"
+msgstr "અભિયાનમાં જોડાઓ"
+
+#: apps/volunteers/models.py:41
+#, fuzzy
+#| msgid "Privacy"
+msgid "Private"
+msgstr "ગોપનીયતા"
+
+#: apps/volunteers/models.py:42
+msgid "NGO"
+msgstr ""
+
+#: apps/volunteers/models.py:43
+#, fuzzy
+#| msgid "optional"
+msgid "Educational"
+msgstr "વૈકલ્પિક"
+
+#: apps/volunteers/models.py:44
+msgid "Corporate"
+msgstr ""
+
+#: apps/volunteers/models.py:45
+#, fuzzy
+#| msgid "Volunteer Hours"
+msgid "Volunteer Group"
+msgstr "સ્વયંસેવક કલાકો"
+
+#: apps/volunteers/models.py:46
+msgid "Others"
+msgstr ""
+
+#: apps/volunteers/models.py:49
+#, fuzzy
+#| msgid "Location Name"
+msgid "organization name"
+msgstr "स्थान नाम"
+
+#: apps/volunteers/models.py:50
+#, fuzzy
+#| msgid "Important dates"
+msgid "organization type"
+msgstr "গুরুত্বপূর্ণ তারিখ"
+
+#: apps/volunteers/models.py:51
+msgid "organization logo"
+msgstr ""
+
+#: apps/volunteers/models.py:55 apps/volunteers/models.py:95
+#, fuzzy
+#| msgid "Information"
+msgid "organization"
+msgstr "তথ্য"
+
+#: apps/volunteers/models.py:56
+#, fuzzy
+#| msgid "Notifications"
+msgid "organizations"
+msgstr "સૂચનાઓ"
+
+#: apps/volunteers/models.py:68 templates/components/registration_popup.html:96
+msgid "Male"
+msgstr ""
+
+#: apps/volunteers/models.py:69 templates/components/registration_popup.html:97
+msgid "Female"
+msgstr ""
+
+#: apps/volunteers/models.py:71 templates/components/registration_popup.html:99
+msgid "Prefer Not to Say"
+msgstr ""
+
+#: apps/volunteers/models.py:76
+msgid "mobile number"
+msgstr ""
+
+#: apps/volunteers/models.py:82
+msgid "gender"
+msgstr ""
+
+#: apps/volunteers/models.py:86
+msgid "date of birth"
+msgstr ""
+
+#: apps/volunteers/models.py:87
+msgid "calculated age"
+msgstr ""
+
+#: apps/volunteers/models.py:90
+#, fuzzy
+#| msgid "Email address"
+msgid "address"
+msgstr "ઇ-મેઇલ સરનામું"
+
+#: apps/volunteers/models.py:98
+msgid "agreed to pledge"
+msgstr ""
+
+#: apps/volunteers/models.py:99
+msgid "consent accepted"
+msgstr ""
+
+#: apps/volunteers/models.py:100
+#, fuzzy
+#| msgid "Verified"
+msgid "otp verified"
+msgstr "ચકાસાયેલ"
+
+#: apps/volunteers/models.py:102
+#, fuzzy
+#| msgid "Approved"
+msgid "is approved"
+msgstr "मंजूर"
+
+#: apps/volunteers/models.py:106
+#, fuzzy
+#| msgid "Certificates"
+msgid "certificate image"
+msgstr "પ્રમાણપત્રો"
+
+#: apps/volunteers/models.py:107
+#, fuzzy
+#| msgid "Certificates"
+msgid "certificate pdf"
+msgstr "પ્રમાણપત્રો"
+
+#: apps/volunteers/models.py:118
+msgid "pledge registration"
+msgstr ""
+
+#: apps/volunteers/models.py:119
+msgid "pledge registrations"
+msgstr ""
+
+#: apps/volunteers/views.py:62
+msgid "You must accept the pledge and consent to proceed."
+msgstr ""
+
+#: apps/volunteers/views.py:65
+msgid "You must select an Associate Organization."
+msgstr ""
+
+#: apps/volunteers/views.py:68
+msgid "Invalid Associate Organization selected."
+msgstr ""
+
+#: apps/volunteers/views.py:95
+msgid "An OTP has been sent to your mobile number."
+msgstr ""
+
+#: apps/volunteers/views.py:100
+msgid "OTP sent to your mobile."
+msgstr ""
+
+#: apps/volunteers/views.py:106
+#, fuzzy
+#| msgid "Invalid email or password. Please try again."
+msgid "An error occurred. Please try again."
+msgstr "અયોગ્ય ઇ-મેઇલ અથવા પાસવર્ડ. ફરી પ્રયાસ કરો."
+
+#: apps/volunteers/views.py:125
+msgid "Invalid or expired OTP."
+msgstr ""
+
+#: apps/volunteers/views.py:141
+msgid "OTP verified! Generating your certificate..."
+msgstr ""
+
+#: core/models.py:61
+msgid "The date and time this record was created (UTC)."
+msgstr ""
+
+#: core/models.py:64
+msgid "updated at"
+msgstr ""
+
+#: core/models.py:66
+msgid "The date and time this record was last modified (UTC)."
+msgstr ""
+
+#: core/models.py:90 core/models.py:188
+msgid "is deleted"
+msgstr ""
+
+#: core/models.py:93
+msgid "Soft delete flag. Deleted records are hidden from normal queries."
+msgstr ""
+
+#: core/models.py:96 core/models.py:193
+msgid "deleted at"
+msgstr ""
+
+#: core/models.py:99
+msgid "The date and time this record was soft-deleted (UTC)."
+msgstr ""
+
+#: core/models.py:142
+msgid "created by"
+msgstr ""
+
+#: core/models.py:150
+msgid "last updated by"
+msgstr ""
+
+#: core/models.py:172
+msgid "Unique public identifier for this record."
+msgstr ""
+
+#: core/validators.py:37
+msgid "Enter a valid Indian mobile number (e.g. +91 98765 43210)."
+msgstr ""
+
+#: core/validators.py:60
+msgid "Latitude must be between -90 and 90."
+msgstr ""
+
+#: core/validators.py:69
+msgid "Longitude must be between -180 and 180."
+msgstr ""
+
+#: templates/account/dashboard.html:4
+msgid "My Dashboard"
+msgstr "મારું ડેશબોર્ડ"
+
+#: templates/account/dashboard.html:32
+msgid "Dashboard Overview"
+msgstr "ડેશબોર્ડ ઓવરવ્યૂ"
+
+#: templates/account/dashboard.html:39
+msgid "My Planted Trees"
+msgstr "મારા વૃક્ષો"
+
+#: templates/account/dashboard.html:47
+msgid "My Uploaded Photos"
+msgstr "મારા ફોટો"
+
+#: templates/account/dashboard.html:54 templates/certificates/list.html:4
+msgid "My Certificates"
+msgstr "મારા પ્રમાણપત્રો"
+
+#: templates/account/dashboard.html:61
+msgid "Registered Events"
+msgstr "નોંધાયેલ ઇવેન્ટ્સ"
+
+#: templates/account/dashboard.html:79
+msgid "Edit Profile"
+msgstr "প্রোফাইল সম্পাদনা করুন"
+
+#: templates/account/dashboard.html:92
+msgid "Welcome back,"
+msgstr "પુનઃ સ્વાગત,"
+
+#: templates/account/dashboard.html:94
+msgid ""
+"Thank you for contributing to Naroda's civic green cover. Track your trees "
+"and upcoming drives below."
+msgstr ""
+
+#: templates/account/dashboard.html:112 templates/pages/about.html:62
+#: templates/pages/landing.html:150 templates/pages/landing.html:224
+#: templates/pages/landing.html:311 templates/volunteers/leaderboard.html:38
+msgid "Trees Planted"
+msgstr "વાવેલા વૃક્ષો"
+
+#: templates/account/dashboard.html:115
+msgid "Verified contributions"
+msgstr "ચકાસાયેલ યોગદાન"
+
+#: templates/account/dashboard.html:124
+msgid "Volunteer Hours"
+msgstr "સ્વયંસેવક કલાકો"
+
+#: templates/account/dashboard.html:127
+msgid "Hours contributed"
+msgstr "ફાળો આપેલ કલાકો"
+
+#: templates/account/dashboard.html:139
+msgid "Digital certificates earned"
+msgstr "ડિજિટલ પ્રમાણપત્રો"
+
+#: templates/account/dashboard.html:145
+msgid "Recent Activity"
+msgstr "તાજેતરની પ્રવૃત્તિ"
+
+#: templates/account/dashboard.html:155
+#, python-format
+msgid ""
+"\n"
+"                  You logged a <strong>%(name)s</strong> tree in %(ward)s on "
+"%(date)s.\n"
+"                  "
+msgstr ""
+
+#: templates/account/dashboard.html:161
+msgid "No activities recorded. Start by logging a newly planted tree!"
+msgstr "કોઈ પ્રવૃત્તિ નોંધાઈ નથી. નવા ઉગાડેલ વૃક્ષ નોંધ કરીને શરૂ કરો!"
+
+#: templates/account/dashboard.html:172
+msgid "My Tree Contributions"
+msgstr "મારા વૃક્ષ યોગદાન"
+
+#: templates/account/dashboard.html:173
+msgid "Summary of all trees logged under your account."
+msgstr "તમારા ખાતા હેઠળ નોંધાયેલ તમામ વૃક્ષોનો સારાંશ."
+
+#: templates/account/dashboard.html:176
+msgid "Log a New Tree"
+msgstr "નવો વૃક્ષ નોંધ કરો"
+
+#: templates/account/dashboard.html:190
+msgid "Total Logged"
+msgstr "કુલ નોંધાયેલ"
+
+#: templates/account/dashboard.html:233
+msgid "How Verification Works"
+msgstr "ચકાસણી કેવી રીતે કાર્ય કરે છે"
+
+#: templates/account/dashboard.html:235
+msgid ""
+"Trees you log are initially marked Pending Review. A campaign field officer "
+"or administrator verifies the record by checking the GPS location and photo "
+"evidence. Verified trees count towards the 28,855 Trees mission."
+msgstr ""
+
+#: templates/account/dashboard.html:242
+msgid "Campaign Contribution Progress"
+msgstr "ઝુંબેશ યોગદાન પ્રગતિ"
+
+#: templates/account/dashboard.html:245
+msgid "total trees goal"
+msgstr "કુલ વૃક્ષ લક્ષ્ય"
+
+#: templates/account/dashboard.html:255
+msgid "Your verified trees as a share of the national mission."
+msgstr "રાષ્ટ્રીય મિશનના ભાગ રૂપે તમારા ચકાસાયેલ વૃક્ષો."
+
+#: templates/account/dashboard.html:264
+msgid "My Submitted Photographs"
+msgstr "મારી રજૂ કરેલ છબીઓ"
+
+#: templates/account/dashboard.html:265
+msgid ""
+"Photos pending review will not appear in the public gallery until approved "
+"by an administrator."
+msgstr ""
+
+#: templates/account/dashboard.html:268
+msgid "Upload Photo"
+msgstr "ફોટો અપલોડ કરો"
+
+#: templates/account/dashboard.html:310
+msgid "You have not submitted any photographs yet."
+msgstr "તમે હજી સુધી કોઈ છબી સબમિટ કરી નથી."
+
+#: templates/account/dashboard.html:319 templates/certificates/list.html:14
+msgid "My Digital Certificates"
+msgstr "મારા ડિજિટલ પ્રમાણપત્રો"
+
+#: templates/account/dashboard.html:336 templates/certificates/list.html:34
+msgid "Verification No:"
+msgstr "ચકાસણી ક્રમ:"
+
+#: templates/account/dashboard.html:338
+msgid "Issued at:"
+msgstr "જારી કરવામાં આવ્યું:"
+
+#: templates/account/dashboard.html:342 templates/certificates/verify.html:4
+msgid "Verify Certificate"
+msgstr "પ્રમાણપત્ર ચકાસો"
+
+#: templates/account/dashboard.html:351
+msgid "No certificates have been issued under your account."
+msgstr "તમારા ખાતા હેઠળ કોઈ પ્રમાણપત્ર જારી કરવામાં આવ્યા નથી."
+
+#: templates/account/dashboard.html:360
+msgid "My Registered Events and Drives"
+msgstr "મારા નોંધાયેલ ઇવેન્ટ્સ"
+
+#: templates/account/dashboard.html:394
+msgid "Registered"
+msgstr "નોંધાયેલ"
+
+#: templates/account/dashboard.html:395
+msgid "Show this pass at entrance"
+msgstr "પ્રવેશ દ્વારે આ પાસ બતાવો"
+
+#: templates/account/dashboard.html:409
+msgid "You have not registered for any plantation drives."
+msgstr "તમે કોઈ વૃક્ષારોપણ ઝુંબેશ માટે નોંધણી કરી નથી."
+
+#: templates/account/dashboard.html:456 templates/trees/list.html:128
+msgid "View Details"
+msgstr "વિગત જુઓ"
+
+#: templates/account/dashboard.html:467
+msgid "Your notification inbox is empty."
+msgstr "તમારું સૂચના ઇનબૉક્સ ખાલી છે."
+
+#: templates/account/login.html:5
+msgid "Sign In"
+msgstr "સાઇન ઇન"
+
+#: templates/account/login.html:13
+msgid "Welcome Back"
+msgstr "પુનઃ સ્વાગત"
+
+#: templates/account/login.html:16
+msgid "Sign in to track your trees and events."
+msgstr "તમારા વૃક્ષો અને ઇવેન્ટ્સ ટ્રૅક કરવા સાઇન ઇન કરો."
+
+#: templates/account/login.html:29
+msgid "Continue with Google"
+msgstr "Google સાથે ચાલુ રાખો"
+
+#: templates/account/login.html:39
+msgid "Or continue with email"
+msgstr "અથવા ઇ-મેઇલ સાથે ચાલુ રાખો"
+
+#: templates/account/login.html:52
+msgid "Invalid email or password. Please try again."
+msgstr "અયોગ્ય ઇ-મેઇલ અથવા પાસવર્ડ. ફરી પ્રયાસ કરો."
+
+#: templates/account/login.html:61 templates/account/password_reset.html:43
+#: templates/account/signup.html:95
+msgid "Email address"
+msgstr "ઇ-મેઇલ સરનામું"
+
+#: templates/account/login.html:70 templates/account/signup.html:104
+msgid "Password"
+msgstr "પાસવર્ડ"
+
+#: templates/account/login.html:81
+msgid "Remember me"
+msgstr "મને યાદ રાખો"
+
+#: templates/account/login.html:87
+msgid "Forgot your password?"
+msgstr "પાસવર્ડ ભૂલ્યા?"
+
+#: templates/account/login.html:94 templates/account/mock_google_login.html:197
+msgid "Sign in"
+msgstr "સાઇન ઇન"
+
+#: templates/account/login.html:100
+msgid "Don't have an account?"
+msgstr "ખાતું નથી?"
+
+#: templates/account/login.html:102
+msgid "Sign up now"
+msgstr "હવે સાઇન અપ કરો"
+
+#: templates/account/logout.html:4 templates/account/logout.html:18
+#: templates/account/logout.html:36
+msgid "Sign Out"
+msgstr ""
+
+#: templates/account/logout.html:21
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: templates/account/logout.html:32
+msgid "Cancel"
+msgstr ""
+
+#: templates/account/mock_google_login.html:4
+msgid "Sign in — mynaroda"
+msgstr ""
+
+#: templates/account/mock_google_login.html:194
+msgid "Goo"
+msgstr ""
+
+#: templates/account/mock_google_login.html:194
+msgid "gle"
+msgstr ""
+
+#: templates/account/mock_google_login.html:198
+msgid "to continue to mynaroda"
+msgstr "mynaroda ચાલુ રાખવા"
+
+#: templates/account/mock_google_login.html:205
+msgid "Localhost Development Mode"
+msgstr "લોકલ ડેવલપમેન્ट મોડ"
+
+#: templates/account/mock_google_login.html:223
+msgid "Email or phone"
+msgstr "ઇ-મેઇલ અથવા ફોન"
+
+#: templates/account/mock_google_login.html:231
+msgid "Enter your email address"
+msgstr "ઇ-મેઇલ સરનામું દાખલ કરો"
+
+#: templates/account/mock_google_login.html:237
+msgid "Full name"
+msgstr "પૂર્ણ નામ"
+
+#: templates/account/mock_google_login.html:237
+msgid "optional"
+msgstr "વૈકલ્પિક"
+
+#: templates/account/mock_google_login.html:243
+msgid "Your full name"
+msgstr "તમારું પૂર્ણ નામ"
+
+#: templates/account/mock_google_login.html:249
+msgid "Not your computer? Use a private browsing window to sign in."
+msgstr "આ તમારો કમ્પ્યૂટર નથી? ખાનગી બ્રાઉઝિંગ વિન્ડોનો ઉપયોગ કરો."
+
+#: templates/account/mock_google_login.html:250
+msgid "Learn more"
+msgstr "વધુ જાણો"
+
+#: templates/account/mock_google_login.html:254
+msgid "Use password instead"
+msgstr "તેના બદલે પાસવર્ડ ઉપયોગ કરો"
+
+#: templates/account/mock_google_login.html:255
+msgid "Next"
+msgstr "આગળ"
+
+#: templates/account/mock_google_login.html:263
+msgid "Privacy"
+msgstr "ગોપનીયતા"
+
+#: templates/account/mock_google_login.html:264
+msgid "Terms"
+msgstr "નિયમો"
+
+#: templates/account/mock_google_login.html:266
+msgid "India (English)"
+msgstr ""
+
+#: templates/account/mock_google_login.html:274
+msgid "Official portal of"
+msgstr "સત્તાવાર પોર્ટલ"
+
+#: templates/account/mock_google_login.html:274
+msgid "mynaroda"
+msgstr ""
+
+#: templates/account/mock_google_login.html:274
+msgid "Green Naroda Campaign, Government of Gujarat"
+msgstr "ગ્રીન નારોદા ઝુંબેશ, ગુજરાત સરકાર"
+
+#: templates/account/password_reset.html:5
+#: templates/account/password_reset.html:13
+msgid "Reset Password"
+msgstr ""
+
+#: templates/account/password_reset.html:19
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: templates/account/password_reset.html:52
+msgid "Reset My Password"
+msgstr ""
+
+#: templates/account/password_reset.html:59 templates/admin/otp_verify.html:42
+msgid "Back to Login"
+msgstr ""
+
+#: templates/account/profile.html:4 templates/account/profile.html:13
+msgid "My Profile"
+msgstr ""
+
+#: templates/account/profile.html:18
+msgid "Back to Dashboard"
+msgstr ""
+
+#: templates/account/profile.html:47
+#: templates/components/registration_popup.html:81
+#: templates/pages/contact.html:121
+msgid "Email Address"
+msgstr ""
+
+#: templates/account/profile.html:56
+msgid "Phone Number"
+msgstr ""
+
+#: templates/account/profile.html:64 templates/account/verify_otp.html:42
+msgid "Verify"
+msgstr ""
+
+#: templates/account/profile.html:72
+msgid "Current Role"
+msgstr ""
+
+#: templates/account/profile.html:82
+msgid "Save Changes"
+msgstr ""
+
+#: templates/account/signup.html:5
+msgid "Sign Up"
+msgstr ""
+
+#: templates/account/signup.html:13
+msgid "Join the Campaign"
+msgstr ""
+
+#: templates/account/signup.html:16
+msgid "Be a part of planting 28,855 trees."
+msgstr ""
+
+#: templates/account/signup.html:29
+msgid "Sign up with Google"
+msgstr ""
+
+#: templates/account/signup.html:39
+msgid "Or sign up with email"
+msgstr ""
+
+#: templates/account/signup.html:113
+msgid "Confirm Password"
+msgstr ""
+
+#: templates/account/signup.html:122
+msgid "Sign up"
+msgstr ""
+
+#: templates/account/signup.html:128
+msgid "Already have an account?"
+msgstr ""
+
+#: templates/account/signup.html:130
+msgid "Sign in instead"
+msgstr ""
+
+#: templates/account/verification_sent.html:4
+#: templates/account/verification_sent.html:18
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: templates/account/verification_sent.html:21
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: templates/account/verification_sent.html:27
+msgid "Return to Login"
+msgstr ""
+
+#: templates/account/verify_otp.html:4 templates/account/verify_otp.html:18
+msgid "Verify Phone Number"
+msgstr ""
+
+#: templates/account/verify_otp.html:21
+msgid "Please enter the 6-digit OTP sent to"
+msgstr ""
+
+#: templates/account/verify_otp.html:37
+msgid "OTP Code"
+msgstr ""
+
+#: templates/account/verify_otp.html:50
+msgid "Didn't receive the code? Resend OTP."
+msgstr ""
+
+#: templates/admin/backup.html:21
+msgid "Generate & Download Backup"
+msgstr ""
+
+#: templates/admin/otp_verify.html:15
+msgid "Django site admin"
+msgstr ""
+
+#: templates/admin/otp_verify.html:15
+msgid "Two-Factor Authentication"
+msgstr ""
+
+#: templates/admin/otp_verify.html:38
+msgid "Verify OTP"
+msgstr ""
+
+#: templates/base/base.html:167
+#, fuzzy
+#| msgid "Green Naroda"
+msgid "Growing a Greener Naroda..."
+msgstr "હરિત નરોડા"
+
+#: templates/base/base.html:169
+msgid "Skip to content"
+msgstr ""
+
+#: templates/base/base.html:180
+msgid "mynaroda.in"
+msgstr ""
+
+#: templates/base/base.html:189
+msgid "EN"
+msgstr ""
+
+#: templates/certificates/list.html:10 templates/certificates/verify.html:10
+#: templates/components/footer.html:40 templates/components/navbar.html:26
+#: templates/components/navbar.html:56 templates/events/detail.html:10
+#: templates/events/list.html:10 templates/gallery/list.html:10
+#: templates/gallery/submit.html:10 templates/news/detail.html:10
+#: templates/news/list.html:10 templates/pages/about.html:11
+#: templates/pages/clean_naroda.html:16 templates/pages/contact.html:10
+#: templates/pages/faq.html:10 templates/pages/green_naroda.html:16
+#: templates/pages/impact.html:10 templates/trees/detail.html:10
+#: templates/trees/list.html:24 templates/trees/plant.html:10
+#: templates/volunteers/leaderboard.html:10
+msgid "Home"
+msgstr "હોમ"
+
+#: templates/certificates/list.html:16
+msgid ""
+"Download or share your verified credentials of environmental contribution."
+msgstr ""
+
+#: templates/certificates/list.html:36
+msgid "Issued on:"
+msgstr ""
+
+#: templates/certificates/list.html:41
+msgid "Verify Authenticity"
+msgstr ""
+
+#: templates/certificates/list.html:48
+msgid "No certificates issued yet."
+msgstr ""
+
+#: templates/certificates/list.html:49
+msgid "Complete events or log verified plantings to earn certificates."
+msgstr ""
+
+#: templates/certificates/verify.html:14
+msgid "Verification"
+msgstr ""
+
+#: templates/certificates/verify.html:16
+msgid "Credentials Verification Registry"
+msgstr ""
+
+#: templates/certificates/verify.html:28
+msgid "Valid Credentials Verified"
+msgstr ""
+
+#: templates/certificates/verify.html:30
+msgid ""
+"This certificate is officially registered under the Green Naroda • Clean "
+"Naroda campaign database."
+msgstr ""
+
+#: templates/certificates/verify.html:46
+msgid "GOVERNMENT CIVIC ENVIRONMENTAL CAMPAIGN"
+msgstr ""
+
+#: templates/certificates/verify.html:50
+msgid "Certificate of Excellence"
+msgstr ""
+
+#: templates/certificates/verify.html:53
+msgid "This is proudly presented to"
+msgstr ""
+
+#: templates/certificates/verify.html:61
+#, python-format
+msgid ""
+"\n"
+"            In recognition of their outstanding contribution to the Green "
+"Naroda • Clean Naroda environmental movement. \n"
+"            Under verification ID <strong>%(number)s</strong>, issued on "
+"<strong>%(date)s</strong> for voluntary plantation and civic participation.\n"
+"            "
+msgstr ""
+
+#: templates/certificates/verify.html:69
+msgid "Registrar, Green Naroda Committee"
+msgstr ""
+
+#: templates/certificates/verify.html:70
+msgid "Ministry of Forest and Environment Initiative"
+msgstr ""
+
+#: templates/certificates/verify.html:78
+msgid "QR"
+msgstr ""
+
+#: templates/certificates/verify.html:81
+msgid "Scan to Verify"
+msgstr ""
+
+#: templates/certificates/verify.html:91
+msgid "Invalid Credentials"
+msgstr ""
+
+#: templates/certificates/verify.html:93
+#, python-format
+msgid ""
+"\n"
+"          The certificate ID <strong>%(certificate_number)s</strong> was not "
+"found in our registry database. \n"
+"          Please verify the number or contact campaign support desk.\n"
+"          "
+msgstr ""
+
+#: templates/certificates/verify.html:99
+msgid "Return to Homepage"
+msgstr ""
+
+#: templates/components/footer.html:13 templates/components/navbar.html:13
+#: templates/pages/green_naroda.html:27 templates/pages/landing.html:264
+msgid "Green Naroda"
+msgstr "હરિત નરોડા"
+
+#: templates/components/footer.html:16 templates/components/navbar.html:16
+#: templates/pages/clean_naroda.html:27 templates/pages/landing.html:282
+msgid "Clean Naroda"
+msgstr "સ્વચ્છ નરોડા"
+
+#: templates/components/footer.html:21
+msgid ""
+"An official initiative by the Government of Gujarat to transform Naroda into "
+"a cleaner, greener, and more sustainable urban ecosystem through community "
+"participation."
+msgstr ""
+
+#: templates/components/footer.html:38
+msgid "Quick Links"
+msgstr ""
+
+#: templates/components/footer.html:41 templates/components/navbar.html:27
+#: templates/components/navbar.html:57 templates/pages/clean_naroda.html:21
+#: templates/pages/green_naroda.html:21
+msgid "Mission"
+msgstr "મિશન"
+
+#: templates/components/footer.html:42 templates/components/navbar.html:28
+#: templates/components/navbar.html:58 templates/pages/landing.html:301
+msgid "Campaign Progress"
+msgstr "અભિયાનની પ્રગતિ"
+
+#: templates/components/footer.html:43 templates/components/navbar.html:29
+#: templates/components/navbar.html:59 templates/gallery/list.html:12
+#: templates/gallery/submit.html:12
+msgid "Gallery"
+msgstr "ફોટો ગેલેરી"
+
+#: templates/components/footer.html:44 templates/events/detail.html:12
+#: templates/events/list.html:12
+msgid "Events"
+msgstr "ઇવેન્ટ્સ"
+
+#: templates/components/footer.html:50
+msgid "Legal"
+msgstr ""
+
+#: templates/components/footer.html:52 templates/pages/privacy.html:4
+#: templates/pages/privacy.html:9
+msgid "Privacy Policy"
+msgstr ""
+
+#: templates/components/footer.html:53
+msgid "Terms of Service"
+msgstr ""
+
+#: templates/components/footer.html:54
+msgid "Cookie Policy"
+msgstr ""
+
+#: templates/components/footer.html:55
+msgid "Accessibility"
+msgstr ""
+
+#: templates/components/footer.html:61 templates/pages/contact.html:4
+#: templates/pages/faq.html:73
+msgid "Contact Us"
+msgstr "আমাদের সাথে যোগাযোগ করুন"
+
+#: templates/components/footer.html:66
+msgid "Naroda Zonal Office,"
+msgstr ""
+
+#: templates/components/footer.html:67
+msgid "Ahmedabad Municipal Corporation,"
+msgstr ""
+
+#: templates/components/footer.html:68 templates/pages/contact.html:42
+msgid "Gujarat 382330"
+msgstr ""
+
+#: templates/components/footer.html:77 templates/pages/contact.html:67
+msgid "prathampriority@mynaroda.in"
+msgstr ""
+
+#: templates/components/footer.html:90
+msgid "Designed & Developed for a Greener Tomorrow."
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:13
+msgid "CELEBRATING INDIA'S 80TH INDEPENDENCE YEAR"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:16 templates/pages/landing.html:199
+msgid "PLANTING 28,855 TREES"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:19
+msgid ""
+"Join the official Green Naroda • Clean Naroda mission. Let us build a "
+"greener and cleaner future for our upcoming generations."
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:23
+#: templates/components/hero_fallbacks.html:82
+msgid "Take the Pledge"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:42
+msgid "A CLEANER NARODA BEGINS WITH YOU"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:45
+msgid "COMMUNITY CLEANLINESS DRIVES"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:48
+msgid ""
+"Participate in local cleanliness campaigns to ensure waste segregation and "
+"maintain public hygiene."
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:52
+#: templates/pages/clean_naroda.html:233 templates/pages/clean_naroda.html:244
+#: templates/pages/clean_naroda.html:255 templates/pages/clean_naroda.html:266
+#: templates/pages/clean_naroda.html:277 templates/pages/clean_naroda.html:288
+#: templates/pages/green_naroda.html:233 templates/pages/green_naroda.html:244
+#: templates/pages/green_naroda.html:255 templates/pages/green_naroda.html:266
+#: templates/pages/green_naroda.html:277 templates/pages/green_naroda.html:288
+msgid "Learn More"
+msgstr "વધુ જાણો"
+
+#: templates/components/hero_fallbacks.html:72
+msgid "EVERY SAPLING MATTERS"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:75
+msgid "MAKE A DIFFERENCE TODAY"
+msgstr ""
+
+#: templates/components/hero_fallbacks.html:78
+msgid ""
+"Join thousands of citizens who have already registered to adopt and care for "
+"a tree in Naroda."
+msgstr ""
+
+#: templates/components/navbar.html:19
+msgid "28,855 Trees for Tomorrow"
+msgstr ""
+
+#: templates/components/navbar.html:30 templates/components/navbar.html:60
+#: templates/news/detail.html:12 templates/news/list.html:12
+msgid "News"
+msgstr "સમાચાર"
+
+#: templates/components/navbar.html:32 templates/components/navbar.html:62
+#: templates/pages/contact.html:12
+msgid "Contact"
+msgstr "સંપર્ક"
+
+#: templates/components/navbar.html:39 templates/components/navbar.html:63
+msgid "Register Now"
+msgstr "હવે નોંધણી કરો"
+
+#: templates/components/registration_popup.html:50
+msgid "Take the Green Naroda • Clean Naroda Pledge"
+msgstr "ગ્રીન નરોડા • ક્લીન નરોડા સંકલ્પ લો"
+
+#: templates/components/registration_popup.html:52
+msgid "Join the official government mission for a sustainable future."
+msgstr "ટકાઉ ભવિષ્ય માટે સત્તાવાર સરકારી મિશનમાં જોડાઓ."
+
+#: templates/components/registration_popup.html:72
+msgid "Mobile Number"
+msgstr ""
+
+#: templates/components/registration_popup.html:87
+msgid "Date of Birth"
+msgstr ""
+
+#: templates/components/registration_popup.html:93
+msgid "Gender"
+msgstr ""
+
+#: templates/components/registration_popup.html:105
+msgid "Associate Organization"
+msgstr ""
+
+#: templates/components/registration_popup.html:117
+msgid "Official Pledge & Consent"
+msgstr "સત્તાવાર સંકલ્પ અને સંમતિ"
+
+#: templates/components/registration_popup.html:121
+msgid ""
+"I pledge to actively contribute towards making Naroda greener and cleaner by "
+"participating in plantation drives, maintaining cleanliness, encouraging "
+"sustainable practices, and inspiring others to protect our environment."
+msgstr ""
+"હું વૃક્ષારોપણ ઝુંબેશમાં ભાગ લઈને, સ્વચ્છતા જાળવીને, ટકાઉ પ્રથાઓને પ્રોત્સાહિત કરીને અને અન્ય "
+"લોકોને આપણા પર્યાવરણના રક્ષણ માટે પ્રેરિત કરીને નરોડાને હરિયાળું અને સ્વચ્છ બનાવવામાં "
+"સક્રિયપણે યોગદાન આપવાની પ્રતિજ્ઞા લઉં છું."
+
+#: templates/components/registration_popup.html:127
+msgid ""
+"I agree that my information may be used only for official Green Naroda • "
+"Clean Naroda mission activities."
+msgstr ""
+"હું સંમત છું કે મારી માહિતીનો ઉપયોગ માત્ર સત્તાવાર ગ્રીન નરોડા • ક્લીન નરોડા મિશન "
+"પ્રવૃત્તિઓ માટે જ થઈ શકે છે."
+
+#: templates/components/registration_popup.html:137
+msgid "Continue to Verify"
+msgstr "ચકાસવા માટે આગળ વધો"
+
+#: templates/components/registration_popup.html:146
+msgid "Verify Your Mobile"
+msgstr "તમારો મોબાઇલ ચકાસો"
+
+#: templates/components/registration_popup.html:147
+msgid "Enter the 6-digit OTP sent to"
+msgstr "મોકલેલ 6-અંકનો OTP દાખલ કરો"
+
+#: templates/components/registration_popup.html:157
+msgid "Verify & Generate Certificate"
+msgstr "ચકાસો અને પ્રમાણપત્ર બનાવો"
+
+#: templates/components/registration_popup.html:161
+msgid "Cancel and Edit Form"
+msgstr "રદ કરો અને ફોર્મ સંપાદિત કરો"
+
+#: templates/components/registration_popup.html:168
+msgid "Processing..."
+msgstr ""
+
+#: templates/components/registration_popup.html:177
+msgid "Pledge Registered Successfully"
+msgstr "સંકલ્પ સફળતાપૂર્વક નોંધાયેલ"
+
+#: templates/components/registration_popup.html:200
+msgid ""
+"Thank you for joining the mission! Your official Government Certificate has "
+"been generated."
+msgstr ""
+"મિશનમાં જોડાવા બદલ આભાર! તમારું સત્તાવાર સરકારી પ્રમાણપત્ર જનરેટ કરવામાં આવ્યું છે."
+
+#: templates/components/registration_popup.html:211
+#, fuzzy
+#| msgid "Certificates"
+msgid "Download Certificate"
+msgstr "પ્રમાણપત્રો"
+
+#: templates/events/detail.html:14
+msgid "Detail"
+msgstr ""
+
+#: templates/events/detail.html:30
+msgid "About this Drive"
+msgstr ""
+
+#: templates/events/detail.html:36
+msgid "Event Organiser"
+msgstr ""
+
+#: templates/events/detail.html:37
+msgid "Green Campaign Committee"
+msgstr ""
+
+#: templates/events/detail.html:40
+msgid "Drive Target Goal"
+msgstr ""
+
+#: templates/events/detail.html:41
+msgid "Trees Planted Target"
+msgstr ""
+
+#: templates/events/detail.html:44 templates/trees/list.html:110
+msgid "Status"
+msgstr ""
+
+#: templates/events/detail.html:48
+msgid "Location Desk"
+msgstr ""
+
+#: templates/events/detail.html:57
+msgid "Volunteer spots"
+msgstr ""
+
+#: templates/events/detail.html:61 templates/events/list.html:65
+msgid "Unlimited"
+msgstr ""
+
+#: templates/events/detail.html:62
+msgid "registered volunteers"
+msgstr ""
+
+#: templates/events/detail.html:72
+msgid "Cancel Registration"
+msgstr ""
+
+#: templates/events/detail.html:78
+msgid "Event Full"
+msgstr ""
+
+#: templates/events/detail.html:82
+msgid "Register as Volunteer"
+msgstr ""
+
+#: templates/events/detail.html:89
+msgid "Login to Join Drive"
+msgstr ""
+
+#: templates/events/list.html:4
+msgid "Campaign Drives & Events"
+msgstr ""
+
+#: templates/events/list.html:14
+msgid "Tree Plantation Drives"
+msgstr ""
+
+#: templates/events/list.html:16
+msgid ""
+"Join our upcoming environmental drives or view report cards of completed "
+"activities."
+msgstr ""
+
+#: templates/events/list.html:27
+msgid "Upcoming Drives"
+msgstr ""
+
+#: templates/events/list.html:30
+msgid "Completed Drives"
+msgstr ""
+
+#: templates/events/list.html:65
+msgid "Joined"
+msgstr ""
+
+#: templates/events/list.html:68
+msgid "Details"
+msgstr ""
+
+#: templates/events/list.html:74
+msgid "No drives scheduled or completed at this time."
+msgstr ""
+
+#: templates/gallery/list.html:4
+#, fuzzy
+#| msgid "Campaign Photo Gallery"
+msgid "Campaign Gallery"
+msgstr "ઝুंबेश ফোটো গ্যালারি"
+
+#: templates/gallery/list.html:14
+msgid "Captured in Green"
+msgstr ""
+
+#: templates/gallery/list.html:16
+msgid ""
+"Browse our collection of verified plantation drives, citizen contributions, "
+"and the growing green cover across Naroda."
+msgstr ""
+
+#: templates/gallery/list.html:30
+msgid "All Photos"
+msgstr "तमाम छायाचित्र"
+
+#: templates/gallery/list.html:42
+#, fuzzy
+#| msgid "Search location, photographer..."
+msgid "Search location or photographer..."
+msgstr "स्थान, फोटोग्राफर खोजें..."
+
+#: templates/gallery/list.html:50
+msgid "Submit Photo"
+msgstr "ফোटো সাবমিট করুন"
+
+#: templates/gallery/list.html:76
+msgid "No photos found"
+msgstr ""
+
+#: templates/gallery/list.html:77
+#, fuzzy
+#| msgid "No approved gallery photos match your criteria."
+msgid "There are no approved gallery photos matching your criteria yet."
+msgstr "आपके मानदंड से कोई अनुमोदित गैलरी तस्वीर मेल नहीं खाती।"
+
+#: templates/gallery/list.html:78
+#, fuzzy
+#| msgid "Submit Photo"
+msgid "Submit the first photo"
+msgstr "ফোटো সাবমিট করুন"
+
+#: templates/gallery/list.html:134 templates/trees/list.html:108
+msgid "Location"
+msgstr ""
+
+#: templates/gallery/list.html:150
+#, fuzzy
+#| msgid "Verified"
+msgid "Date Verified"
+msgstr "ચકાસાયેલ"
+
+#: templates/gallery/list.html:161
+msgid "Download Full Image"
+msgstr ""
+
+#: templates/gallery/submit.html:4 templates/gallery/submit.html:14
+msgid "Submit Photograph"
+msgstr "ફોટો સબમિટ કરો"
+
+#: templates/gallery/submit.html:16
+msgid "Submit Plantation Photograph"
+msgstr "વૃક્ષારોપણ ફોટો સબમિટ કરો"
+
+#: templates/gallery/submit.html:18
+msgid ""
+"Share your plantation drive photographs. All submissions are reviewed by an "
+"administrator before appearing in the public gallery."
+msgstr ""
+
+#: templates/gallery/submit.html:32
+msgid "Pending Administrator Approval"
+msgstr "સંચાલક મંजૂરી બાકી"
+
+#: templates/gallery/submit.html:34
+msgid ""
+"Your submitted photograph will be reviewed by the campaign administrator. "
+"Upon approval, it will appear in the public gallery and campaign reports."
+msgstr ""
+
+#: templates/gallery/submit.html:47
+msgid "Photograph Title"
+msgstr "ફોટો શીર્ષક"
+
+#: templates/gallery/submit.html:55
+msgid "E.g. Neem tree planting at Naroda Cross Roads"
+msgstr "ઉ.દા. નારોδа ক্রস রোডসে নীম গাছ রোপণ"
+
+#: templates/gallery/submit.html:63
+msgid "Campaign Theme / Category"
+msgstr "ઝुंबेश विषय / श्रेणी"
+
+#: templates/gallery/submit.html:67
+msgid "— Select a category —"
+msgstr "— श्रेणी चुनें —"
+
+#: templates/gallery/submit.html:76
+msgid "Location Name"
+msgstr "स्थान नाम"
+
+#: templates/gallery/submit.html:81
+msgid "E.g. Naroda East, Ward 12"
+msgstr "उदा. नरोदा ईस्ट, वार्ड 12"
+
+#: templates/gallery/submit.html:89
+msgid "Photograph File"
+msgstr "ফोटো ফাইল"
+
+#: templates/gallery/submit.html:103
+msgid "Click to select or drag an image here"
+msgstr "ছবি নির্বাচন করতে ক্লিক করুন বা এখানে টেনে আনুন"
+
+#: templates/gallery/submit.html:104
+msgid "JPEG, PNG, WebP — Maximum 10 MB"
+msgstr "JPEG, PNG, WebP — अधिकतम 10 MB"
+
+#: templates/gallery/submit.html:128
+msgid "Submit for Administrator Review"
+msgstr "व्यवस्थापक समीक्षा के लिए सबमिट करें"
+
+#: templates/gallery/submit.html:131
+msgid ""
+"By submitting, you confirm this photograph was taken during a Green Naroda "
+"campaign activity."
+msgstr ""
+
+#: templates/news/detail.html:14
+msgid "Article"
+msgstr ""
+
+#: templates/news/detail.html:42
+msgid "Recent Updates"
+msgstr ""
+
+#: templates/news/detail.html:55
+msgid "No other updates logged."
+msgstr ""
+
+#: templates/news/list.html:4
+msgid "News & Press Releases"
+msgstr ""
+
+#: templates/news/list.html:14
+msgid "Campaign News & Circulars"
+msgstr ""
+
+#: templates/news/list.html:16
+msgid ""
+"Official updates, press coverage, and downloadable government orders or "
+"guidelines."
+msgstr ""
+
+#: templates/news/list.html:30
+msgid "Press Releases & Announcements"
+msgstr ""
+
+#: templates/news/list.html:37
+msgid "All Articles"
+msgstr ""
+
+#: templates/news/list.html:64
+msgid "Read Article"
+msgstr ""
+
+#: templates/news/list.html:70
+msgid "No articles published in this category yet."
+msgstr ""
+
+#: templates/news/list.html:81
+msgid "&laquo;"
+msgstr ""
+
+#: templates/news/list.html:95
+msgid "&raquo;"
+msgstr ""
+
+#: templates/news/list.html:108
+msgid "Government Circulars"
+msgstr ""
+
+#: templates/news/list.html:123
+msgid "No circulars uploaded yet."
+msgstr ""
+
+#: templates/pages/about.html:4
+msgid "About the Campaign"
+msgstr ""
+
+#: templates/pages/about.html:13
+msgid "About Us"
+msgstr ""
+
+#: templates/pages/about.html:15
+msgid "About Our Mission"
+msgstr ""
+
+#: templates/pages/about.html:17
+msgid ""
+"India's 80th Independence Day Celebration through Community Afforestation."
+msgstr ""
+
+#: templates/pages/about.html:27 templates/pages/clean_naroda.html:94
+#: templates/pages/green_naroda.html:94
+msgid "The Vision"
+msgstr ""
+
+#: templates/pages/about.html:29
+msgid "28,855 Days. 28,855 Trees."
+msgstr ""
+
+#: templates/pages/about.html:32
+msgid ""
+"On August 15, 2027, India marks 80 years since securing independence. Over "
+"those 80 years, approximately 28,855 days will have passed. To commemorate "
+"this milestone, the Green Naroda • Clean Naroda movement was founded with a "
+"clear, ambitious goal: plant one native tree for every single day of our "
+"nation's freedom."
+msgstr ""
+
+#: templates/pages/about.html:35
+msgid ""
+"This campaign is not just about planting saplings. It is about creating a "
+"legacy of community environmental stewardship, engaging school children, "
+"citizens, volunteers, and local administration to nurture these trees into a "
+"mature urban forest."
+msgstr ""
+
+#: templates/pages/about.html:43
+msgid "Nurturing Our Shared Future"
+msgstr ""
+
+#: templates/pages/about.html:44
+msgid "Plantation Drive in Naroda, Ahmedabad"
+msgstr ""
+
+#: templates/pages/about.html:55
+msgid "Campaign Statistics"
+msgstr ""
+
+#: templates/pages/about.html:57
+msgid "Our Growth So Far"
+msgstr ""
+
+#: templates/pages/about.html:66
+msgid "Active Volunteers"
+msgstr ""
+
+#: templates/pages/about.html:70
+msgid "Days Until Target Date"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:56 templates/pages/green_naroda.html:56
+#, fuzzy
+#| msgid "Mission"
+msgid "Join Mission"
+msgstr "મિશન"
+
+#: templates/pages/clean_naroda.html:59 templates/pages/green_naroda.html:59
+#, fuzzy
+#| msgid "Campaign Contribution Progress"
+msgid "View Progress"
+msgstr "ઝુંબેશ યોગદાન પ્રગતિ"
+
+#: templates/pages/clean_naroda.html:74 templates/pages/green_naroda.html:74
+msgid "Mission Introduction"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:76
+msgid ""
+"Cleanliness is a fundamental civic right and a collective responsibility. "
+"The Clean Naroda mission represents the Government's stringent approach "
+"toward solid waste management, sanitation, and public hygiene."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:79
+msgid ""
+"Our methodology focuses on aggressive waste segregation at the source, daily "
+"community sweeping drives, and total eradication of single-use plastics "
+"across market areas, ensuring a disease-free environment."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:97
+msgid ""
+"A zero-waste municipal zone where every street, park, and public gathering "
+"area is maintained immaculately by a coalition of dedicated sanitation "
+"workers and vigilant local residents."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:103
+msgid "Cleanliness Drives"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:104
+msgid "Weekly structured neighborhood cleaning."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:110
+msgid "AMC Workforce"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:111
+msgid "Supported by municipal machinery."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:117
+msgid "Community Action"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:118
+msgid "Citizens acting as area wardens."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:124
+msgid "Park Maintenance"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:125
+msgid "Daily upkeep of public gardens."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:139 templates/pages/green_naroda.html:139
+msgid "Objectives"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:149
+msgid "Waste Segregation"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:150
+msgid ""
+"Mandating source-level division of wet, dry, and hazardous medical waste for "
+"proper disposal."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:158
+msgid "Plastic Free Areas"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:159
+msgid ""
+"Strictly prohibiting single-use plastics in main markets and commercial hubs."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:167
+msgid "Community Ownership"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:168
+msgid ""
+"Empowering resident welfare associations to maintain and monitor cleanliness "
+"in their zones."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:176
+msgid "Daily Road Sweeping"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:177
+msgid ""
+"Ensuring massive daily cleaning drives on arterial roads using mechanical "
+"sweepers and staff."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:188 templates/pages/green_naroda.html:188
+#, fuzzy
+#| msgid "Mission"
+msgid "Mission Highlights"
+msgstr "મિશન"
+
+#: templates/pages/clean_naroda.html:197
+msgid "Ongoing Action"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:198
+msgid "Door-to-Door Collection"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:207
+msgid "Awareness Camps"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:208
+msgid "Swachhata Abhiyan Meetings"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:209
+msgid ""
+"Regular ward-level meetings instructing commercial shop owners on bulk waste "
+"disposal and sanitation norms."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:220 templates/pages/green_naroda.html:220
+#, fuzzy
+#| msgid "Recent Activity"
+msgid "Campaign Activities"
+msgstr "તાજેતરની પ્રવૃત્તિ"
+
+#: templates/pages/clean_naroda.html:231
+msgid "Clean Street Campaign"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:232
+msgid ""
+"Weekly mass gatherings to deep clean residential lanes and clear any "
+"unauthorized garbage dumps."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:242
+msgid "Waste Segregation Training"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:243
+msgid ""
+"Workshops teaching the correct methods of utilizing green and blue bins for "
+"daily domestic waste."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:253
+msgid "Plastic Free Market Drives"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:254
+msgid ""
+"Inspections and confiscations in market areas to strictly enforce the ban on "
+"single-use polyethylene bags."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:264
+msgid "Lake & River Cleaning"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:265
+msgid ""
+"Specialized drives to clear floating garbage and plastics from adjacent "
+"water bodies and canals."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:275
+msgid "School Awareness Camps"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:276
+msgid ""
+"Engaging students with interactive sessions about the importance of civic "
+"sense and personal hygiene."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:286
+msgid "AMC Collaboration"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:287
+msgid ""
+"Direct feedback loops connecting citizens with AMC officials to swiftly "
+"resolve local garbage complaints."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:299 templates/pages/green_naroda.html:299
+msgid "Impact Statistics"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:307
+#, fuzzy
+#| msgid "Filter Album/Collection"
+msgid "Waste Collection"
+msgstr "एल्बम / संग्रह फ़िल्टर करें"
+
+#: templates/pages/clean_naroda.html:315
+#: templates/volunteers/leaderboard.html:12
+msgid "Volunteers"
+msgstr "સ્વયંસેવકો"
+
+#: templates/pages/clean_naroda.html:323
+msgid "Tons Recycled"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:331 templates/pages/landing.html:165
+#: templates/pages/landing.html:239
+msgid "Wards Covered"
+msgstr "આવરી લેવાયેલ વોર્ડ"
+
+#: templates/pages/clean_naroda.html:342 templates/pages/green_naroda.html:342
+#, fuzzy
+#| msgid "Mission"
+msgid "Mission Gallery"
+msgstr "મિશન"
+
+#: templates/pages/clean_naroda.html:343 templates/pages/green_naroda.html:343
+msgid "View Full Gallery &rarr;"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:373 templates/pages/green_naroda.html:373
+msgid "Implementation Timeline"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:384 templates/pages/green_naroda.html:384
+msgid "1. Planning"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:385
+msgid "Identifying chronic waste spots."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:392 templates/pages/green_naroda.html:392
+#, fuzzy
+#| msgid "Important dates"
+msgid "2. Registration"
+msgstr "গুরুত্বপূর্ণ তারিখ"
+
+#: templates/pages/clean_naroda.html:393
+msgid "Enlisting civic volunteers."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:400
+msgid "3. Action"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:401
+msgid "Massive street cleaning drives."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:408 templates/pages/green_naroda.html:408
+msgid "4. Monitoring"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:409
+msgid "Issuing challans for violations."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:416 templates/pages/green_naroda.html:416
+msgid "5. Completion"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:417
+msgid "Achieving zero-waste targets."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:427 templates/pages/green_naroda.html:427
+msgid "Every Citizen Matters"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:429
+msgid ""
+"The success of this cleanliness mission entirely relies on robust public "
+"participation. By registering on this portal, you officially pledge to "
+"maintain hygiene in your vicinity and enforce waste segregation. Let's unite "
+"to make Naroda the cleanest district in Gujarat."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:442 templates/pages/faq.html:4
+#: templates/pages/faq.html:14 templates/pages/green_naroda.html:442
+msgid "Frequently Asked Questions"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:449
+msgid "How can I volunteer for cleaning drives?"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:453
+msgid ""
+"By registering on this portal, you will automatically receive SMS alerts "
+"regarding weekend cleaning drives happening in your registered ward."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:457
+msgid "How do I correctly segregate waste?"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:461
+msgid ""
+"Use the Green bin exclusively for wet (kitchen) waste, and the Blue bin for "
+"dry recyclable waste (paper, plastic, glass)."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:465
+msgid "Where can I report illegal garbage dumping?"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:469
+msgid ""
+"You can use the official AMC toll-free number or the centralized civic "
+"complaint app to upload photos and report violations instantly."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:478
+msgid "Become Part of Clean Naroda"
+msgstr ""
+
+#: templates/pages/clean_naroda.html:479
+msgid ""
+"Join thousands of citizens in building a cleaner, healthier community. "
+"Register today and take absolute responsibility for your neighborhood."
+msgstr ""
+
+#: templates/pages/clean_naroda.html:481 templates/pages/green_naroda.html:481
+#, fuzzy
+#| msgid "Mission"
+msgid "Register For Mission"
+msgstr "મિશન"
+
+#: templates/pages/contact.html:14
+msgid "Get in Touch"
+msgstr ""
+
+#: templates/pages/contact.html:16
+msgid ""
+"Reach out to the campaign nodal office for queries regarding plantation "
+"drives, volunteering, or partnerships."
+msgstr ""
+
+#: templates/pages/contact.html:29
+msgid "Nodal Office details"
+msgstr ""
+
+#: templates/pages/contact.html:38
+#, fuzzy
+#| msgid "Email address"
+msgid "Address"
+msgstr "ઇ-મેઇલ સરનામું"
+
+#: templates/pages/contact.html:40
+msgid "Naroda Municipal Office,"
+msgstr ""
+
+#: templates/pages/contact.html:41
+msgid "Near Naroda Gam, Ahmedabad,"
+msgstr ""
+
+#: templates/pages/contact.html:52
+msgid "Phone"
+msgstr ""
+
+#: templates/pages/contact.html:55
+msgid "Mon-Sat, 10:00 AM - 6:00 PM"
+msgstr ""
+
+#: templates/pages/contact.html:65
+msgid "Email"
+msgstr ""
+
+#: templates/pages/contact.html:95
+msgid "Send us a message"
+msgstr ""
+
+#: templates/pages/contact.html:98
+msgid ""
+"Have questions about volunteering or adopting a tree? Fill out the form "
+"below and our team will get back to you."
+msgstr ""
+
+#: templates/pages/contact.html:127
+msgid "Subject"
+msgstr ""
+
+#: templates/pages/contact.html:132
+msgid "Message"
+msgstr ""
+
+#: templates/pages/contact.html:138
+msgid "Send Message"
+msgstr ""
+
+#: templates/pages/faq.html:16
+msgid ""
+"Find answers to common questions about the Green Naroda • Clean Naroda "
+"campaign and the 28,855 trees initiative."
+msgstr ""
+
+#: templates/pages/faq.html:39
+msgid "Why exactly 28,855 trees?"
+msgstr ""
+
+#: templates/pages/faq.html:43
+msgid ""
+"India will celebrate its 80th Independence Day on August 15, 2027. Between "
+"August 15, 1947, and August 15, 2027, exactly 28,855 days will have passed. "
+"We are planting one tree for every single day of our freedom to create a "
+"living monument of our nation's journey."
+msgstr ""
+
+#: templates/pages/faq.html:49
+msgid "How can I adopt a tree?"
+msgstr ""
+
+#: templates/pages/faq.html:53
+msgid "You can click the \\"
+msgstr ""
+
+#: templates/pages/faq.html:59
+msgid "Do I need to pay to participate?"
+msgstr ""
+
+#: templates/pages/faq.html:63
+msgid ""
+"No. Participation in the Green Naroda • Clean Naroda campaign is entirely "
+"free. The government provides the saplings during designated drives. Your "
+"contribution is your time and commitment to nurturing the tree."
+msgstr ""
+
+#: templates/pages/faq.html:70
+msgid "Still have questions?"
+msgstr ""
+
+#: templates/pages/faq.html:71
+msgid ""
+"Our campaign office is here to help clarify any doubts regarding plantation "
+"drives or volunteering."
+msgstr ""
+
+#: templates/pages/green_naroda.html:76
+msgid ""
+"The Green Naroda initiative is an official urban afforestation campaign "
+"dedicated to transforming our cityscape. Launched to commemorate the 80th "
+"year of India's independence, this mission symbolizes our deep-rooted "
+"commitment to environmental preservation."
+msgstr ""
+
+#: templates/pages/green_naroda.html:79
+msgid ""
+"Our goal is to systematically plant exactly 28,855 native trees across all "
+"municipal wards, converting barren public spaces into thriving green "
+"habitats. We empower every citizen to take ownership of this movement, "
+"ensuring high survival rates for every sapling planted."
+msgstr ""
+
+#: templates/pages/green_naroda.html:97
+msgid ""
+"A resilient and completely self-sustaining urban ecosystem where native "
+"trees thrive, providing a natural cooling effect to the city, reducing "
+"localized pollution, and protecting biodiversity."
+msgstr ""
+
+#: templates/pages/green_naroda.html:103
+msgid "Government Initiatives"
+msgstr ""
+
+#: templates/pages/green_naroda.html:104
+msgid "Backed by full municipal support."
+msgstr ""
+
+#: templates/pages/green_naroda.html:110 templates/pages/green_naroda.html:167
+msgid "Citizen Participation"
+msgstr ""
+
+#: templates/pages/green_naroda.html:111
+#, fuzzy
+#| msgid "Hours contributed"
+msgid "Every household contributes."
+msgstr "ફાળો આપેલ કલાકો"
+
+#: templates/pages/green_naroda.html:117
+msgid "Schools & Education"
+msgstr ""
+
+#: templates/pages/green_naroda.html:118
+msgid "Teaching the next generation."
+msgstr ""
+
+#: templates/pages/green_naroda.html:124
+msgid "AMC Workers"
+msgstr ""
+
+#: templates/pages/green_naroda.html:125
+msgid "Dedicated maintenance teams."
+msgstr ""
+
+#: templates/pages/green_naroda.html:149
+msgid "Increase Green Cover"
+msgstr ""
+
+#: templates/pages/green_naroda.html:150
+msgid ""
+"Systematic planting across barren lands and dividers to maximize urban "
+"foliage density."
+msgstr ""
+
+#: templates/pages/green_naroda.html:158
+msgid "Improve Air Quality"
+msgstr ""
+
+#: templates/pages/green_naroda.html:159
+msgid ""
+"Utilizing broad-leaf native species to act as natural air filters against "
+"dust and vehicle emissions."
+msgstr ""
+
+#: templates/pages/green_naroda.html:168
+msgid ""
+"Fostering a sense of environmental responsibility by allowing residents to "
+"pledge and adopt saplings."
+msgstr ""
+
+#: templates/pages/green_naroda.html:176
+msgid "Urban Biodiversity"
+msgstr ""
+
+#: templates/pages/green_naroda.html:177
+msgid ""
+"Creating safe and thriving micro-habitats for local birds, insects, and "
+"flora."
+msgstr ""
+
+#: templates/pages/green_naroda.html:197
+msgid "Aug 2026 Phase"
+msgstr ""
+
+#: templates/pages/green_naroda.html:198
+msgid "Massive Target Rollout"
+msgstr ""
+
+#: templates/pages/green_naroda.html:199
+msgid ""
+"Procurement and safe distribution of over 10,000 native saplings completely "
+"free of charge to registered societies and local volunteers."
+msgstr ""
+
+#: templates/pages/green_naroda.html:207
+msgid "School Integration"
+msgstr ""
+
+#: templates/pages/green_naroda.html:208
+msgid "Educational Partnerships"
+msgstr ""
+
+#: templates/pages/green_naroda.html:209
+msgid ""
+"Official tie-ups with 25+ local schools ensuring every student learns "
+"practically by maintaining at least one assigned tree on campus."
+msgstr ""
+
+#: templates/pages/green_naroda.html:231
+msgid "Mega Tree Plantation Drive"
+msgstr ""
+
+#: templates/pages/green_naroda.html:232
+msgid ""
+"A city-wide synchronized plantation day inviting all citizens to physically "
+"plant trees in designated zones."
+msgstr ""
+
+#: templates/pages/green_naroda.html:242
+msgid "School Plantation Initiatives"
+msgstr ""
+
+#: templates/pages/green_naroda.html:243
+msgid ""
+"Partnering with primary and secondary schools to build awareness and "
+"cultivate habits in children."
+msgstr ""
+
+#: templates/pages/green_naroda.html:253
+msgid "Women Empowerment Force"
+msgstr ""
+
+#: templates/pages/green_naroda.html:254
+msgid ""
+"Local women's groups leading the maintenance, watering schedules, and "
+"regular audits of the planted saplings."
+msgstr ""
+
+#: templates/pages/green_naroda.html:264
+msgid "Lake Border Restoration"
+msgstr ""
+
+#: templates/pages/green_naroda.html:265
+msgid ""
+"Dense plantation along the periphery of local lakes to prevent soil erosion "
+"and improve aquatic biodiversity."
+msgstr ""
+
+#: templates/pages/green_naroda.html:275
+#, fuzzy
+#| msgid "Volunteer Hours"
+msgid "Youth Volunteer Network"
+msgstr "સ્વયંસેવક કલાકો"
+
+#: templates/pages/green_naroda.html:276
+msgid ""
+"Mobilizing college students for weekend monitoring drives and data "
+"collection via the official portal app."
+msgstr ""
+
+#: templates/pages/green_naroda.html:286
+msgid "Roadside Canopy Creation"
+msgstr ""
+
+#: templates/pages/green_naroda.html:287
+msgid ""
+"Strategic placement of fast-growing shade trees along major arterial roads "
+"and highway intersections."
+msgstr ""
+
+#: templates/pages/green_naroda.html:307 templates/pages/landing.html:145
+#: templates/pages/landing.html:219
+msgid "Target Trees"
+msgstr "લક્ષ્યાંક વૃક્ષો"
+
+#: templates/pages/green_naroda.html:315 templates/pages/landing.html:155
+#: templates/pages/landing.html:229
+msgid "Citizens Joined"
+msgstr "નાગરિકો જોડાયા"
+
+#: templates/pages/green_naroda.html:323
+#, fuzzy
+#| msgid "Wards Covered"
+msgid "Schools Covered"
+msgstr "આવરી લેવાયેલા વોર્ડ"
+
+#: templates/pages/green_naroda.html:331
+#, fuzzy
+#| msgid "CO2 Reduced"
+msgid "Kg CO₂ Reduced"
+msgstr "CO2 ઘટાડો"
+
+#: templates/pages/green_naroda.html:385
+msgid "Zonal mapping and sapling acquisition."
+msgstr ""
+
+#: templates/pages/green_naroda.html:393
+msgid "Digital citizen enrollments."
+msgstr ""
+
+#: templates/pages/green_naroda.html:400
+msgid "3. Plantation"
+msgstr ""
+
+#: templates/pages/green_naroda.html:401
+msgid "Massive execution and ground work."
+msgstr ""
+
+#: templates/pages/green_naroda.html:409
+msgid "Health tracking and watering schedules."
+msgstr ""
+
+#: templates/pages/green_naroda.html:417
+#, fuzzy
+#| msgid "Official portal of"
+msgid "Official public release of data."
+msgstr "સત્તાવાર પોર્ટલ"
+
+#: templates/pages/green_naroda.html:429
+msgid ""
+"The success of this mission entirely relies on robust public participation. "
+"By registering on this portal, you officially pledge to protect and nurture "
+"the saplings in your vicinity, creating a safer environment for our next "
+"generation. Let's unite to make Naroda the greenest district in Gujarat."
+msgstr ""
+
+#: templates/pages/green_naroda.html:449
+msgid "Who can participate?"
+msgstr ""
+
+#: templates/pages/green_naroda.html:453
+msgid ""
+"Every citizen, family, society, and school based in Naroda is officially "
+"encouraged to participate in this Government-backed mission."
+msgstr ""
+
+#: templates/pages/green_naroda.html:457
+msgid "Is there any registration fee?"
+msgstr ""
+
+#: templates/pages/green_naroda.html:461
+msgid ""
+"No. Tree adoption and plantation are completely free of cost, heavily "
+"subsidized by the State Government."
+msgstr ""
+
+#: templates/pages/green_naroda.html:465
+msgid "Will I receive an official certificate?"
+msgstr ""
+
+#: templates/pages/green_naroda.html:469
+msgid ""
+"Yes, upon successful registration and pledging, an official digital "
+"Government participation certificate is instantly generated for you to "
+"download and share."
+msgstr ""
+
+#: templates/pages/green_naroda.html:478
+msgid "Become Part of Green Naroda"
+msgstr ""
+
+#: templates/pages/green_naroda.html:479
+msgid ""
+"Join thousands of citizens in building a greener, sustainable future. "
+"Register today and make a permanent mark on India's 80th Independence Year."
+msgstr ""
+
+#: templates/pages/impact.html:4 templates/pages/impact.html:14
+msgid "Environmental Impact Dashboard"
+msgstr ""
+
+#: templates/pages/impact.html:12
+msgid "Environmental Impact"
+msgstr "পরিবেশগত প্রভাব"
+
+#: templates/pages/impact.html:16
+msgid ""
+"Quantifying the ecological footprint and benefits of the 28,855 trees "
+"initiative."
+msgstr ""
+
+#: templates/pages/impact.html:25
+msgid "Real-time Metrics"
+msgstr ""
+
+#: templates/pages/impact.html:27
+msgid "Ecosystem Benefits of Our Forest"
+msgstr ""
+
+#: templates/pages/impact.html:35
+msgid "CO2 Absorbed (kg/yr)"
+msgstr ""
+
+#: templates/pages/impact.html:41
+msgid "Oxygen Produced (L/day)"
+msgstr ""
+
+#: templates/pages/impact.html:47
+msgid "Rainwater Retained (L/yr)"
+msgstr ""
+
+#: templates/pages/impact.html:53
+msgid "Estimated Temperature Reduction"
+msgstr ""
+
+#: templates/pages/impact.html:60
+msgid "Ward-wise Plantation Leaderboard"
+msgstr ""
+
+#: templates/pages/impact.html:66 templates/trees/detail.html:12
+#: templates/trees/list.html:26 templates/trees/plant.html:12
+msgid "Trees"
+msgstr "વૃક્ષો"
+
+#: templates/pages/impact.html:69
+msgid "No ward data logged yet."
+msgstr ""
+
+#: templates/pages/impact.html:77
+msgid "Personal Impact Calculator"
+msgstr ""
+
+#: templates/pages/impact.html:79
+msgid ""
+"Select the number of trees you wish to sponsor/plant, and calculate your "
+"estimated positive ecological contribution."
+msgstr ""
+
+#: templates/pages/impact.html:84
+msgid "Number of Trees"
+msgstr ""
+
+#: templates/pages/impact.html:90
+msgid "CO2 Offsetting"
+msgstr ""
+
+#: templates/pages/impact.html:91
+msgid "220 kg/year"
+msgstr ""
+
+#: templates/pages/impact.html:94
+msgid "Oxygen Output"
+msgstr ""
+
+#: templates/pages/impact.html:95
+msgid "1,200 L/day"
+msgstr ""
+
+#: templates/pages/impact.html:98
+msgid "Rainwater Saved"
+msgstr ""
+
+#: templates/pages/impact.html:99
+msgid "10,000 L/year"
+msgstr ""
+
+#: templates/pages/impact.html:102
+msgid "Canopy Shade Area"
+msgstr ""
+
+#: templates/pages/impact.html:103
+msgid "150 m²"
+msgstr ""
+
+#: templates/pages/landing.html:160 templates/pages/landing.html:234
+msgid "Days Remaining"
+msgstr "બાકીના દિવસો"
+
+#: templates/pages/landing.html:169 templates/pages/landing.html:243
+msgid "T"
+msgstr ""
+
+#: templates/pages/landing.html:170 templates/pages/landing.html:244
+msgid "CO2 Reduced"
+msgstr "CO2 ઘટાડો"
+
+#: templates/pages/landing.html:196
+msgid "Together for a"
+msgstr ""
+
+#: templates/pages/landing.html:196
+msgid "Greener Tomorrow."
+msgstr ""
+
+#: templates/pages/landing.html:202
+msgid ""
+"Join the Green Naroda initiative to plant 28,855 trees across our city by "
+"August 15, 2027."
+msgstr ""
+
+#: templates/pages/landing.html:266
+msgid ""
+"Transforming our urban landscape by planting 28,855 native trees. We aim to "
+"increase green cover, improve air quality, and create a sustainable "
+"ecosystem for future generations."
+msgstr ""
+
+#: templates/pages/landing.html:269
+msgid "Discover Our Green Initiatives"
+msgstr ""
+
+#: templates/pages/landing.html:284
+msgid ""
+"Fostering sustainable waste management and civic cleanliness. Through "
+"rigorous waste segregation drives and citizen education, we are building a "
+"zero-waste community."
+msgstr ""
+
+#: templates/pages/landing.html:287
+msgid "Discover Our Clean Initiatives"
+msgstr ""
+
+#: templates/pages/landing.html:307
+msgid "Target Completion"
+msgstr ""
+
+#: templates/pages/landing.html:322
+msgid "Upcoming Plantation Drives"
+msgstr "આગામી વૃક્ષારોપણ અભિયાન"
+
+#: templates/pages/landing.html:324
+msgid "View All Drives"
+msgstr "બધા અભિયાનો જુઓ"
+
+#: templates/pages/landing.html:335 templates/pages/landing.html:354
+#: templates/pages/landing.html:373
+msgid "Aug"
+msgstr ""
+
+#: templates/pages/landing.html:339
+#, fuzzy
+#| msgid "Submit Plantation Photograph"
+msgid "Smriti Van Plantation Drive"
+msgstr "વૃક્ષારોપણ ફોટો સબમિટ કરો"
+
+#: templates/pages/landing.html:342
+msgid "Sector 4, Naroda"
+msgstr ""
+
+#: templates/pages/landing.html:344 templates/pages/landing.html:363
+#: templates/pages/landing.html:382
+msgid "Register for Drive"
+msgstr "અભિયાન માટે નોંધણી કરો"
+
+#: templates/pages/landing.html:358
+msgid "Lakefront Greening Campaign"
+msgstr ""
+
+#: templates/pages/landing.html:361
+msgid "Naroda Lake Area"
+msgstr ""
+
+#: templates/pages/landing.html:377
+msgid "School Youth Plantation"
+msgstr ""
+
+#: templates/pages/landing.html:380
+msgid "Sardar Patel High School"
+msgstr ""
+
+#: templates/pages/landing.html:398
+msgid "Why 28,855 Trees?"
+msgstr ""
+
+#: templates/pages/landing.html:400
+msgid ""
+"India gained independence on August 15, 1947. By August 15, 2027, that will "
+"be exactly 28,855 days of freedom. The Green Naroda campaign commits to "
+"planting one tree for every single one of those days."
+msgstr ""
+
+#: templates/pages/landing.html:409
+msgid "Combating Urban Heat"
+msgstr ""
+
+#: templates/pages/landing.html:410
+msgid ""
+"Significantly reducing the urban heat island effect across Naroda's "
+"industrial and residential zones."
+msgstr ""
+
+#: templates/pages/landing.html:418
+msgid "Improving Air Quality"
+msgstr ""
+
+#: templates/pages/landing.html:419
+msgid ""
+"Acting as green lungs to filter out particulate matter and provide cleaner, "
+"fresher air to citizens."
+msgstr ""
+
+#: templates/pages/landing.html:427
+msgid "Restoring Biodiversity"
+msgstr ""
+
+#: templates/pages/landing.html:428
+msgid ""
+"Creating natural habitats for local birds, insects, and flora using "
+"carefully selected native species."
+msgstr ""
+
+#: templates/pages/landing.html:434
+msgid "Read our full mission report"
+msgstr ""
+
+#: templates/pages/landing.html:456
+#, fuzzy
+#| msgid "Gallery"
+msgid "Gallery & Impact"
+msgstr "ફોટો ગેલરી"
+
+#: templates/pages/landing.html:458
+msgid "View Full Gallery"
+msgstr ""
+
+#: templates/pages/landing.html:477
+msgid "News & Announcements"
+msgstr ""
+
+#: templates/pages/landing.html:479
+msgid "View All News"
+msgstr ""
+
+#: templates/pages/landing.html:489
+msgid "Press Release"
+msgstr ""
+
+#: templates/pages/landing.html:490
+msgid "Naroda achieves 10,000 trees milestone three months ahead of schedule"
+msgstr ""
+
+#: templates/pages/landing.html:491
+msgid "August 10, 2026"
+msgstr ""
+
+#: templates/pages/landing.html:500
+msgid "Announcement"
+msgstr ""
+
+#: templates/pages/landing.html:501
+#, fuzzy
+#| msgid "You have not registered for any plantation drives."
+msgid "New species guidelines released for monsoon plantation drive"
+msgstr "તમે કોઈ વૃક્ષારોપણ ઝુંબેશ માટે નોંધણી કરી નથી."
+
+#: templates/pages/landing.html:502
+msgid "July 28, 2026"
+msgstr ""
+
+#: templates/pages/landing.html:511
+msgid "Community"
+msgstr ""
+
+#: templates/pages/landing.html:512
+msgid "Local schools join forces to adopt 5,000 saplings in Sector 4"
+msgstr ""
+
+#: templates/pages/landing.html:513
+msgid "July 15, 2026"
+msgstr ""
+
+#: templates/pages/privacy.html:16
+msgid ""
+"Green Naroda • Clean Naroda campaign values your privacy. We only collect "
+"the minimal personal data required to register and verify tree planting "
+"drives, issue certificates, and support campaign communications."
+msgstr ""
+
+#: templates/pages/privacy.html:17
+msgid "1. Information We Collect"
+msgstr ""
+
+#: templates/pages/privacy.html:18
+msgid ""
+"We collect your email, full name, phone number, role, and optional profile "
+"pictures. For tree logging, we request GPS location coordinates to map and "
+"verify the planted saplings."
+msgstr ""
+
+#: templates/pages/privacy.html:19
+msgid "2. How We Use It"
+msgstr ""
+
+#: templates/pages/privacy.html:20
+msgid ""
+"Your information is used strictly to coordinate drives, notify you of "
+"approved trees/photos, issue digital certificates of participation, and "
+"update public analytics dashboard tables."
+msgstr ""
+
+#: templates/pages/terms.html:4 templates/pages/terms.html:9
+msgid "Terms of Use"
+msgstr ""
+
+#: templates/pages/terms.html:16
+msgid ""
+"Welcome to the Green Naroda • Clean Naroda civic platform. By participating "
+"in this campaign, registering planted trees, or uploading photos, you agree "
+"to these Terms of Use."
+msgstr ""
+
+#: templates/pages/terms.html:17
+msgid "1. Tree Logging Accuracy"
+msgstr ""
+
+#: templates/pages/terms.html:18
+msgid ""
+"Users agree to log genuine trees planted at correct GPS coordinates. False "
+"logging, coordinates outside Naroda/Ahmedabad, or repeated logging of the "
+"same tree will be rejected by our coordinator panel."
+msgstr ""
+
+#: templates/pages/terms.html:19
+msgid "2. Photo Submissions"
+msgstr ""
+
+#: templates/pages/terms.html:20
+msgid ""
+"By uploading photographs to the gallery, you grant the campaign a non-"
+"exclusive license to feature the images on this public portal for non-"
+"commercial promotion of afforestation."
+msgstr ""
+
+#: templates/trees/detail.html:4 templates/trees/detail.html:14
+msgid "Tree Details"
+msgstr ""
+
+#: templates/trees/detail.html:16
+msgid "Tree Lifecycle Tracker"
+msgstr ""
+
+#: templates/trees/detail.html:18
+msgid ""
+"Detailed timeline, health tracking, and maintenance records of this tree."
+msgstr ""
+
+#: templates/trees/detail.html:35
+msgid "QR Code Number:"
+msgstr ""
+
+#: templates/trees/detail.html:41
+msgid "Scientific Name:"
+msgstr ""
+
+#: templates/trees/detail.html:53
+msgid "Growth Photos & Timeline"
+msgstr ""
+
+#: templates/trees/detail.html:60
+msgid "Growth check-in"
+msgstr ""
+
+#: templates/trees/detail.html:65
+msgid "No photographs have been uploaded for this tree yet."
+msgstr ""
+
+#: templates/trees/detail.html:73
+msgid "Log Growth Photograph"
+msgstr ""
+
+#: templates/trees/detail.html:78
+msgid "Image URL"
+msgstr ""
+
+#: templates/trees/detail.html:82
+msgid "Notes"
+msgstr ""
+
+#: templates/trees/detail.html:83
+msgid "Height progress, fresh leaves visible, etc."
+msgstr ""
+
+#: templates/trees/detail.html:86
+msgid "Submit Growth Log"
+msgstr ""
+
+#: templates/trees/detail.html:99
+msgid "Tree Ledger Info"
+msgstr ""
+
+#: templates/trees/detail.html:103
+msgid "Planted Date:"
+msgstr ""
+
+#: templates/trees/detail.html:106
+msgid "Location Desk:"
+msgstr ""
+
+#: templates/trees/detail.html:109
+msgid "Ward Region:"
+msgstr ""
+
+#: templates/trees/detail.html:112
+msgid "Planted By:"
+msgstr ""
+
+#: templates/trees/detail.html:112
+msgid "Campaign Volunteer"
+msgstr ""
+
+#: templates/trees/detail.html:115
+msgid "Contributor Sponsor:"
+msgstr ""
+
+#: templates/trees/detail.html:115
+msgid "Citizen Sponsor"
+msgstr ""
+
+#: templates/trees/detail.html:123
+msgid "Maintenance Log"
+msgstr ""
+
+#: templates/trees/detail.html:131
+msgid "Resolved"
+msgstr ""
+
+#: templates/trees/detail.html:131
+msgid "Open"
+msgstr ""
+
+#: templates/trees/detail.html:138
+msgid "No maintenance items reported."
+msgstr ""
+
+#: templates/trees/detail.html:145
+msgid "Report Care / Maintenance Issue"
+msgstr ""
+
+#: templates/trees/detail.html:151
+msgid "Select Issue Type"
+msgstr ""
+
+#: templates/trees/detail.html:158
+msgid "Additional details (e.g. broken branch)"
+msgstr ""
+
+#: templates/trees/detail.html:161
+msgid "File Maintenance Report"
+msgstr ""
+
+#: templates/trees/list.html:4
+msgid "Campaign Tree Map"
+msgstr ""
+
+#: templates/trees/list.html:28
+msgid "Interactive Tree Map"
+msgstr ""
+
+#: templates/trees/list.html:30
+msgid ""
+"Explore the geographic distribution and verification status of all campaign "
+"trees in Naroda."
+msgstr ""
+
+#: templates/trees/list.html:49
+msgid "Filter Trees"
+msgstr ""
+
+#: templates/trees/list.html:54 templates/trees/list.html:107
+msgid "Species"
+msgstr ""
+
+#: templates/trees/list.html:56
+msgid "All Species"
+msgstr ""
+
+#: templates/trees/list.html:64
+msgid "Ward"
+msgstr ""
+
+#: templates/trees/list.html:66
+msgid "All Wards"
+msgstr ""
+
+#: templates/trees/list.html:74
+msgid "Verification Status"
+msgstr ""
+
+#: templates/trees/list.html:76
+msgid "All Statuses"
+msgstr ""
+
+#: templates/trees/list.html:84
+msgid "Apply Filters"
+msgstr ""
+
+#: templates/trees/list.html:87
+msgid "Reset"
+msgstr ""
+
+#: templates/trees/list.html:94
+msgid "Plant & Log a Tree"
+msgstr ""
+
+#: templates/trees/list.html:101
+msgid "Planted Trees Log"
+msgstr ""
+
+#: templates/trees/list.html:109
+msgid "Planted Date"
+msgstr ""
+
+#: templates/trees/list.html:111
+msgid "Action"
+msgstr ""
+
+#: templates/trees/list.html:135
+msgid "No trees matching current criteria."
+msgstr ""
+
+#: templates/trees/list.html:166
+msgid "OpenStreetMap"
+msgstr ""
+
+#: templates/trees/list.html:177
+msgid "Status:"
+msgstr ""
+
+#: templates/trees/list.html:177
+msgid "&bull; Health:"
+msgstr ""
+
+#: templates/trees/list.html:178
+msgid "View Timeline &rarr;"
+msgstr ""
+
+#: templates/trees/plant.html:4
+msgid "Plant & Log Tree"
+msgstr ""
+
+#: templates/trees/plant.html:14
+msgid "Plant Tree"
+msgstr ""
+
+#: templates/trees/plant.html:16
+msgid "Log Tree Plantation"
+msgstr ""
+
+#: templates/trees/plant.html:18
+msgid ""
+"Add a newly planted sapling to the campaign map ledger. Coordinates will be "
+"logged."
+msgstr ""
+
+#: templates/trees/plant.html:31
+msgid "Tree Species"
+msgstr ""
+
+#: templates/trees/plant.html:33
+msgid "Select Species"
+msgstr ""
+
+#: templates/trees/plant.html:41
+msgid "Associated Planting Drive / Event"
+msgstr ""
+
+#: templates/trees/plant.html:41 templates/trees/plant.html:76
+msgid "Optional"
+msgstr ""
+
+#: templates/trees/plant.html:43
+msgid "Independent Planting"
+msgstr ""
+
+#: templates/trees/plant.html:51
+msgid "GPS Coordinates"
+msgstr ""
+
+#: templates/trees/plant.html:54
+msgid "Latitude"
+msgstr ""
+
+#: templates/trees/plant.html:57
+msgid "Longitude"
+msgstr ""
+
+#: templates/trees/plant.html:61
+msgid "Retrieve Current Location (GPS)"
+msgstr ""
+
+#: templates/trees/plant.html:66
+msgid "Location Landmark Description"
+msgstr ""
+
+#: templates/trees/plant.html:67
+msgid "E.g. Near Ward Office, Naroda Canal Road"
+msgstr ""
+
+#: templates/trees/plant.html:71
+msgid "Ward Name / Number"
+msgstr ""
+
+#: templates/trees/plant.html:72
+msgid "E.g. Naroda East"
+msgstr ""
+
+#: templates/trees/plant.html:76
+msgid "Initial Plant Image URL"
+msgstr ""
+
+#: templates/trees/plant.html:81
+msgid "Caretaker Notes"
+msgstr ""
+
+#: templates/trees/plant.html:82
+msgid "Special soil types or protection fence description..."
+msgstr ""
+
+#: templates/trees/plant.html:86
+msgid "Submit Sapling Ledger Entry"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:4
+msgid "Volunteer Leaderboard"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:14
+msgid "Volunteer Hall of Fame"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:16
+msgid "Honoring the champions of Naroda's urban afforestation drive."
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:24
+msgid "Leaderboard"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:26
+msgid "Top Environmental Stewards"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:35
+msgid "Rank"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:36
+msgid "Name"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:37
+msgid "Level"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:39
+msgid "Hours Logged"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:58
+msgid "Naroda Resident"
+msgstr ""
+
+#: templates/volunteers/leaderboard.html:71
+msgid "No volunteers found on the leaderboard yet."
+msgstr ""
+
+#, fuzzy
+#~| msgid "Email address"
+#~ msgid "Full Address"
+#~ msgstr "ઇ-મેઇલ સરનામું"
+
+#, fuzzy
+#~ msgid "Planting Trees"
+#~ msgstr "वृक्ष लगाएं"
+
+#, fuzzy
+#~ msgid "General Volunteer"
+#~ msgstr "સ્વયંસેવકો"
+
+#, fuzzy
+#~ msgid "Share Your Certificate"
+#~ msgstr "પ્રમાણપત્ર ચકાસો"
+
+#, fuzzy
+#~ msgid "Certificate Downloaded!"
+#~ msgstr "પ્રમાણપત્રો"
+
+#, fuzzy
+#~ msgid "Certificate"
+#~ msgstr "પ્રમાણપત્રો"
+
+#~ msgid "Tree Tracker"
+#~ msgstr "वृक्ष ट्रैकर"
+
+#~ msgid "Photo Gallery"
+#~ msgstr "ফোটো গ্যালারি"
+
+#~ msgid "Volunteer Portal"
+#~ msgstr "স্বেচ্ছাসেবী পোর্টাল"
+
+#~ msgid "About Campaign"
+#~ msgstr "ঝুনবেশ সম্পর্কে"
+
+#~ msgid "A civic environmental campaign."
+#~ msgstr "একটি নাগরিক পরিবেশ অভিযান।"
+
+#~ msgid "Sitemap"
+#~ msgstr "সাইটম্যাপ"
+
+#~ msgid "Filter Category"
+#~ msgstr "श्रेणी फ़िल्टर करें"
+
+#~ msgid "Search"
+#~ msgstr "खोजें"

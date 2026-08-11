@@ -1,0 +1,85 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Campaign Drives & Events" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header-premium">
+  <div class="container-site relative z-10">
+    <div class="breadcrumb-premium">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "Events" %}</span>
+    </div>
+    <h1>{% trans "Tree Plantation Drives" %}</h1>
+    <p class="page-header-sub">
+      {% trans "Join our upcoming environmental drives or view report cards of completed activities." %}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site">
+
+    <!-- Tabs Header -->
+    <div class="flex justify-center gap-4 mb-12">
+      <a href="{% url 'events:list' %}?status=upcoming" class="px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors {% if status_filter == 'upcoming' %}bg-[#0E7A37] text-white shadow-sm{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+        {% trans "Upcoming Drives" %}
+      </a>
+      <a href="{% url 'events:list' %}?status=past" class="px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors {% if status_filter == 'past' %}bg-[#0E7A37] text-white shadow-sm{% else %}bg-gray-100 text-gray-700 hover:bg-gray-200{% endif %}">
+        {% trans "Completed Drives" %}
+      </a>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 reveal-grid">
+      {% for event in events %}
+        <div class="card flex flex-col justify-between overflow-hidden">
+          <div>
+            <div class="h-48 bg-gray-150 relative">
+              {% if event.cover_cloudinary_id %}
+                <img src="{{ event.cover_cloudinary_id }}" alt="{{ event.title }}" class="object-cover w-full h-full" />
+              {% else %}
+                <div class="w-full h-full bg-forest-900/10 flex items-center justify-center text-4xl font-bold text-forest-750">
+                  🌲
+                </div>
+              {% endif %}
+              <div class="absolute top-4 left-4 event-card-date">
+                <span class="day">{{ event.starts_at|date:"d" }}</span>
+                <span class="month">{{ event.starts_at|date:"M" }}</span>
+              </div>
+            </div>
+            
+            <div class="p-6">
+              <span class="text-xs text-[#FF7500] font-bold uppercase tracking-wider block mb-2">{{ event.get_event_type_display }}</span>
+              <h4 class="font-serif text-xl font-bold text-gray-900 leading-snug mb-3">
+                <a href="{% url 'events:detail' event.slug %}" class="hover:text-forest-750">{{ event.title }}</a>
+              </h4>
+              <p class="text-sm text-gray-500 mb-4">📍 {{ event.location_name }}</p>
+              <p class="text-sm text-gray-600 line-clamp-3 mb-6">{{ event.description }}</p>
+            </div>
+          </div>
+
+          <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-gray-50">
+            <span class="text-xs text-gray-500">
+              <strong>{{ event.registration_count }}</strong> / {{ event.max_volunteers|default:_("Unlimited") }} {% trans "Joined" %}
+            </span>
+            <a href="{% url 'events:detail' event.slug %}" class="btn-outline-dark text-xs" style="padding: 0.4rem 0.8rem;">
+              {% trans "Details" %} &rarr;
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-span-full text-center py-16 text-gray-500">
+          {% trans "No drives scheduled or completed at this time." %}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</section>
+{% endblock %}

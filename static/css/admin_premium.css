@@ -1,0 +1,270 @@
+/* ================================================================
+   GREEN NARODA • CLEAN NARODA — Premium Admin Panel CSS
+   ================================================================ */
+
+/* ── Fonts ─────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ── Root Variables ─────────────────────────────────────────────── */
+:root {
+  --admin-green: #0B7A3B;
+  --admin-green-light: #E8F5EE;
+  --admin-saffron: #F97316;
+  --admin-success: #16A34A;
+  --admin-warning: #EA580C;
+  --admin-danger: #DC2626;
+  --admin-bg: #F5F7FA;
+  --admin-card-bg: #FFFFFF;
+  --admin-border: rgba(15, 23, 42, 0.06);
+  --admin-shadow: 0 4px 24px rgba(2, 6, 23, 0.07);
+  --admin-shadow-hover: 0 12px 40px rgba(2, 6, 23, 0.13);
+  --admin-radius: 16px;
+  --admin-radius-sm: 10px;
+  --transition: 180ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── KPI Cards ──────────────────────────────────────────────────── */
+.kpi-card {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow);
+  padding: 1.5rem;
+  transition: transform var(--transition), box-shadow var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.kpi-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--admin-shadow-hover);
+}
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--admin-radius) var(--admin-radius) 0 0;
+}
+.kpi-card.green::before { background: linear-gradient(90deg, #0B7A3B, #22C55E); }
+.kpi-card.saffron::before { background: linear-gradient(90deg, #F97316, #FCD34D); }
+.kpi-card.blue::before { background: linear-gradient(90deg, #2563EB, #60A5FA); }
+.kpi-card.purple::before { background: linear-gradient(90deg, #7C3AED, #A78BFA); }
+.kpi-card.teal::before { background: linear-gradient(90deg, #0D9488, #34D399); }
+.kpi-card.rose::before { background: linear-gradient(90deg, #E11D48, #FB7185); }
+
+.kpi-number {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0F172A;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.kpi-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748B;
+  margin-top: 0.35rem;
+}
+.kpi-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  margin-top: 0.75rem;
+}
+.kpi-trend.up { background: #F0FDF4; color: #16A34A; }
+.kpi-trend.neutral { background: #F8FAFC; color: #64748B; }
+.kpi-icon-wrap {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.kpi-icon-wrap.green { background: #DCFCE7; color: #16A34A; }
+.kpi-icon-wrap.saffron { background: #FFF7ED; color: #EA580C; }
+.kpi-icon-wrap.blue { background: #EFF6FF; color: #2563EB; }
+.kpi-icon-wrap.purple { background: #F5F3FF; color: #7C3AED; }
+.kpi-icon-wrap.teal { background: #F0FDFA; color: #0D9488; }
+.kpi-icon-wrap.rose { background: #FFF1F2; color: #E11D48; }
+
+/* ── Dashboard Welcome Card ─────────────────────────────────────── */
+.welcome-card {
+  background: linear-gradient(135deg, #0B4D27 0%, #0B7A3B 50%, #16A34A 100%);
+  border-radius: var(--admin-radius);
+  padding: 2rem 2.5rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(11, 122, 59, 0.3);
+}
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: -40%; right: -5%;
+  width: 350px; height: 350px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.welcome-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30%; left: 20%;
+  width: 250px; height: 250px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.welcome-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.welcome-subtitle {
+  font-size: 0.875rem;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+/* ── Activity Feed ──────────────────────────────────────────────── */
+.activity-feed { display: flex; flex-direction: column; gap: 0; }
+.activity-item {
+  display: flex; align-items: flex-start; gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--admin-border);
+  transition: background var(--transition);
+}
+.activity-item:hover { background: #F8FAFC; }
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+.activity-dot.green { background: #16A34A; }
+.activity-dot.saffron { background: #F97316; }
+.activity-dot.blue { background: #2563EB; }
+.activity-dot.purple { background: #7C3AED; }
+.activity-text { font-size: 0.8125rem; color: #374151; line-height: 1.4; }
+.activity-time { font-size: 0.7rem; color: #9CA3AF; margin-top: 0.15rem; }
+
+/* ── Status Badges ──────────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.badge-approved, .badge-success { background: #DCFCE7; color: #16A34A; }
+.badge-pending, .badge-warning { background: #FFF7ED; color: #EA580C; }
+.badge-rejected, .badge-danger { background: #FEF2F2; color: #DC2626; }
+.badge-hold, .badge-info { background: #EFF6FF; color: #2563EB; }
+
+/* ── Chart Cards ────────────────────────────────────────────────── */
+.chart-card {
+  background: var(--admin-card-bg);
+  border-radius: var(--admin-radius);
+  border: 1px solid var(--admin-border);
+  box-shadow: var(--admin-shadow);
+  padding: 1.5rem;
+}
+.chart-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 0.25rem;
+}
+.chart-subtitle {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Quick Action Buttons ───────────────────────────────────────── */
+.quick-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: var(--admin-radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all var(--transition);
+  border: 1px solid transparent;
+}
+.quick-btn.primary {
+  background: var(--admin-green);
+  color: white;
+}
+.quick-btn.primary:hover {
+  background: #095C2D;
+  box-shadow: 0 4px 14px rgba(11, 122, 59, 0.35);
+  transform: translateY(-1px);
+}
+.quick-btn.outline {
+  background: transparent;
+  border-color: var(--admin-border);
+  color: #374151;
+}
+.quick-btn.outline:hover {
+  background: var(--admin-green-light);
+  border-color: var(--admin-green);
+  color: var(--admin-green);
+}
+
+/* ── Section Headings ───────────────────────────────────────────── */
+.section-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0F172A;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--admin-green-light);
+  margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+
+/* ── Count-up Animation ─────────────────────────────────────────── */
+@keyframes countFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.count-up { animation: countFadeIn 0.5s ease forwards; }
+
+/* ── Dashboard Grid ─────────────────────────────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.chart-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 1200px) {
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .chart-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .kpi-grid { grid-template-columns: 1fr; }
+  .bottom-grid { grid-template-columns: 1fr; }
+}

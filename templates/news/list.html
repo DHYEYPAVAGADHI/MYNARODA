@@ -1,0 +1,137 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "News & Press Releases" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header-premium">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="breadcrumb-premium">
+      <a href="{% url 'cms:home' %}">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "News" %}</span>
+    </div>
+    <h1>{% trans "Campaign News & Circulars" %}</h1>
+    <p class="page-header-sub">
+      {% trans "Official updates, press coverage, and downloadable government orders or guidelines." %}
+    </p>
+  </div>
+</div>
+
+<section class="py-12 bg-[#F9FBF9] min-h-screen">
+  <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- Articles List -->
+      <div class="lg:col-span-2 space-y-8">
+        <div class="bg-white p-6 md:p-8 rounded-xl border border-gray-100 shadow-sm">
+          <div class="flex justify-between items-center mb-6 border-b border-gray-100 pb-4">
+            <h3 class="font-serif text-2xl font-bold text-gray-900">
+              {% trans "Press Releases & Announcements" %}
+            </h3>
+          </div>
+
+          <!-- Filter Category Tabs -->
+          <div class="flex gap-2 flex-wrap mb-8">
+            <a href="{% url 'news:list' %}" class="px-4 py-2 rounded-lg text-sm font-semibold {% if not selected_category %}bg-[#0E7A37] text-white shadow-sm{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+              {% trans "All Articles" %}
+            </a>
+            {% for cat in categories %}
+              <a href="{% url 'news:list' %}?category={{ cat.slug }}" class="px-4 py-2 rounded-lg text-sm font-semibold {% if selected_category == cat.slug %}bg-[#0E7A37] text-white shadow-sm{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}">
+                {{ cat.name }}
+              </a>
+            {% endfor %}
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {% for article in page_obj %}
+              <article class="flex flex-col justify-between p-5 rounded-xl border border-gray-200 hover:border-[#0E7A37] transition-colors bg-gray-50 hover:bg-white group">
+                <div>
+                  <span class="text-xs font-bold text-[#FF7500] uppercase tracking-wider block mb-2">{{ article.category.name }}</span>
+                  <h4 class="font-serif text-lg font-bold text-gray-900 leading-snug mb-2 group-hover:text-[#0E7A37] transition-colors">
+                    <a href="{% url 'news:detail' article.slug %}" class="focus:outline-none">
+                      <span class="absolute inset-0" aria-hidden="true"></span>
+                      {{ article.title }}
+                    </a>
+                  </h4>
+                  <p class="text-xs text-gray-500 mb-3 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    {{ article.published_at|date:"M d, Y" }}
+                  </p>
+                  <p class="text-sm text-gray-600 line-clamp-3 mb-4">{{ article.summary }}</p>
+                </div>
+                <div class="text-sm font-bold text-[#0E7A37] flex items-center gap-1">
+                  {% trans "Read Article" %} &rarr;
+                </div>
+              </article>
+            {% empty %}
+              <div class="col-span-full text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+                <svg class="w-12 h-12 text-gray-400 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+                {% trans "No articles published in this category yet." %}
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Pagination -->
+          {% if page_obj.has_other_pages %}
+            <div class="mt-8 flex justify-center">
+              <nav class="flex items-center gap-1">
+                {% if page_obj.has_previous %}
+                  <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50">
+                    {% trans "&laquo;" %}
+                  </a>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                  {% if page_obj.number == num %}
+                    <span class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#0E7A37] text-white font-bold">{{ num }}</span>
+                  {% else %}
+                    <a href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 font-medium">{{ num }}</a>
+                  {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                  <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50">
+                    {% trans "&raquo;" %}
+                  </a>
+                {% endif %}
+              </nav>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Downloads / Circulars Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm sticky top-[110px]">
+          <h3 class="font-serif text-xl font-bold text-gray-900 mb-6 border-b border-gray-100 pb-4">
+            {% trans "Government Circulars" %}
+          </h3>
+          <ul class="space-y-4">
+            {% for doc in documents %}
+              <li class="bg-gray-50 p-4 rounded-xl border border-gray-200 flex justify-between items-start gap-3 hover:border-[#0E7A37] transition-colors group">
+                <div>
+                  <h5 class="text-sm font-semibold text-gray-800 leading-snug group-hover:text-[#0E7A37] transition-colors">{{ doc.title }}</h5>
+                  <span class="text-xs text-gray-500 block mt-1">{{ doc.created_at|date:"M d, Y" }}</span>
+                </div>
+                <a href="{{ doc.file_url }}" target="_blank" class="w-8 h-8 rounded-lg bg-[#0E7A37]/10 flex items-center justify-center text-[#0E7A37] flex-shrink-0 hover:bg-[#0E7A37] hover:text-white transition-colors" aria-label="Download Document">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                </a>
+              </li>
+            {% empty %}
+              <li class="text-center py-8 text-gray-500 text-sm bg-gray-50 rounded-lg border border-dashed border-gray-200">
+                {% trans "No circulars uploaded yet." %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

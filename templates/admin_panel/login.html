@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control — Secure Login | Green Naroda</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Gujarati:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:14px}
+    body{font-family:'Inter',sans-serif;background:#F7F8F5;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .login-wrap{display:flex;width:100%;max-width:920px;min-height:540px;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.12)}
+    /* Left panel */
+    .lp{flex:1;background:linear-gradient(160deg,#07250F 0%,#0B5D2A 55%,#10813A 100%);padding:48px 40px;display:flex;flex-direction:column;color:#fff;position:relative;overflow:hidden}
+    .lp::before{content:'';position:absolute;top:-80px;right:-80px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.04)}
+    .lp::after{content:'';position:absolute;bottom:-60px;left:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.03)}
+    .lp-logo{display:flex;align-items:center;gap:12px;margin-bottom:40px;position:relative;z-index:1}
+    .lp-logobox{width:44px;height:44px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .lp-logobox img{width:100%;object-fit:contain}
+    .lp-brand{display:flex;flex-direction:column}
+    .lp-b1{font-size:15px;font-weight:800;letter-spacing:.2px}
+    .lp-b2{font-size:11px;font-weight:500;opacity:.7;letter-spacing:.5px;text-transform:uppercase}
+    .lp-main{flex:1;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:1}
+    .lp-tag{font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px}
+    .lp-h{font-size:30px;font-weight:800;line-height:1.25;margin-bottom:16px}
+    .lp-h span{color:#6EE7B7}
+    .lp-p{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7;max-width:280px}
+    .lp-stats{display:flex;gap:24px;margin-top:36px}
+    .lp-si{display:flex;flex-direction:column;gap:2px}
+    .lp-sv{font-size:22px;font-weight:800;color:#6EE7B7}
+    .lp-sl{font-size:10px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px;text-transform:uppercase}
+    .lp-bottom{position:relative;z-index:1;font-size:11px;color:rgba(255,255,255,.35);margin-top:32px}
+    /* Right panel */
+    .rp{width:400px;flex-shrink:0;background:#fff;padding:48px 44px;display:flex;flex-direction:column;justify-content:center}
+    .rp-head{margin-bottom:32px}
+    .rp-tag{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0B5D2A;margin-bottom:8px}
+    .rp-title{font-size:24px;font-weight:800;color:#111827;line-height:1.2}
+    .rp-sub{font-size:13px;color:#6B7280;margin-top:6px}
+    .alert{padding:10px 14px;border-radius:8px;font-size:12.5px;font-weight:500;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+    .alert-error{background:#FEE2E2;color:#DC2626;border:1px solid #FECACA}
+    .alert-warning{background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+    @keyframes shake {
+      0%, 100% {transform: translateX(0)}
+      10%, 30%, 50%, 70%, 90% {transform: translateX(-4px)}
+      20%, 40%, 60%, 80% {transform: translateX(4px)}
+    }
+    .shake-anim {animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both}
+    .fg{margin-bottom:16px}
+    .fl{display:block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#6B7280;margin-bottom:7px}
+    .fi{width:100%;background:#F9FAFB;border:1.5px solid #E5E7EB;border-radius:9px;padding:10px 14px;color:#111827;font-size:14px;transition:.18s ease}
+    .fi:focus{border-color:#0B5D2A;background:#fff;box-shadow:0 0 0 3px rgba(11,93,42,.08);outline:none}
+    .pw-wrap{position:relative}
+    .pw-toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:14px;padding:4px}
+    .btn-login{width:100%;padding:12px;background:#0B5D2A;color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:.18s ease;margin-top:4px}
+    .btn-login:hover{background:#0E7234;box-shadow:0 6px 18px rgba(11,93,42,.30)}
+    .btn-login:active{transform:scale(.99)}
+    .secure-note{display:flex;align-items:center;gap:6px;font-size:11px;color:#9CA3AF;margin-top:20px;text-align:center;justify-content:center}
+    @media(max-width:700px){.lp{display:none}.rp{width:100%}.login-wrap{max-width:420px}}
+  </style>
+</head>
+<body>
+<div class="login-wrap">
+  <!-- Left branding panel -->
+  <div class="lp">
+    <div class="lp-logo">
+      <div class="lp-logobox"><img src="/static/images/gncn_logo.png" alt="Logo" onerror="this.parentElement.textContent='🌿'"></div>
+      <div class="lp-brand">
+        <span class="lp-b1">Green Naroda</span>
+        <span class="lp-b2">Clean Naroda</span>
+      </div>
+    </div>
+    <div class="lp-main">
+      <div class="lp-tag">Mission Control Center</div>
+      <div class="lp-h">One Platform.<br><span>Every Mission.</span></div>
+      <div class="lp-p">Manage pledges, students, organizations, gallery, events, and news — all in one secure dashboard.</div>
+      <div class="lp-stats">
+        <div class="lp-si"><div class="lp-sv" id="loginPledges">—</div><div class="lp-sl">Pledges</div></div>
+        <div class="lp-si"><div class="lp-sv" id="loginStudents">—</div><div class="lp-sl">Students</div></div>
+        <div class="lp-si"><div class="lp-sv" id="loginOrgs">—</div><div class="lp-sl">Orgs</div></div>
+      </div>
+    </div>
+    <div class="lp-bottom">🔒 Secure access — authorized personnel only</div>
+  </div>
+
+  <!-- Right login form -->
+  <div class="rp">
+    <div class="rp-head">
+      <div class="rp-tag">Admin Login</div>
+      <div class="rp-title">Mission Control</div>
+      <div class="rp-sub">Sign in with your administrator account</div>
+    </div>
+
+    {% if lockout_error %}
+      <div class="alert alert-warning">⚠ {{ lockout_error }}</div>
+    {% elif login_error %}
+      <div class="alert alert-error">✕ {{ login_error }}</div>
+    {% elif messages %}
+      {% for msg in messages %}
+        <div class="alert alert-error">✕ {{ msg }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <form method="post" action="{% url 'admin_panel:login' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}" {% if shake_form %}class="shake-anim"{% endif %}>
+      {% csrf_token %}
+      <div class="fg">
+        <label class="fl" for="email">Email Address</label>
+        <input class="fi" id="email" name="email" type="email" value="{{ email|default:'' }}" required autocomplete="email" placeholder="admin@greennaroda.in">
+      </div>
+      <div class="fg">
+        <label class="fl" for="password">Password</label>
+        <div class="pw-wrap">
+          <input class="fi" id="password" name="password" type="password" required autocomplete="current-password" placeholder="••••••••••••">
+          <button type="button" class="pw-toggle" onclick="togglePw()">👁</button>
+        </div>
+      </div>
+      <button type="submit" class="btn-login">Sign In to Mission Control →</button>
+    </form>
+    <div class="secure-note">🔒 Secured by Django Authentication · Authorized access only</div>
+  </div>
+</div>
+
+<script>
+function togglePw(){
+  const f=document.getElementById('password');
+  f.type = f.type==='password'?'text':'password';
+}
+// Load live stats on login page
+fetch('/api/stats/')
+  .then(r=>r.json())
+  .then(d=>{
+    const fmt = n => n.toLocaleString('en-IN');
+    document.getElementById('loginPledges').textContent = fmt(d.pledges);
+    document.getElementById('loginStudents').textContent = fmt(d.students);
+    document.getElementById('loginOrgs').textContent = fmt(d.organizations);
+  }).catch(()=>{});
+</script>
+</body>
+</html>

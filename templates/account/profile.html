@@ -1,0 +1,90 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "My Profile" %} — Green Naroda{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-earth-50 pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    
+    <div class="md:flex md:items-center md:justify-between mb-8">
+      <div class="flex-1 min-w-0">
+        <h2 class="text-3xl font-playfair font-bold leading-7 text-forest-900 sm:text-4xl sm:truncate">
+          {% trans "My Profile" %}
+        </h2>
+      </div>
+      <div class="mt-4 flex md:mt-0 md:ml-4 space-x-3">
+        <a href="{% url 'accounts:dashboard' %}" class="inline-flex items-center px-4 py-2 border border-earth-300 rounded-md shadow-sm text-sm font-medium text-earth-700 bg-white hover:bg-earth-50 focus:outline-none">
+          {% trans "Back to Dashboard" %}
+        </a>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-sm rounded-2xl border border-earth-100 p-8">
+      <form method="POST" action="{% url 'accounts:profile' %}" class="space-y-6">
+        {% csrf_token %}
+        
+        {% if messages %}
+          {% for message in messages %}
+            <div class="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-md mb-6">
+              <p class="text-sm text-green-700">{{ message }}</p>
+            </div>
+          {% endfor %}
+        {% endif %}
+        
+        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+          <div class="sm:col-span-3">
+            <label for="full_name" class="block text-sm font-medium text-earth-700">
+              {% trans "Full Name" %}
+            </label>
+            <div class="mt-1">
+              <input type="text" name="full_name" id="full_name" value="{{ user.full_name }}" required class="shadow-sm focus:ring-forest-500 focus:border-forest-500 block w-full sm:text-sm border-earth-300 rounded-md px-3 py-2 border">
+            </div>
+          </div>
+          
+          <div class="sm:col-span-3">
+            <label for="email" class="block text-sm font-medium text-earth-700">
+              {% trans "Email Address" %}
+            </label>
+            <div class="mt-1">
+              <input type="email" name="email" id="email" value="{{ user.email }}" disabled class="shadow-sm bg-earth-50 text-earth-500 block w-full sm:text-sm border-earth-300 rounded-md px-3 py-2 border cursor-not-allowed">
+            </div>
+          </div>
+          
+          <div class="sm:col-span-3">
+            <label for="phone" class="block text-sm font-medium text-earth-700">
+              {% trans "Phone Number" %}
+            </label>
+            <div class="mt-1 flex rounded-md shadow-sm">
+              <input type="tel" name="phone" id="phone" value="{{ user.phone }}" class="flex-1 min-w-0 block w-full px-3 py-2 rounded-none rounded-l-md focus:ring-forest-500 focus:border-forest-500 sm:text-sm border-earth-300 border">
+              <span class="inline-flex items-center px-3 rounded-r-md border border-l-0 border-earth-300 bg-earth-50 text-earth-500 sm:text-sm">
+                {% if user.is_phone_verified %}
+                  <span class="text-green-600 font-medium">{% trans "Verified" %}</span>
+                {% else %}
+                  <a href="{% url 'accounts:verify_phone' %}" class="text-forest-600 hover:text-forest-800 font-medium">{% trans "Verify" %}</a>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+          
+          <div class="sm:col-span-3">
+            <label class="block text-sm font-medium text-earth-700">
+              {% trans "Current Role" %}
+            </label>
+            <div class="mt-1">
+              <input type="text" value="{{ user.get_role_display }}" disabled class="shadow-sm bg-earth-50 text-earth-500 block w-full sm:text-sm border-earth-300 rounded-md px-3 py-2 border cursor-not-allowed">
+            </div>
+          </div>
+        </div>
+        
+        <div class="pt-5 flex justify-end">
+          <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-forest-700 hover:bg-forest-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-forest-500">
+            {% trans "Save Changes" %}
+          </button>
+        </div>
+      </form>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

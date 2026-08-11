@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Privacy Policy" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "Privacy Policy" %}</h1>
+  </div>
+</div>
+
+<section class="section bg-gray-50 backdrop-blur-md">
+  <div class="container-site max-w-3xl">
+    <div class="prose text-gray-600 space-y-6">
+      <p>{% trans "Green Naroda • Clean Naroda campaign values your privacy. We only collect the minimal personal data required to register and verify tree planting drives, issue certificates, and support campaign communications." %}</p>
+      <h3 class="font-serif text-xl font-bold text-white mt-6">{% trans "1. Information We Collect" %}</h3>
+      <p>{% trans "We collect your email, full name, phone number, role, and optional profile pictures. For tree logging, we request GPS location coordinates to map and verify the planted saplings." %}</p>
+      <h3 class="font-serif text-xl font-bold text-white mt-6">{% trans "2. How We Use It" %}</h3>
+      <p>{% trans "Your information is used strictly to coordinate drives, notify you of approved trees/photos, issue digital certificates of participation, and update public analytics dashboard tables." %}</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

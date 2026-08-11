@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "My Certificates" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <div class="breadcrumb justify-center mb-4">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "Certificates" %}</span>
+    </div>
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "My Digital Certificates" %}</h1>
+    <p class="mt-2 text-forest-200 text-sm md:text-base max-w-xl mx-auto">
+      {% trans "Download or share your verified credentials of environmental contribution." %}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site max-w-4xl">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal-grid">
+      {% for cert in certificates %}
+        <div class="card p-6 bg-gray-50 border border-gray-150 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 bg-forest-50 text-forest-750 rounded-xl flex items-center justify-center text-xl font-bold mb-4">
+              🎖️
+            </div>
+            <h3 class="font-serif text-lg font-bold text-gray-900 leading-snug mb-1">
+              {{ cert.get_certificate_type_display }}
+            </h3>
+            <span class="text-xs text-saffron-600 font-bold uppercase tracking-wider block mb-4">
+              {% trans "Verification No:" %} {{ cert.certificate_number }}
+            </span>
+            <p class="text-xs text-gray-500 mb-6">{% trans "Issued on:" %} {{ cert.issued_at|date:"F d, Y" }}</p>
+          </div>
+          <div class="flex gap-2 w-full pt-4 border-t border-gray-200">
+            <!-- Simulated Certificate PDF / Image Generator -->
+            <a href="{% url 'certificates:verify' cert.certificate_number %}" class="btn-outline-dark text-xs flex-1 text-center justify-center" style="padding: 0.45rem 1rem;">
+              {% trans "Verify Authenticity" %} &rarr;
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-span-full text-center py-16 text-gray-500">
+          <span class="text-4xl block mb-3">🏅</span>
+          <p class="text-sm font-semibold">{% trans "No certificates issued yet." %}</p>
+          <p class="text-xs text-gray-400 mt-1">{% trans "Complete events or log verified plantings to earn certificates." %}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

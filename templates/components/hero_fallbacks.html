@@ -1,0 +1,90 @@
+{% load i18n static %}
+
+<!-- Fallback Slide 1 -->
+<div class="swiper-slide relative overflow-hidden">
+  <div class="absolute inset-0 z-10" style="background: rgba(0,70,35,0.55);"></div>
+  <picture>
+    <img src="{% static 'images/default/hero-1.webp' %}" alt="Green Naroda" class="absolute inset-0 w-full h-full object-cover z-0 slide-img" loading="eager">
+  </picture>
+  <div class="absolute inset-0 z-20 flex flex-col justify-center">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="max-w-4xl">
+        <h1 class="anim-title text-[64px] md:text-[80px] font-bold font-serif leading-[1.1] text-white mb-4 tracking-tight drop-shadow-lg">
+          {% trans "CELEBRATING INDIA'S 80TH INDEPENDENCE YEAR" %}
+        </h1>
+        <h2 class="anim-subtitle text-2xl md:text-3xl font-semibold text-[#4ade80] mb-6 drop-shadow-md">
+          {% trans "PLANTING 28,855 TREES" %}
+        </h2>
+        <p class="anim-desc text-[20px] text-gray-100 mb-10 max-w-2xl leading-relaxed drop-shadow-md">
+          {% trans "Join the official Green Naroda • Clean Naroda mission. Let us build a greener and cleaner future for our upcoming generations." %}
+        </p>
+        <div class="anim-btns flex flex-col sm:flex-row items-center gap-4">
+          <button onclick="openPledgePopup()" class="bg-[#15803d] hover:bg-[#166534] text-white text-[16px] font-bold px-8 py-3.5 rounded transition-colors shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center">
+            {% trans "Take the Pledge" %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fallback Slide 2 -->
+<div class="swiper-slide relative overflow-hidden">
+  <div class="absolute inset-0 z-10" style="background: rgba(210,90,0,0.45);"></div>
+  <picture>
+    <img src="{% static 'images/default/hero-2.webp' %}" alt="Clean Naroda" class="absolute inset-0 w-full h-full object-cover z-0 slide-img" loading="lazy">
+  </picture>
+  <div class="absolute inset-0 z-20 flex flex-col justify-center">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="max-w-4xl">
+        <h1 class="anim-title text-[64px] md:text-[80px] font-bold font-serif leading-[1.1] text-white mb-4 tracking-tight drop-shadow-lg">
+          {% trans "A CLEANER NARODA BEGINS WITH YOU" %}
+        </h1>
+        <h2 class="anim-subtitle text-2xl md:text-3xl font-semibold text-[#f97316] mb-6 drop-shadow-md">
+          {% trans "COMMUNITY CLEANLINESS DRIVES" %}
+        </h2>
+        <p class="anim-desc text-[20px] text-gray-100 mb-10 max-w-2xl leading-relaxed drop-shadow-md">
+          {% trans "Participate in local cleanliness campaigns to ensure waste segregation and maintain public hygiene." %}
+        </p>
+        <div class="anim-btns flex flex-col sm:flex-row items-center gap-4">
+          <a href="{% url 'cms:clean_naroda' %}" class="bg-[#ea580c] hover:bg-[#c2410c] text-white text-[16px] font-bold px-8 py-3.5 rounded transition-colors shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center">
+            {% trans "Learn More" %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fallback Slide 3 to 6 -->
+{% for i in '3456'|make_list %}
+<div class="swiper-slide relative overflow-hidden">
+  <div class="absolute inset-0 z-10" style="background: rgba(0,70,35,0.55);"></div>
+  <picture>
+    <img src="{% static 'images/default/hero-' %}{{ i }}.webp" alt="Green Naroda" class="absolute inset-0 w-full h-full object-cover z-0 slide-img" loading="lazy">
+  </picture>
+  <div class="absolute inset-0 z-20 flex flex-col justify-center">
+    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div class="max-w-4xl">
+        <h1 class="anim-title text-[64px] md:text-[80px] font-bold font-serif leading-[1.1] text-white mb-4 tracking-tight drop-shadow-lg">
+          {% trans "EVERY SAPLING MATTERS" %}
+        </h1>
+        <h2 class="anim-subtitle text-2xl md:text-3xl font-semibold text-[#4ade80] mb-6 drop-shadow-md">
+          {% trans "MAKE A DIFFERENCE TODAY" %}
+        </h2>
+        <p class="anim-desc text-[20px] text-gray-100 mb-10 max-w-2xl leading-relaxed drop-shadow-md">
+          {% trans "Join thousands of citizens who have already registered to adopt and care for a tree in Naroda." %}
+        </p>
+        <div class="anim-btns flex flex-col sm:flex-row items-center gap-4">
+          <button onclick="openPledgePopup()" class="bg-[#15803d] hover:bg-[#166534] text-white text-[16px] font-bold px-8 py-3.5 rounded transition-colors shadow-lg flex items-center gap-2 w-full sm:w-auto justify-center">
+            {% trans "Take the Pledge" %}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}

@@ -1,0 +1,253 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Mission Overview</div>
+    <div class="ph-sub">Green Naroda · Clean Naroda — Live Campaign Dashboard</div>
+  </div>
+  <div class="ph-actions">
+    <a href="{% url 'admin_panel:export_pledges_excel' %}" class="btn btn-outline btn-sm">⬇ Export Pledges</a>
+    <a href="{% url 'admin_panel:analytics' %}" class="btn btn-primary btn-sm">📈 Analytics</a>
+  </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon green">💚</div>
+    </div>
+    <div class="stat-val">{{ total_pledges|default:0 }}</div>
+    <div class="stat-lbl">Pledges Taken</div>
+    <div class="stat-trend up">↑ Growing daily</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon blue">🎓</div>
+    </div>
+    <div class="stat-val">{{ total_students|default:0 }}</div>
+    <div class="stat-lbl">Student Registrations</div>
+    <div class="stat-trend up">↑ Competition entries</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon gold">🏢</div>
+    </div>
+    <div class="stat-val">{{ total_orgs|default:0 }}</div>
+    <div class="stat-lbl">Organizations</div>
+    <div class="stat-trend warn">{{ approved_orgs }} approved</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-top">
+      <div class="stat-icon red">🖼️</div>
+    </div>
+    <div class="stat-val">{{ total_photos|default:0 }}</div>
+    <div class="stat-lbl">Gallery Photos</div>
+    {% if pending_photos > 0 %}
+    <div class="stat-trend warn">⚠ {{ pending_photos }} pending review</div>
+    {% else %}
+    <div class="stat-trend up">✓ All reviewed</div>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="section-title" id="quickActions">Quick Actions</div>
+<div class="qa-grid">
+  <a href="{% url 'admin_panel:dashboard' %}?add_hero=1" class="qa-btn" onclick="openAddModal()">
+    <span class="ic">📸</span>
+    <span class="lbl">Add Hero Slide</span>
+  </a>
+  <a href="{% url 'admin_panel:gallery' %}" class="qa-btn">
+    <span class="ic">🖼️</span>
+    <span class="lbl">Upload Gallery</span>
+  </a>
+  <a href="{% url 'admin_panel:leadership_photos' %}" class="qa-btn">
+    <span class="ic">👤</span>
+    <span class="lbl">Add Leadership</span>
+  </a>
+  <a href="{% url 'admin_panel:leadership_photos' %}" class="qa-btn">
+    <span class="ic">👥</span>
+    <span class="lbl">Add Co-Convener</span>
+  </a>
+  <a href="{% url 'admin_panel:news' %}" class="qa-btn">
+    <span class="ic">📰</span>
+    <span class="lbl">Add News</span>
+  </a>
+  <a href="{% url 'admin_panel:events' %}" class="qa-btn">
+    <span class="ic">📅</span>
+    <span class="lbl">Add Event</span>
+  </a>
+  <a href="{% url 'admin_panel:associate_orgs' %}" class="qa-btn">
+    <span class="ic">🤝</span>
+    <span class="lbl">Add Assoc Org</span>
+  </a>
+  <a href="{% url 'admin_panel:org_types' %}" class="qa-btn">
+    <span class="ic">🏷️</span>
+    <span class="lbl">Add Org Type</span>
+  </a>
+</div>
+
+<!-- Charts + Activity -->
+<div class="grid-2" style="margin-bottom:24px">
+  <div class="card">
+    <div class="section-title">Pledge Registrations — Last 30 Days</div>
+    <div class="chart-wrap"><canvas id="pledgeChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-title">Mission Progress</div>
+    <div class="ring-wrap">
+      <div style="position:relative;display:inline-block">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="ring-track" cx="80" cy="80" r="65" stroke-width="10"></circle>
+          <circle class="ring-fill" cx="80" cy="80" r="65" stroke-width="10" transform="rotate(-90 80 80)" id="missionRing" style="stroke-dasharray:{{ total_pledges|default:0 }};stroke-dashoffset:{{ total_pledges|default:0 }}"></circle>
+        </svg>
+        <div class="ring-center">
+          <div class="ring-pct" id="missionPct">—</div>
+          <div class="ring-lbl">COMPLETE</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:28px;margin-top:16px;text-align:center">
+        <div><div style="font-size:20px;font-weight:800;color:var(--green)">{{ total_pledges|default:0 }}</div><div style="font-size:10px;color:var(--text3);font-weight:600">Pledges</div></div>
+        <div><div style="font-size:20px;font-weight:800;color:var(--gold)">{{ total_events|default:0 }}</div><div style="font-size:10px;color:var(--text3);font-weight:600">Events</div></div>
+        <div><div style="font-size:20px;font-weight:800;color:var(--text3)">28,855</div><div style="font-size:10px;color:var(--text3);font-weight:600">Target</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ward Chart + Recent Pledges -->
+<div class="grid-2" style="margin-bottom:24px">
+  <div class="card">
+    <div class="section-title">Organization-wise Participation (Top 8)</div>
+    <div class="chart-wrap"><canvas id="wardChart"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="section-title">Recent Pledges</div>
+    {% for p in recent_pledges %}
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #F3F4F6">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text)">{{ p.full_name }}</div>
+        <div style="font-size:11px;color:var(--text3);margin-top:1px">{{ p.mobile_number }} · {{ p.organization.name|default:"—" }}</div>
+      </div>
+      <div style="text-align:right">
+        <span class="badge {% if p.is_approved %}badge-green{% else %}badge-gold{% endif %}">
+          {% if p.is_approved %}Approved{% else %}Pending{% endif %}
+        </span>
+        <div style="font-size:10px;color:var(--text3);margin-top:3px">{{ p.created_at|date:"d M, H:i" }}</div>
+      </div>
+    </div>
+    {% empty %}
+    <div style="text-align:center;padding:32px;color:var(--text3)">No pledges yet</div>
+    {% endfor %}
+    <div class="mt-4">
+      <a href="{% url 'admin_panel:pledges' %}" class="btn btn-outline btn-sm w-full" style="justify-content:center">View All Pledges →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Upcoming Events -->
+{% if upcoming_events %}
+<div class="card">
+  <div class="section-title">Upcoming Events</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px">
+    {% for ev in upcoming_events %}
+    <div style="background:#F9FAFB;border:1px solid var(--border);border-radius:10px;padding:16px;position:relative;overflow:hidden">
+      <div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--green)"></div>
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px">{{ ev.title }}</div>
+      <div style="font-size:11px;color:var(--text3)">📍 {{ ev.location_name }}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">📅 {{ ev.starts_at|date:"d M Y, g:i A" }}</div>
+      <span class="badge badge-green mt-2">{{ ev.get_status_display }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#6B7280';
+
+// Pledge 30-day chart
+const days = {{ chart_days|safe }};
+const counts = {{ chart_counts|safe }};
+new Chart(document.getElementById('pledgeChart'), {
+  type: 'line',
+  data: {
+    labels: days,
+    datasets: [{
+      label: 'Pledges',
+      data: counts,
+      borderColor: '#0B5D2A',
+      backgroundColor: 'rgba(11,93,42,.08)',
+      borderWidth: 2.5,
+      fill: true,
+      tension: .45,
+      pointBackgroundColor: '#0B5D2A',
+      pointRadius: 3,
+      pointHoverRadius: 5,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#F3F4F6' }, ticks: { maxTicksLimit: 8 } },
+      y: { grid: { color: '#F3F4F6' }, ticks: { precision: 0 } }
+    }
+  }
+});
+
+// Ward bar chart
+const wLabels = {{ ward_labels|safe }};
+const wCounts = {{ ward_counts|safe }};
+if (document.getElementById('wardChart')) {
+  new Chart(document.getElementById('wardChart'), {
+    type: 'bar',
+    data: {
+      labels: wLabels,
+      datasets: [{
+        label: 'Pledges',
+        data: wCounts,
+        backgroundColor: 'rgba(11,93,42,.18)',
+        borderColor: '#0B5D2A',
+        borderWidth: 2,
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { maxRotation: 30 } },
+        y: { grid: { color: '#F3F4F6' }, ticks: { precision: 0 } }
+      }
+    }
+  });
+}
+
+// Mission ring animation
+(function() {
+  const total = {{ total_pledges|default:0 }};
+  const target = 28855;
+  const pct = Math.min(100, Math.round((total / target) * 100));
+  document.getElementById('missionPct').textContent = pct + '%';
+  const circumference = 2 * Math.PI * 65;
+  const ring = document.getElementById('missionRing');
+  if (ring) {
+    ring.style.strokeDasharray = circumference;
+    setTimeout(() => {
+      ring.style.strokeDashoffset = circumference * (1 - pct / 100);
+    }, 300);
+  }
+})();
+</script>
+{% endblock %}

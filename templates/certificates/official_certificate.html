@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate of Participation</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+        body {
+            font-family: 'Times New Roman', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fdfcf8;
+            color: #0f172a;
+            width: 1122px; /* A4 landscape width at 96 DPI */
+            height: 793px; /* A4 landscape height at 96 DPI */
+            position: relative;
+        }
+        .border-green {
+            position: absolute;
+            top: 20px; left: 20px; right: 20px; bottom: 20px;
+            border: 6px solid #16a34a;
+            border-radius: 10px;
+        }
+        .border-gold {
+            position: absolute;
+            top: 32px; left: 32px; right: 32px; bottom: 32px;
+            border: 2px solid #eab308;
+            border-radius: 6px;
+        }
+        .content {
+            position: absolute;
+            top: 60px; left: 60px; right: 60px; bottom: 60px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .header-title {
+            font-size: 40px;
+            font-weight: bold;
+            color: #166534;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+        .header-subtitle {
+            font-size: 24px;
+            color: #ea580c;
+            margin-bottom: 30px;
+            font-family: 'Helvetica', sans-serif;
+        }
+        .cert-awarded {
+            font-size: 20px;
+            color: #374151;
+            margin-bottom: 20px;
+            font-family: 'Helvetica', sans-serif;
+        }
+        .participant-name {
+            font-size: 48px;
+            font-weight: bold;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+        .organization {
+            font-size: 18px;
+            color: #475569;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .official-text {
+            font-size: 22px;
+            color: #166534;
+            max-width: 800px;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+        .cert-id {
+            font-size: 14px;
+            color: #94a3b8;
+            font-family: monospace;
+            margin-bottom: 40px;
+        }
+        .footer {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 0 50px;
+            box-sizing: border-box;
+            position: absolute;
+            bottom: 50px;
+        }
+        .date-section, .signature-section {
+            text-align: center;
+            width: 250px;
+        }
+        .date-val, .signature-val {
+            font-size: 20px;
+            color: #166534;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .line {
+            border-bottom: 2px solid #cbd5e1;
+            margin-bottom: 5px;
+        }
+        .label {
+            font-size: 16px;
+            color: #64748b;
+            font-family: 'Helvetica', sans-serif;
+        }
+        .qr-code {
+            width: 80px;
+            height: 80px;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .amc-stamp {
+            position: absolute;
+            width: 100px;
+            opacity: 0.88;
+            right: 120px;
+            bottom: 120px;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <div class="border-green"></div>
+    <div class="border-gold"></div>
+
+    {% if amc_stamp_url %}
+    <img src="{{ amc_stamp_url }}" class="amc-stamp" alt="AMC Stamp">
+    {% endif %}
+
+    <div class="content">
+        <div class="header-title">CERTIFICATE OF PARTICIPATION</div>
+        <div class="header-subtitle">Green Naroda • Clean Naroda Mission</div>
+
+        <div class="cert-awarded">This is to certify that</div>
+        
+        <div class="participant-name">{{ pledge.full_name }}</div>
+        <div class="organization">
+            Associate Organization: {{ pledge.organization.name|default:"Citizen Participant" }}
+        </div>
+
+        <div class="official-text">
+            This certificate is proudly awarded to {{ pledge.full_name }} for taking the official Green Naroda • Clean Naroda Pledge and committing to support tree plantation, environmental protection, cleanliness, and sustainable community participation for a greener and healthier Ahmedabad.
+        </div>
+        
+        <div class="cert-id">Certificate ID: {{ pledge.certificate_id }}</div>
+    </div>
+
+    <div class="footer">
+        <div class="date-section">
+            <div class="date-val">{{ pledge.generated_at|date:"d F Y" }}</div>
+            <div class="line"></div>
+            <div class="label">Date</div>
+        </div>
+
+        {% if qr_code_url %}
+        <img src="{{ qr_code_url }}" class="qr-code" alt="QR Code">
+        {% endif %}
+
+        <div class="signature-section">
+            <div class="signature-val" style="font-size: 14px;">Ahmedabad Municipal Corporation<br>Green Naroda • Clean Naroda</div>
+            <div class="line" style="margin-top: 5px;"></div>
+            <div class="label">Official Campaign</div>
+        </div>
+    </div>
+</body>
+</html>

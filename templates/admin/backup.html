@@ -1,0 +1,28 @@
+{% extends "unfold/layouts/base.html" %}
+{% load i18n unfold %}
+
+{% block content %}
+<div class="px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold font-serif text-gray-900">System Backup</h1>
+        <p class="mt-2 text-sm text-gray-600">Generate and download a full snapshot of the platform database.</p>
+    </div>
+
+    <div class="bg-white shadow-sm rounded-lg border border-gray-200 overflow-hidden">
+        <div class="px-4 py-5 sm:p-6">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Download Database Backup</h3>
+            <div class="mt-2 max-w-xl text-sm text-gray-500">
+                <p>This will execute a safe data dump of the entire PostgreSQL database including users, pledges, CMS pages, certificates, and settings. The file will be provided as a compressed .zip archive containing the JSON dump.</p>
+            </div>
+            <div class="mt-5">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    {% component "unfold/components/button.html" with submit=1 variant="primary" %}
+                        <span class="material-symbols-outlined mr-2 text-sm">download</span> {% translate 'Generate & Download Backup' %}
+                    {% endcomponent %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

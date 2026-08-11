@@ -1,0 +1,125 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "Plant & Log Tree" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <div class="breadcrumb justify-center mb-4">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <a href="{% url 'trees:list' %}">{% trans "Trees" %}</a>
+      <span>/</span>
+      <span>{% trans "Plant Tree" %}</span>
+    </div>
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "Log Tree Plantation" %}</h1>
+    <p class="mt-2 text-forest-200 text-sm md:text-base max-w-xl mx-auto">
+      {% trans "Add a newly planted sapling to the campaign map ledger. Coordinates will be logged." %}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site max-w-xl">
+    <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm reveal">
+      
+      <form method="POST" action="{% url 'trees:plant' %}" class="space-y-5">
+        {% csrf_token %}
+        
+        <div>
+          <label for="species" class="form-label">{% trans "Tree Species" %}</label>
+          <select id="species" name="species" required class="form-input">
+            <option value="">{% trans "Select Species" %}</option>
+            {% for sp in species_list %}
+              <option value="{{ sp.id }}">{{ sp.name }} ({{ sp.scientific_name }})</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label for="event" class="form-label">{% trans "Associated Planting Drive / Event" %} ({% trans "Optional" %})</label>
+          <select id="event" name="event" class="form-input">
+            <option value="">{% trans "Independent Planting" %}</option>
+            {% for ev in events %}
+              <option value="{{ ev.id }}">{{ ev.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">{% trans "GPS Coordinates" %}</label>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <input type="text" id="latitude" name="latitude" required readonly placeholder="{% trans 'Latitude' %}" class="form-input bg-gray-100" />
+            </div>
+            <div>
+              <input type="text" id="longitude" name="longitude" required readonly placeholder="{% trans 'Longitude' %}" class="form-input bg-gray-100" />
+            </div>
+          </div>
+          <button type="button" onclick="getLocation()" class="mt-2 text-xs text-forest-750 font-bold hover:text-forest-900 inline-flex items-center gap-1">
+            📍 {% trans "Retrieve Current Location (GPS)" %}
+          </button>
+        </div>
+
+        <div>
+          <label for="location_name" class="form-label">{% trans "Location Landmark Description" %}</label>
+          <input type="text" id="location_name" name="location_name" placeholder="{% trans 'E.g. Near Ward Office, Naroda Canal Road' %}" class="form-input" />
+        </div>
+
+        <div>
+          <label for="ward" class="form-label">{% trans "Ward Name / Number" %}</label>
+          <input type="text" id="ward" name="ward" required placeholder="{% trans 'E.g. Naroda East' %}" class="form-input" />
+        </div>
+
+        <div>
+          <label for="image_url" class="form-label">{% trans "Initial Plant Image URL" %} ({% trans "Optional" %})</label>
+          <input type="url" id="image_url" name="image_url" placeholder="https://images.unsplash.com/photo-example" class="form-input" />
+        </div>
+
+        <div>
+          <label for="notes" class="form-label">{% trans "Caretaker Notes" %}</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="{% trans 'Special soil types or protection fence description...' %}" class="form-input"></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary w-full justify-center">
+          {% trans "Submit Sapling Ledger Entry" %}
+        </button>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<script>
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  document.getElementById("latitude").value = position.coords.latitude.toFixed(6);
+  document.getElementById("longitude").value = position.coords.longitude.toFixed(6);
+}
+
+function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      alert("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      alert("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      alert("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+      alert("An unknown error occurred.");
+      break;
+  }
+}
+</script>
+{% endblock %}

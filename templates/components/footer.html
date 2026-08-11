@@ -1,0 +1,101 @@
+{% load i18n static %}
+<footer class="footer-premium pt-20 font-sans">
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16 pb-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+
+      {# Column 1 — Brand & Social #}
+      <div class="lg:col-span-1">
+        <div class="flex items-center gap-3 mb-6 notranslate" translate="no">
+          <img src="{% static 'images/logo.png' %}" alt="Green Naroda Clean Naroda Logo" class="h-24 w-auto object-contain">
+          <div>
+            <div class="font-serif font-bold text-[22px] text-[#22C55E] leading-tight">Green Naroda</div>
+            <div class="font-serif font-bold text-[22px] text-[#F59E0B] leading-tight">Clean Naroda</div>
+            <div class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mt-0.5">28,855 Trees for Tomorrow</div>
+          </div>
+        </div>
+        <p class="text-gray-600 text-sm leading-relaxed mb-6 max-w-xs">
+          A Pratham Priority Club and My Naroda Samiti initiative, with the support of BJP Naroda, for a cleaner, greener and sustainable Naroda.
+        </p>
+        <div class="flex gap-2">
+          <a href="https://www.facebook.com/mynaroda" target="_blank" rel="noopener"
+             class="w-9 h-9 rounded-full bg-gray-100 hover:bg-[#22C55E] text-gray-500 hover:text-white flex items-center justify-center transition-all">
+            <i class="fa-brands fa-facebook-f text-xs"></i>
+          </a>
+          <a href="https://www.instagram.com/mynaroda/" target="_blank" rel="noopener"
+             class="w-9 h-9 rounded-full bg-gray-100 hover:bg-[#22C55E] text-gray-500 hover:text-white flex items-center justify-center transition-all">
+            <i class="fa-brands fa-instagram text-xs"></i>
+          </a>
+        </div>
+      </div>
+
+      {# Column 2 — Quick Links #}
+      <div>
+        <h3 class="text-[#0F172A] font-bold text-sm mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-leaf text-[#22C55E] text-xs"></i> Quick Links
+        </h3>
+        <ul class="space-y-3">
+          <li><a href="{% url 'cms:home' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Home</a></li>
+          <li><a href="{% url 'cms:mission' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Mission</a></li>
+          <li><a href="{% url 'cms:progress' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Campaign Progress</a></li>
+          <li><a href="{% url 'gallery:list' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Gallery</a></li>
+          <li><a href="{% url 'student_portal' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Student Corner</a></li>
+          <li><a href="{% url 'news:list' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> News</a></li>
+
+        </ul>
+      </div>
+
+      {# Column 3 — Important Links #}
+      <div>
+        <h3 class="text-[#0F172A] font-bold text-sm mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-leaf text-[#22C55E] text-xs"></i> Important Links
+        </h3>
+        <ul class="space-y-3">
+          <li><a href="{% url 'events:list' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Events</a></li>
+
+          <li><a href="{% url 'cms:contact' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Contact Us</a></li>
+          <li><a href="{% url 'competitions:registration' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Organization Registration</a></li>
+          <li><a href="{% url 'cms:privacy' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Privacy Policy</a></li>
+          <li><a href="{% url 'cms:terms' %}" class="text-sm text-gray-600 hover:text-[#0E7A37] transition-colors flex items-center gap-2"><i class="fa-solid fa-chevron-right text-[8px] text-[#22C55E]"></i> Terms &amp; Conditions</a></li>
+        </ul>
+      </div>
+
+      {# Column 4 — QR & Newsletter #}
+      <div>
+        <h3 class="text-[#0F172A] font-bold text-sm mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-leaf text-[#22C55E] text-xs"></i> Scan to Pledge
+        </h3>
+        <div class="bg-white rounded-2xl p-4 mb-6 w-fit shadow-lg border border-gray-100">
+          <div class="w-24 h-24 bg-[#F0FDF4] rounded-xl flex items-center justify-center text-[#0E7A37]">
+            <i class="fa-solid fa-qrcode text-5xl"></i>
+          </div>
+          <p class="text-center text-[10px] font-bold text-[#6B7280] mt-2 uppercase tracking-wider">Scan &amp; Join</p>
+        </div>
+        <div>
+          <h4 class="text-[#0F172A] font-bold text-xs mb-3 uppercase tracking-wider">Newsletter</h4>
+          <p class="text-gray-500 text-xs mb-3 leading-relaxed">Stay updated with campaign news and events.</p>
+          <form class="flex">
+            <input type="email" placeholder="Your email address"
+                   class="flex-1 bg-gray-50 text-[#0F172A] placeholder-gray-400 border border-gray-200 rounded-l-xl px-4 py-2.5 text-xs outline-none focus:border-[#22C55E] transition-colors">
+            <button type="submit" class="bg-[#22C55E] hover:bg-[#16A34A] text-white px-4 py-2.5 rounded-r-xl transition-colors flex-shrink-0">
+              <i class="fa-solid fa-paper-plane text-xs"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {# Bottom Bar #}
+  <div class="border-t border-gray-100">
+    <div class="max-w-[1440px] mx-auto px-8 lg:px-16 py-5 flex flex-col md:flex-row justify-between items-center gap-3">
+      <p class="text-gray-500 text-xs">
+        &copy; 2026 Green Naroda &bull; Clean Naroda Campaign. All Rights Reserved.
+      </p>
+      <p class="text-gray-500 text-xs flex items-center gap-1.5">
+        Design by: <span class="text-gray-700 font-semibold">Chargex Innovation LLP</span>
+        <i class="fa-solid fa-leaf text-[#22C55E]"></i>
+      </p>
+    </div>
+  </div>
+</footer>

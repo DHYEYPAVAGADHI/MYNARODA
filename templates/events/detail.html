@@ -1,0 +1,102 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ event.title }} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header-premium">
+  <div class="container-site relative z-10">
+    <div class="breadcrumb-premium">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <a href="{% url 'events:list' %}">{% trans "Events" %}</a>
+      <span>/</span>
+      <span>{% trans "Detail" %}</span>
+    </div>
+    <h1 class="max-w-3xl mx-auto" style="font-size: clamp(26px, 4vw, 40px);">{{ event.title }}</h1>
+    <p class="page-header-sub">
+      {{ event.starts_at|date:"F d, Y H:i" }} &ndash; {{ event.ends_at|date:"H:i" }}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      
+      <!-- Event Information -->
+      <div class="lg:col-span-2 space-y-8 reveal">
+        <div class="prose max-w-none text-gray-700 leading-relaxed">
+          <h3 class="font-serif text-2xl font-bold text-forest-950 mb-4">{% trans "About this Drive" %}</h3>
+          <p class="text-base whitespace-pre-line">{{ event.description }}</p>
+        </div>
+
+        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div>
+            <h5 class="text-xs text-gray-400 uppercase tracking-wider font-semibold">{% trans "Event Organiser" %}</h5>
+            <p class="text-sm font-semibold text-gray-800 mt-1">{{ event.organiser.full_name|default:_("Green Campaign Committee") }}</p>
+          </div>
+          <div>
+            <h5 class="text-xs text-gray-400 uppercase tracking-wider font-semibold">{% trans "Drive Target Goal" %}</h5>
+            <p class="text-sm font-semibold text-gray-800 mt-1">{{ event.trees_target }} {% trans "Trees Planted Target" %}</p>
+          </div>
+          <div>
+            <h5 class="text-xs text-gray-400 uppercase tracking-wider font-semibold">{% trans "Status" %}</h5>
+            <span class="badge badge-saffron mt-1">{{ event.get_status_display }}</span>
+          </div>
+          <div>
+            <h5 class="text-xs text-gray-400 uppercase tracking-wider font-semibold">{% trans "Location Desk" %}</h5>
+            <p class="text-sm font-semibold text-gray-800 mt-1">{{ event.location_name }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registration Box -->
+      <div class="space-y-6 reveal">
+        <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm text-center">
+          <h4 class="font-serif text-xl font-bold text-forest-950 mb-2">{% trans "Volunteer spots" %}</h4>
+          
+          <div class="my-6">
+            <span class="text-4xl font-serif font-extrabold text-forest-750">{{ registration_count }}</span>
+            <span class="text-gray-400 text-lg">/ {{ event.max_volunteers|default:_("Unlimited") }}</span>
+            <p class="text-xs text-gray-500 mt-1">{% trans "registered volunteers" %}</p>
+          </div>
+
+          <!-- Registration Form -->
+          {% if request.user.is_authenticated %}
+            <form method="POST" action="{% url 'events:register' event.slug %}">
+              {% csrf_token %}
+              {% if is_registered %}
+                <input type="hidden" name="action" value="cancel" />
+                <button type="submit" class="w-full py-3 px-4 rounded-xl text-sm font-semibold text-red-600 border border-red-200 hover:bg-red-50 transition-colors">
+                  {% trans "Cancel Registration" %}
+                </button>
+              {% else %}
+                <input type="hidden" name="action" value="register" />
+                {% if is_full %}
+                  <button type="button" disabled class="w-full py-3 px-4 rounded-xl text-sm font-semibold text-gray-400 bg-gray-200 cursor-not-allowed">
+                    {% trans "Event Full" %}
+                  </button>
+                {% else %}
+                  <button type="submit" class="btn-primary w-full justify-center">
+                    {% trans "Register as Volunteer" %}
+                  </button>
+                {% endif %}
+              {% endif %}
+            </form>
+          {% else %}
+            <a href="{% url 'account_login' %}?next={{ request.path }}" class="btn-primary w-full justify-center">
+              {% trans "Login to Join Drive" %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

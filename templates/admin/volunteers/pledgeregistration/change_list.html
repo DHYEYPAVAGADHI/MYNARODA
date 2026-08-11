@@ -1,0 +1,23 @@
+{% extends "unfold/change_list.html" %}
+
+{% block object-tools %}
+<div class="mb-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+        <h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Total Pledges</h4>
+        <p class="text-3xl font-bold text-gray-900 dark:text-white">5,231</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+        <h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Today</h4>
+        <p class="text-3xl font-bold text-green-600 dark:text-green-400">384</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+        <h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Emails Sent</h4>
+        <p class="text-3xl font-bold text-blue-600 dark:text-blue-400">5,231</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-5 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+        <h4 class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">WhatsApp Sent</h4>
+        <p class="text-3xl font-bold text-emerald-600 dark:text-emerald-400">5,228</p>
+    </div>
+</div>
+{{ block.super }}
+{% endblock %}

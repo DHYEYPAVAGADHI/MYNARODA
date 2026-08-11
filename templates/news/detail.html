@@ -1,0 +1,68 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{{ article.title }} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="page-header-premium">
+  <div class="container-site relative z-10">
+    <div class="breadcrumb-premium">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <a href="{% url 'news:list' %}">{% trans "News" %}</a>
+      <span>/</span>
+      <span>{% trans "Article" %}</span>
+    </div>
+    <h1 class="max-w-3xl mx-auto" style="font-size: clamp(26px, 4vw, 40px);">{{ article.title }}</h1>
+    <p class="page-header-sub">
+      {{ article.published_at|date:"F d, Y" }} &bull; {{ article.category.name }}
+    </p>
+  </div>
+</div>
+
+<section class="section bg-white">
+  <div class="container-site">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      
+      <!-- Article Content -->
+      <div class="lg:col-span-2 reveal">
+        <div class="prose max-w-none text-gray-700 leading-relaxed space-y-6">
+          <p class="text-lg font-medium text-gray-900 border-l-4 border-forest-600 pl-4 py-1">
+            {{ article.summary }}
+          </p>
+          <div class="text-base whitespace-pre-line mt-6">
+            {{ article.content }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Articles Sidebar -->
+      <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm reveal">
+        <h3 class="font-serif text-xl font-bold text-forest-950 mb-6 border-b border-gray-200 pb-4">
+          {% trans "Recent Updates" %}
+        </h3>
+        <ul class="space-y-6">
+          {% for item in recent_articles %}
+            <li>
+              <span class="text-xs text-[#FF7500] font-bold uppercase tracking-wider block mb-1">{{ item.category.name }}</span>
+              <h5 class="text-sm font-semibold text-gray-800 leading-snug">
+                <a href="{% url 'news:detail' item.slug %}" class="hover:text-forest-750">{{ item.title }}</a>
+              </h5>
+              <span class="text-xs text-gray-400 block mt-1">{{ item.published_at|date:"M d, Y" }}</span>
+            </li>
+          {% empty %}
+            <li class="text-center py-6 text-gray-500 text-sm">
+              {% trans "No other updates logged." %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,525 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Participate in {{ category_name }} | Student Portal{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="relative bg-[#F9FBF9] pt-32 pb-24 min-h-screen">
+  <div class="max-w-3xl mx-auto px-4">
+
+    <div class="mb-8">
+      <a href="{% url 'student_portal' %}"
+        class="text-gray-500 hover:text-[#0E7A37] flex items-center gap-2 mb-6 font-semibold transition-colors">
+        <i class="fa-solid fa-arrow-left"></i> Back to Portal
+      </a>
+      <h2 class="text-3xl font-serif font-bold text-[#053B25] mb-2">Student Participation Form</h2>
+      <p class="text-gray-500">Green Naroda &bull; Clean Naroda Mission</p>
+    </div>
+
+    <div class="bg-white rounded-3xl p-8 lg:p-12 shadow-xl border border-gray-100">
+
+      <!-- ─── FORM ──────────────────────────────────────────────────────── -->
+      <form id="spForm" method="post" enctype="multipart/form-data">
+
+        <!-- Category badge -->
+        <div class="mb-10 bg-green-50 border border-green-200 p-5 rounded-2xl">
+          <p class="text-xs font-bold text-green-700 uppercase tracking-widest mb-1">Selected Category</p>
+          <p class="text-xl font-serif font-bold text-gray-900">{{ category_name }}</p>
+          <input type="hidden" name="competition_type" value="{{ category_value }}">
+        </div>
+
+        <!-- ── STEP 1: Student Details ─────────────────────────────────── -->
+        <div class="mb-12">
+          <h3 class="text-[#053B25] text-xl font-bold mb-6 flex items-center gap-3 border-b pb-4">
+            <span class="w-8 h-8 rounded-full bg-[#0E7A37] text-white flex items-center justify-center text-sm">1</span>
+            Student Details
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Student Name *</label>
+              <input type="text" name="student_name" required
+                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-green-400 transition-all">
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">Parent / Guardian Name *</label>
+              <input type="text" name="parent_name" required
+                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-green-400 transition-all">
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="block text-sm font-bold text-gray-700 mb-2">Guardian Mobile Number (10 digits) *</label>
+              <div class="relative">
+                <span class="absolute left-4 top-3.5 text-gray-500 font-bold select-none">+91</span>
+                <input type="tel" id="sp_mobile" name="guardian_mobile" pattern="[0-9]{10}" maxlength="10" required
+                  placeholder="Enter 10-digit mobile number"
+                  class="w-full pl-12 pr-12 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-green-400 transition-all">
+                <div id="sp_mobile_icon" class="absolute right-4 top-3.5 hidden">
+                  <i id="sp_mobile_ok" class="fa-solid fa-circle-check text-green-500 text-xl hidden"></i>
+                  <i id="sp_mobile_err" class="fa-solid fa-circle-xmark text-red-500 text-xl hidden"></i>
+                  <i id="sp_mobile_loading" class="fa-solid fa-spinner fa-spin text-gray-400 text-xl hidden"></i>
+                </div>
+              </div>
+              <p id="sp_mobile_errmsg"
+                class="hidden mt-2 text-sm text-red-600 font-semibold bg-red-50 border border-red-100 rounded-lg p-3">
+                <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+                This mobile number is already registered. Each student may participate only once.
+              </p>
+            </div>
+
+            <div>
+              <label class="block text-sm font-bold text-gray-700 mb-2">School Name *</label>
+              <input type="text" name="school_name" required
+                class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-green-400 transition-all">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">Grade (1–8) *</label>
+                <input type="number" name="grade" min="1" max="8" required
+                  class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-green-400 transition-all">
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">City *</label>
+                <input type="text" name="city" value="Ahmedabad" required
+                  class="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-green-400 transition-all">
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── STEP 2: Upload Work ─────────────────────────────────────── -->
+        <div class="mb-8">
+          <h3 class="text-[#053B25] text-xl font-bold mb-6 flex items-center gap-3 border-b pb-4">
+            <span class="w-8 h-8 rounded-full bg-[#0E7A37] text-white flex items-center justify-center text-sm">2</span>
+            Upload Work
+          </h3>
+
+          <!-- ── Main work file ───────────────────────────────────────── -->
+          <div class="mb-6">
+            <p class="block text-sm font-bold text-gray-700 mb-3">
+              Upload Photo or PDF of Work <span class="text-red-500">*</span>
+            </p>
+
+            <!--
+              KEY TECHNIQUE: label[for] creates a native browser link to the input.
+              Clicking anywhere inside the label opens the file picker.
+              The input itself is hidden with display:none — no z-index tricks needed.
+              No JavaScript event handler required for opening the picker.
+            -->
+            <label for="sp_work_file" id="sp_drop_zone"
+              class="flex flex-col items-center justify-center gap-4 w-full min-h-[180px] rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 cursor-pointer transition-all duration-200 hover:border-green-500 hover:bg-green-50 p-8 text-center">
+              <div
+                class="w-14 h-14 rounded-full bg-white border border-gray-100 shadow flex items-center justify-center text-[#0E7A37]">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+              </div>
+              <div>
+                <p class="font-bold text-gray-800 text-base">Click here to select a file</p>
+                <p class="text-sm text-gray-500 mt-1">or drag and drop &nbsp;|&nbsp; JPG, PNG, PDF &nbsp;|&nbsp; Max 10
+                  MB</p>
+              </div>
+            </label>
+
+            <!-- The REAL file input — hidden, linked to the label above -->
+            <input type="file" id="sp_work_file" name="uploaded_file" accept=".jpg,.jpeg,.png,.pdf"
+              style="display:none;" onchange="spOnWorkFileChange(this)">
+
+            <!-- ── Image / PDF Preview (hidden until file selected) ──── -->
+            <div id="sp_preview_box"
+              style="display:none; margin-top:16px; border:1px solid #bbf7d0; background:#f0fdf4; border-radius:16px; padding:16px;">
+
+              <!-- Header row -->
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                <div style="display:flex; align-items:center; gap:12px;">
+                  <div
+                    style="width:36px;height:36px;border-radius:50%;background:#dcfce7;display:flex;align-items:center;justify-content:center;color:#15803d;">
+                    <i class="fa-solid fa-check"></i>
+                  </div>
+                  <div>
+                    <p style="margin:0;font-size:13px;font-weight:700;color:#14532d;">File selected successfully</p>
+                    <p id="sp_file_name_label" style="margin:0;font-size:12px;color:#16a34a;"></p>
+                  </div>
+                </div>
+                <button type="button" onclick="spClearWorkFile()"
+                  style="font-size:12px;font-weight:600;color:#dc2626;border:1px solid #fecaca;background:#fff;border-radius:8px;padding:4px 12px;cursor:pointer;">
+                  Remove
+                </button>
+              </div>
+
+              <!-- Image preview -->
+              <div id="sp_img_wrap" style="display:none;">
+                <img id="sp_preview_img" src="" alt="Selected image preview"
+                  style="width:100%;max-height:300px;object-fit:contain;border-radius:12px;border:1px solid #bbf7d0;background:#fff;">
+              </div>
+
+              <!-- PDF preview -->
+              <div id="sp_pdf_wrap"
+                style="display:none;align-items:center;gap:12px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px;">
+                <div
+                  style="width:44px;height:44px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#dc2626;flex-shrink:0;">
+                  <i class="fa-solid fa-file-pdf" style="font-size:20px;"></i>
+                </div>
+                <div>
+                  <p style="margin:0;font-size:13px;font-weight:700;color:#111827;">PDF Document</p>
+                  <p id="sp_pdf_name_label" style="margin:0;font-size:12px;color:#6b7280;"></p>
+                </div>
+              </div>
+
+            </div><!-- /#sp_preview_box -->
+          </div>
+
+          <!-- ── Optional Student Photo ───────────────────────────────── -->
+          <div>
+            <p class="block text-sm font-bold text-gray-700 mb-2">
+              Student Photo <span class="text-gray-400 font-normal">(Optional)</span>
+            </p>
+            <label for="sp_photo_file"
+              style="display:flex;align-items:center;gap:12px;width:100%;padding:12px 16px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;cursor:pointer;transition:background .15s;"
+              onmouseover="this.style.background='#f3f4f6'" onmouseout="this.style.background='#f9fafb'">
+              <i class="fa-solid fa-camera" style="color:#9ca3af;"></i>
+              <span id="sp_photo_label_text" style="font-size:14px;color:#6b7280;font-weight:500;">
+                Click to upload student portrait (optional)
+              </span>
+            </label>
+            <input type="file" id="sp_photo_file" name="student_photo" accept=".jpg,.jpeg,.png" style="display:none;"
+              onchange="spOnPhotoChange(this)">
+            <p style="font-size:12px;color:#9ca3af;margin-top:6px;">
+              <i class="fa-solid fa-circle-info"></i>
+              If provided, may be featured in the showcase gallery.
+            </p>
+          </div>
+
+        </div><!-- /step 2 -->
+
+        <!-- ── Consent ────────────────────────────────────────────────── -->
+        <div
+          style="margin-top:32px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:14px;padding:20px;display:flex;gap:16px;align-items:flex-start;">
+          <input type="checkbox" id="sp_consent" name="consent" value="true"
+            style="width:20px;height:20px;margin-top:2px;accent-color:#0E7A37;flex-shrink:0;cursor:pointer;">
+          <label for="sp_consent" style="font-size:14px;color:#374151;font-weight:500;line-height:1.6;cursor:pointer;">
+            I confirm that the uploaded work is created by the student and I permit its use for the
+            Green Naroda &bull; Clean Naroda campaign, exhibitions, recognition, and related educational activities.
+          </label>
+        </div>
+
+        <!-- ── Submit ─────────────────────────────────────────────────── -->
+        <button type="submit" id="sp_submit_btn" disabled style="width:100%;margin-top:32px;background:#0E7A37;color:#fff;font-size:18px;font-weight:700;
+                       padding:16px;border-radius:14px;border:none;cursor:pointer;transition:all .2s;
+                       box-shadow:0 10px 20px rgba(14,122,55,.2);"
+          onmouseover="if(!this.disabled)this.style.background='#096831'"
+          onmouseout="if(!this.disabled)this.style.background='#0E7A37'">
+          Submit Participation
+        </button>
+
+      </form>
+    </div><!-- /card -->
+  </div>
+</section>
+
+
+<!-- ─── SUCCESS MODAL ──────────────────────────────────────────────────────── -->
+<div id="sp_success_modal"
+  style="display:none;position:fixed;inset:0;z-index:200;align-items:center;justify-content:center;padding:16px;background:rgba(2,13,7,.75);backdrop-filter:blur(6px);">
+  <div
+    style="background:#fff;border-radius:28px;width:100%;max-width:440px;padding:40px;text-align:center;position:relative;">
+
+    <div
+      style="width:88px;height:88px;background:#f0fdf4;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 0 30px rgba(34,197,94,.25);">
+      <i class="fa-solid fa-check" style="font-size:40px;color:#22c55e;"></i>
+    </div>
+
+    <h3 style="font-size:22px;font-weight:800;color:#111827;margin:0 0 8px;">Participation Submitted!</h3>
+    <p style="font-size:14px;color:#6b7280;margin:0 0 24px;">
+      Thank you for participating in the Green Naroda &bull; Clean Naroda Student Initiative.
+    </p>
+
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:16px;padding:20px;margin-bottom:24px;">
+      <p
+        style="font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px;">
+        Participation ID</p>
+      <p id="sp_cert_id"
+        style="font-size:20px;font-family:monospace;font-weight:800;color:#0E7A37;letter-spacing:.15em;margin:0;">
+        GN-STU-XXXX</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <a id="sp_dl_png" href="#" download
+        style="display:flex;align-items:center;justify-content:center;gap:8px;background:#053B25;color:#fff;font-weight:700;padding:14px;border-radius:12px;text-decoration:none;">
+        <i class="fa-solid fa-image"></i> Download PNG Certificate
+      </a>
+      <a id="sp_dl_pdf" href="#" download
+        style="display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;border:2px solid #0E7A37;color:#0E7A37;font-weight:700;padding:14px;border-radius:12px;text-decoration:none;">
+        <i class="fa-solid fa-file-pdf"></i> Download PDF Certificate
+      </a>
+      <a id="sp_share_wa" href="#" target="_blank"
+        style="display:flex;align-items:center;justify-content:center;gap:8px;background:#25d366;color:#fff;font-weight:700;padding:14px;border-radius:12px;text-decoration:none;margin-top:4px;">
+        <i class="fa-brands fa-whatsapp" style="font-size:18px;"></i> Share on WhatsApp
+      </a>
+      <a href="{% url 'student_portal' %}"
+        style="display:block;margin-top:8px;color:#9ca3af;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;">
+        Return to Portal
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+
+{% block extra_scripts %}
+<!-- ═══════════════════════════════════════════════════════════════════
+     STUDENT PORTAL — COMPLETE SELF-CONTAINED SCRIPT
+     All logic lives here. No external JS file dependency for core features.
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+  (function () {
+    'use strict';
+
+    /* ── Helpers ─────────────────────────────────────────────────────── */
+    function fmt(bytes) {
+      var mb = bytes / (1048576);
+      return mb >= 1 ? mb.toFixed(1) + ' MB' : Math.round(bytes / 1024) + ' KB';
+    }
+    function getCookie(name) {
+      var m = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+      return m ? m.pop() : '';
+    }
+    function $(id) { return document.getElementById(id); }
+
+    /* ── Work-file preview ───────────────────────────────────────────── */
+    var _objURL = null;
+
+    window.spOnWorkFileChange = function (input) {
+      if (!input.files || !input.files.length) return;
+      var file = input.files[0];
+      var ext = (file.name.split('.').pop() || '').toLowerCase();
+      var mime = file.type || '';
+
+      var okExts = ['jpg', 'jpeg', 'png', 'pdf'];
+      var okMimes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+
+      if (okExts.indexOf(ext) < 0 && okMimes.indexOf(mime) < 0) {
+        alert('Please choose a JPG, PNG, or PDF file.');
+        input.value = '';
+        return;
+      }
+      if (file.size > 10485760) {          // 10 MB
+        alert('File is too large. Maximum size is 10 MB.');
+        input.value = '';
+        return;
+      }
+
+      /* Revoke previous blob URL */
+      if (_objURL) { try { URL.revokeObjectURL(_objURL); } catch (e) { } _objURL = null; }
+
+      /* Update file-name label */
+      $('sp_file_name_label').textContent = file.name + '  \u2014  ' + fmt(file.size);
+
+      /* Show preview box */
+      $('sp_preview_box').style.display = 'block';
+
+      var isImg = mime.indexOf('image') === 0 || ext === 'jpg' || ext === 'jpeg' || ext === 'png';
+
+      if (isImg) {
+        _objURL = URL.createObjectURL(file);
+        $('sp_preview_img').src = _objURL;
+        $('sp_img_wrap').style.display = 'block';
+        $('sp_pdf_wrap').style.display = 'none';
+      } else {
+        $('sp_pdf_name_label').textContent = file.name + '  \u2014  ' + fmt(file.size);
+        $('sp_img_wrap').style.display = 'none';
+        $('sp_pdf_wrap').style.display = 'flex';
+      }
+    };
+
+    window.spClearWorkFile = function () {
+      var inp = $('sp_work_file');
+      if (inp) inp.value = '';
+      $('sp_preview_box').style.display = 'none';
+      $('sp_img_wrap').style.display = 'none';
+      $('sp_pdf_wrap').style.display = 'none';
+      $('sp_preview_img').src = '';
+      if (_objURL) { try { URL.revokeObjectURL(_objURL); } catch (e) { } _objURL = null; }
+    };
+
+    /* ── Student photo label update ─────────────────────────────────── */
+    window.spOnPhotoChange = function (input) {
+      if (!input.files || !input.files.length) return;
+      $('sp_photo_label_text').textContent = input.files[0].name;
+      $('sp_photo_label_text').style.color = '#0E7A37';
+    };
+
+    /* ── Drag-and-drop onto the label ───────────────────────────────── */
+    document.addEventListener('DOMContentLoaded', function () {
+      var zone = $('sp_drop_zone');
+      var inp = $('sp_work_file');
+      if (!zone || !inp) return;
+
+      zone.addEventListener('dragover', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        zone.style.borderColor = '#0E7A37';
+        zone.style.background = '#f0fdf4';
+      });
+      zone.addEventListener('dragleave', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        zone.style.borderColor = '';
+        zone.style.background = '';
+      });
+      zone.addEventListener('drop', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        zone.style.borderColor = '';
+        zone.style.background = '';
+        var files = e.dataTransfer && e.dataTransfer.files;
+        if (!files || !files.length) return;
+        try {
+          var dt = new DataTransfer();
+          dt.items.add(files[0]);
+          inp.files = dt.files;
+          window.spOnWorkFileChange(inp);
+        } catch (err) {
+          window.spOnWorkFileChange({ files: files });
+        }
+      });
+
+      /* ── Mobile validation ────────────────────────────────────────── */
+      var mobileInp = $('sp_mobile');
+      var mobileIcon = $('sp_mobile_icon');
+      var mobileOk = $('sp_mobile_ok');
+      var mobileErr = $('sp_mobile_err');
+      var mobileLoad = $('sp_mobile_loading');
+      var mobileMsg = $('sp_mobile_errmsg');
+      var submitBtn = $('sp_submit_btn');
+      var timer;
+
+      function resetMobile() {
+        mobileIcon.classList.add('hidden');
+        mobileOk.classList.add('hidden');
+        mobileErr.classList.add('hidden');
+        mobileLoad.classList.add('hidden');
+        mobileMsg.classList.add('hidden');
+        if (mobileInp) mobileInp.style.borderColor = '';
+        if (submitBtn) submitBtn.disabled = true;
+      }
+
+      if (mobileInp) {
+        mobileInp.addEventListener('input', function () {
+          resetMobile();
+          clearTimeout(timer);
+          var val = this.value.replace(/\D/g, '');
+          if (val.length !== 10) return;
+
+          mobileIcon.classList.remove('hidden');
+          mobileLoad.classList.remove('hidden');
+
+          timer = setTimeout(function () {
+            var fd = new FormData();
+            fd.append('mobile', val);
+            fetch('/student-portal/api/check-mobile/', {
+              method: 'POST',
+              body: fd,
+              headers: { 'X-CSRFToken': getCookie('csrftoken') }
+            })
+              .then(function (r) { return r.json(); })
+              .then(function (data) {
+                mobileLoad.classList.add('hidden');
+                if (data.exists) {
+                  mobileErr.classList.remove('hidden');
+                  mobileMsg.classList.remove('hidden');
+                  mobileInp.style.borderColor = '#ef4444';
+                  submitBtn.disabled = true;
+                } else {
+                  mobileOk.classList.remove('hidden');
+                  mobileInp.style.borderColor = '#22c55e';
+                  submitBtn.disabled = false;
+                }
+              })
+              .catch(function () {
+                mobileLoad.classList.add('hidden');
+                /* On network failure, allow the user to proceed */
+                submitBtn.disabled = false;
+              });
+          }, 600);
+        });
+      }
+
+      /* ── Form submission ─────────────────────────────────────────── */
+      var form = $('spForm');
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        /* Validate work file */
+        var workInp = $('sp_work_file');
+        if (!workInp || !workInp.files || !workInp.files.length) {
+          alert('Please upload a photo or PDF of your work.');
+          return;
+        }
+
+        /* Validate consent */
+        var consent = $('sp_consent');
+        if (!consent || !consent.checked) {
+          alert('Please tick the consent checkbox before submitting.');
+          return;
+        }
+
+        var origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>  Submitting\u2026';
+
+        var fd = new FormData(form);
+
+        fetch('/student-portal/api/submit/', {
+          method: 'POST',
+          body: fd,
+          headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        })
+          .then(function (r) {
+            return r.json().then(function (d) { return { ok: r.ok, d: d }; });
+          })
+          .then(function (res) {
+            if (res.ok) {
+              /* Populate success modal */
+              $('sp_cert_id').textContent = res.d.participation_id || '';
+              $('sp_dl_png').href = res.d.certificate_png || '#';
+              $('sp_dl_pdf').href = res.d.certificate_pdf || '#';
+              var msg = encodeURIComponent(
+                'I participated in the Green Naroda \u2022 Clean Naroda Mission! \u2013 ' +
+                window.location.origin + (res.d.certificate_pdf || '')
+              );
+              $('sp_share_wa').href = 'https://wa.me/?text=' + msg;
+
+              /* Show modal */
+              $('sp_success_modal').style.display = 'flex';
+
+              /* Reset form */
+              form.reset();
+              window.spClearWorkFile();
+              $('sp_photo_label_text').textContent = 'Click to upload student portrait (optional)';
+              $('sp_photo_label_text').style.color = '';
+              resetMobile();
+
+            } else {
+              alert(res.d.error || 'Submission failed. Please try again.');
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = origText;
+            }
+          })
+          .catch(function () {
+            alert('Network error. Please check your connection and try again.');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+          });
+      });
+
+    }); // DOMContentLoaded
+
+  })();
+</script>
+{% endblock %}

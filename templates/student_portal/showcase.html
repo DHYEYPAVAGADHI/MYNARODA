@@ -1,0 +1,63 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Young Ambassadors Showcase | Student Portal{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="relative bg-[#020D07] pt-32 pb-24 min-h-screen border-t-8 border-[#FF7500]">
+  <!-- Background -->
+  <div class="absolute inset-0 bg-gradient-to-br from-[#053B25] via-[#020D07] to-[#0A2210] z-0"></div>
+  <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-0"></div>
+  
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16 relative z-10">
+    
+    <div class="text-center mb-16">
+      <a href="{% url 'student_portal' %}" class="inline-block mb-6 text-gray-400 hover:text-white transition-colors font-semibold tracking-wide">
+        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Portal
+      </a>
+      <h2 class="text-[#FF7500] text-lg font-bold tracking-widest uppercase mb-4">Gallery</h2>
+      <h3 class="text-white text-5xl font-serif font-bold mb-4">Young Ambassadors Showcase</h3>
+      <p class="text-gray-400 max-w-2xl mx-auto text-lg">Explore some of the brilliant and creative works submitted by the talented young minds of Naroda.</p>
+    </div>
+    
+    <div class="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
+      {% for showcase in showcases %}
+      <div class="break-inside-avoid bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-[0_20px_50px_rgba(255,255,255,0.1)] transition-shadow group relative border border-gray-100">
+        {% if showcase.submission.uploaded_file.url|lower|slice:"-4:" == '.pdf' %}
+          <div class="w-full h-64 bg-gray-50 flex flex-col items-center justify-center relative">
+            <i class="fa-solid fa-file-pdf text-6xl text-red-500 mb-4 group-hover:scale-110 transition-transform"></i>
+            <a href="{{ showcase.submission.uploaded_file.url }}" target="_blank" class="bg-white px-5 py-2 rounded-full text-sm font-bold text-gray-800 shadow-md hover:bg-gray-100 transition-colors">View PDF</a>
+          </div>
+        {% else %}
+          <div class="relative w-full overflow-hidden">
+            <img src="{{ showcase.submission.uploaded_file.url }}" alt="Work" class="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+              <a href="{{ showcase.submission.uploaded_file.url }}" target="_blank" class="bg-white/20 hover:bg-white/40 border border-white px-6 py-2 rounded-full text-white font-bold backdrop-blur-md transition-colors">View Full Size</a>
+            </div>
+          </div>
+        {% endif %}
+        
+        <div class="p-6">
+          <div class="flex justify-between items-start mb-3">
+            <h4 class="font-bold text-[#053B25] text-lg leading-tight font-serif">{{ showcase.submission.student_name }}</h4>
+            <span class="bg-[#F0FDF4] text-[#0E7A37] border border-[#BBF7D0] text-[10px] font-bold px-2.5 py-1 rounded-md uppercase tracking-wider whitespace-nowrap shadow-sm">{{ showcase.submission.get_competition_type_display }}</span>
+          </div>
+          <p class="text-sm text-gray-500"><i class="fa-solid fa-school text-gray-400 mr-1.5"></i> {{ showcase.submission.school_name }} <br> <span class="ml-5 text-xs">Grade {{ showcase.submission.grade }} • {{ showcase.submission.city|default:"Ahmedabad" }}</span></p>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-span-full text-center py-24 bg-white/5 rounded-3xl border border-white/10 backdrop-blur-md shadow-2xl">
+        <i class="fa-solid fa-image text-6xl text-white/20 mb-6"></i>
+        <h4 class="text-white text-2xl font-bold mb-2">Showcase Gallery is Empty</h4>
+        <p class="text-gray-400">Approved works will appear here soon.</p>
+      </div>
+      {% endfor %}
+    </div>
+    
+  </div>
+</section>
+{% endblock %}

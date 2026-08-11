@@ -1,0 +1,75 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "About the Campaign" %} — Green Naroda • Clean Naroda{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="page-header">
+  <div class="container-site relative z-10 text-center text-white">
+    <div class="breadcrumb justify-center mb-4">
+      <a href="/">{% trans "Home" %}</a>
+      <span>/</span>
+      <span>{% trans "About Us" %}</span>
+    </div>
+    <h1 class="heading-display text-4xl md:text-5xl">{% trans "About Our Mission" %}</h1>
+    <p class="mt-2 text-forest-200 text-sm md:text-base max-w-xl mx-auto">
+      {% trans "India's 80th Independence Day Celebration through Community Afforestation." %}
+    </p>
+  </div>
+</div>
+
+<!-- Mission Section -->
+<section class="section bg-gray-50 backdrop-blur-md">
+  <div class="container-site">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+        <div class="section-label">{% trans "The Vision" %}</div>
+        <h2 class="heading-section text-3xl md:text-4xl text-forest-950 mt-4">
+          {% trans "28,855 Days. 28,855 Trees." %}
+        </h2>
+        <p class="mt-6 text-gray-600 leading-relaxed">
+          {% trans "On August 15, 2027, India marks 80 years since securing independence. Over those 80 years, approximately 28,855 days will have passed. To commemorate this milestone, the Green Naroda • Clean Naroda movement was founded with a clear, ambitious goal: plant one native tree for every single day of our nation's freedom." %}
+        </p>
+        <p class="mt-4 text-gray-600 leading-relaxed">
+          {% trans "This campaign is not just about planting saplings. It is about creating a legacy of community environmental stewardship, engaging school children, citizens, volunteers, and local administration to nurture these trees into a mature urban forest." %}
+        </p>
+      </div>
+      <div class="reveal relative">
+        <div class="bg-gray-50 rounded-3xl overflow-hidden shadow-lg aspect-video flex items-center justify-center">
+          <!-- Placeholder/Decorative representation -->
+          <div class="text-center p-8">
+            <span class="text-6xl">🌳</span>
+            <h3 class="font-serif text-xl font-bold text-forest-900 mt-4">{% trans "Nurturing Our Shared Future" %}</h3>
+            <p class="text-xs text-gray-600 mt-2">{% trans "Plantation Drive in Naroda, Ahmedabad" %}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Grid -->
+<section class="section bg-background">
+  <div class="container-site text-center">
+    <div class="section-label mx-auto">{% trans "Campaign Statistics" %}</div>
+    <h2 class="heading-section text-2xl md:text-3xl text-forest-950 mt-4 mb-12">
+      {% trans "Our Growth So Far" %}
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+      <div class="bg-gray-50 backdrop-blur-md p-8 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <div class="font-serif text-5xl font-extrabold text-forest-700" data-counter="{{ total_trees }}">0</div>
+        <div class="text-gray-600 text-xs uppercase tracking-wide font-medium mt-2">{% trans "Trees Planted" %}</div>
+      </div>
+      <div class="bg-gray-50 backdrop-blur-md p-8 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <div class="font-serif text-5xl font-extrabold text-saffron-500" data-counter="{{ total_volunteers }}">0</div>
+        <div class="text-gray-600 text-xs uppercase tracking-wide font-medium mt-2">{% trans "Active Volunteers" %}</div>
+      </div>
+      <div class="bg-gray-50 backdrop-blur-md p-8 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <div class="font-serif text-5xl font-extrabold text-forest-950" data-counter="{{ days_remaining }}">0</div>
+        <div class="text-gray-600 text-xs uppercase tracking-wide font-medium mt-2">{% trans "Days Until Target Date" %}</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

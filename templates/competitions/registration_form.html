@@ -1,0 +1,572 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load i18n %}
+{% load competition_tags %}
+{% block title %}{% trans "Competition Registration - Green Naroda Clean Naroda" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 pt-24 pb-12 overflow-hidden relative font-sans">
+    
+    <!-- Background Accents -->
+    <div class="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-br from-green-50 to-orange-50 -z-10" style="clip-path: polygon(0 0, 100% 0, 100% 80%, 0% 100%);"></div>
+    <div class="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-green-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    <div class="absolute top-40 left-0 -ml-20 w-72 h-72 bg-orange-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        
+        <!-- Hero Section -->
+        <div class="text-center mb-12 animate-fade-in-up">
+            <span class="inline-block py-1 px-3 rounded-full bg-green-100 text-green-800 text-sm font-semibold uppercase tracking-wider mb-4 border border-green-200">
+                {% trans "Official Competition Portal" %}
+            </span>
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 font-serif">
+                <span class="text-green-600">Green Naroda</span> • <span class="text-green-600">Clean Naroda</span><br/> Competition 2026
+            </h1>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                {% trans "Register your School, College, Society, NGO, Trust, or Organization to participate in Naroda’s largest environmental competition." %}
+            </p>
+        </div>
+
+        <!-- Glass Card Container -->
+        <div class="bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/50 overflow-hidden" id="form-container">
+            
+            <!-- Stepper Header -->
+            <div class="bg-gray-50/80 border-b border-gray-100 px-6 py-4 sm:px-10 sm:py-6">
+                <div class="flex items-center justify-between relative">
+                    <!-- Progress Bar Background -->
+                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full z-0"></div>
+                    <!-- Progress Bar Fill -->
+                    <div class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-green-500 rounded-full z-0 transition-all duration-500 ease-in-out" id="progress-bar" style="width: 0%;"></div>
+
+                    <!-- Step 1 -->
+                    <div class="relative z-10 flex flex-col items-center step-indicator active" data-step="1">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors duration-300 bg-green-500 border-green-500 text-white shadow-lg shadow-green-500/30">
+                            1
+                        </div>
+                        <span class="mt-2 text-xs font-medium text-gray-900 hidden sm:block">{% trans "Organization" %}</span>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative z-10 flex flex-col items-center step-indicator" data-step="2">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors duration-300 bg-white border-gray-300 text-gray-500">
+                            2
+                        </div>
+                        <span class="mt-2 text-xs font-medium text-gray-400 hidden sm:block">{% trans "Contact" %}</span>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative z-10 flex flex-col items-center step-indicator" data-step="3">
+                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors duration-300 bg-white border-gray-300 text-gray-500">
+                            3
+                        </div>
+                        <span class="mt-2 text-xs font-medium text-gray-400 hidden sm:block">{% trans "Sustainability" %}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form -->
+            <form id="competition-form" class="px-6 py-8 sm:px-10" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- STEP 1: Organization Details -->
+                <div class="step-content active animate-fade-in" id="step-1">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 font-serif">{% trans "Organization Details" %}</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Organization Type -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Select Organization Type" %} <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select name="organization_type" id="org_type" class="block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm rounded-lg shadow-sm transition-shadow hover:shadow-md appearance-none bg-gray-50" required>
+                                    <option value="" disabled selected>{% trans "Select organization type" %}</option>
+                                    {% get_competition_organization_types as comp_org_types %}
+                                    {% for type in comp_org_types %}
+                                        <option value="{{ type.id }}">{{ type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                                    <i class="fas fa-chevron-down text-sm"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Organization Name -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Organization Name" %} <span class="text-red-500">*</span></label>
+                            <input type="text" name="organization_name" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <!-- Registration Number -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Registration Number (optional)" %}</label>
+                            <input type="text" name="registration_number" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white">
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Full Address" %} <span class="text-red-500">*</span></label>
+                            <textarea name="address" rows="3" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white resize-none" required></textarea>
+                        </div>
+
+                        <!-- City -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "City" %} <span class="text-red-500">*</span></label>
+                            <input type="text" name="city" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <!-- Pincode -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Pincode" %} <span class="text-red-500">*</span></label>
+                            <input type="text" name="pincode" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <!-- Society Conditional Fields -->
+                        <div id="society_fields" class="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6 hidden p-6 bg-orange-50 rounded-lg border border-orange-100 mt-4 transition-all duration-300 transform scale-95 opacity-0">
+                            <div class="col-span-1 md:col-span-2">
+                                <h3 class="text-md font-semibold text-orange-800 mb-1 flex items-center">
+                                    <i class="fas fa-building mr-2"></i>
+                                    {% trans "Residential Society Information" %}
+                                </h3>
+                                <p class="text-sm text-orange-600 mb-4">{% trans "Please provide details about your residential society." %}</p>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Number of Homes in Society" %} <span class="text-red-500">*</span></label>
+                                <input type="number" name="homes_count" id="homes_count" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-white">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Members Participating (optional)" %}</label>
+                                <input type="number" name="members_participating" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-white">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Authorized Contact Person -->
+                <div class="step-content hidden opacity-0 translate-x-8" id="step-2">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2 font-serif">{% trans "Authorized Contact Person" %}</h2>
+                    <p class="text-sm text-gray-500 mb-6">{% trans "This person is authorized to register and communicate on behalf of the organization." %}</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Contact Name -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Authorized Person Name" %} <span class="text-red-500">*</span></label>
+                            <input type="text" name="authorized_person_name" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <!-- Designation -->
+                        <div class="col-span-1 md:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Designation (optional)" %}</label>
+                            <input type="text" name="designation" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white">
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Authorized Person Mobile Number" %} <span class="text-red-500">*</span></label>
+                            <input type="tel" name="mobile_number" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <!-- WhatsApp Number -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "WhatsApp Number" %} <span class="text-red-500">*</span></label>
+                            <input type="tel" name="whatsapp_number" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+
+                        <!-- Alternate Number -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Another Contact Number (optional)" %}</label>
+                            <input type="tel" name="alternate_number" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white">
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Email Address" %} <span class="text-red-500">*</span></label>
+                            <input type="email" name="email" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm transition-shadow hover:shadow-md bg-gray-50 focus:bg-white" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Sustainability Information & Submit -->
+                <div class="step-content hidden opacity-0 translate-x-8" id="step-3">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 font-serif">{% trans "Sustainability Information" %}</h2>
+                    
+                    <div class="space-y-8">
+                        
+                        <!-- Solar Info -->
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                                <i class="fas fa-solar-panel text-orange-500 mr-2"></i>
+                                {% trans "Solar Panel Information" %}
+                            </h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Is Solar Panel Installed?" %} <span class="text-red-500">*</span></label>
+                                    <div class="flex space-x-4 mt-2">
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="solar_installed" value="yes" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300" required>
+                                            <span class="ml-2 text-gray-700">{% trans "Yes" %}</span>
+                                        </label>
+                                        <label class="flex items-center cursor-pointer">
+                                            <input type="radio" name="solar_installed" value="no" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300">
+                                            <span class="ml-2 text-gray-700">{% trans "No" %}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="solar_count_container" class="opacity-50 pointer-events-none transition-opacity duration-300">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Number of Solar Panels" %} <span class="text-red-500">*</span></label>
+                                    <input type="number" name="solar_panels_count" id="solar_panels_count" class="block w-full px-4 py-3 border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm bg-white">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rainwater Info -->
+                        <div class="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                                <i class="fas fa-droplet text-blue-500 mr-2"></i>
+                                {% trans "Rainwater Harvesting" %}
+                            </h3>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Do you have Rainwater Harvesting?" %} <span class="text-red-500">*</span></label>
+                                <div class="flex space-x-4 mt-2">
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="rainwater_harvesting" value="yes" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300" required>
+                                        <span class="ml-2 text-gray-700">{% trans "Yes" %}</span>
+                                    </label>
+                                    <label class="flex items-center cursor-pointer">
+                                        <input type="radio" name="rainwater_harvesting" value="no" class="h-5 w-5 text-green-600 focus:ring-green-500 border-gray-300">
+                                        <span class="ml-2 text-gray-700">{% trans "No" %}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Upload Evidence -->
+                        <div>
+                            <h3 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                                <i class="fas fa-file-upload text-green-600 mr-2"></i>
+                                {% trans "Upload Supporting Evidence" %}
+                            </h3>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">{% trans "Upload Supporting Evidence of Organization" %} <span class="text-red-500">*</span></label>
+                            
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors duration-300 cursor-pointer" id="drop-zone">
+                                <div class="space-y-1 text-center">
+                                    <i class="fas fa-cloud-upload-alt text-gray-400 text-4xl mb-2"></i>
+                                    <div class="flex text-sm text-gray-600 justify-center">
+                                        <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-green-600 hover:text-green-500 focus-within:outline-none">
+                                            <span>{% trans "Upload Photos / Documents" %}</span>
+                                            <input id="file-upload" name="supporting_file" type="file" class="sr-only" accept=".jpg,.jpeg,.png,.pdf" required>
+                                        </label>
+                                    </div>
+                                    <p class="text-xs text-gray-500">{% trans "JPG, PNG, PDF • Max 20 MB" %}</p>
+                                    <p id="file-name" class="text-sm font-medium text-green-700 mt-2 hidden"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-3"></i>
+                                <p class="text-sm text-blue-700">
+                                    <strong class="font-medium">{% trans "Declaration:" %}</strong>
+                                    {% trans "I confirm that the information provided is correct and authorized by the organization." %}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="mt-10 pt-6 border-t border-gray-200 flex items-center justify-between">
+                    <button type="button" id="prev-btn" class="hidden px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-arrow-left mr-2 text-sm"></i>
+                        {% trans "Back" %}
+                    </button>
+                    <div class="flex-1"></div>
+                    <button type="button" id="next-btn" class="px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg shadow-green-600/30 transition-all duration-200 transform hover:-translate-y-0.5 flex items-center">
+                        {% trans "Next Step" %}
+                        <i class="fas fa-arrow-right ml-2 text-sm"></i>
+                    </button>
+                    <button type="submit" id="submit-btn" class="hidden px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg shadow-green-600/30 transition-all duration-200 transform hover:-translate-y-0.5 flex items-center relative">
+                        <span id="submit-text">{% trans "Submit Registration" %}</span>
+                        <i class="fas fa-check-circle ml-2 text-sm" id="submit-icon"></i>
+                        <!-- Loader -->
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0" id="submit-loader" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            
+            <!-- Success Screen -->
+            <div id="success-screen" class="hidden px-6 py-16 sm:px-10 text-center">
+                <div class="mx-auto flex items-center justify-center h-24 w-24 rounded-full bg-green-100 mb-6">
+                    <i class="fas fa-check-circle text-green-600 text-5xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-gray-900 mb-2 font-serif">{% trans "Registration Submitted Successfully" %}</h2>
+                <p class="text-lg text-gray-600 mb-8 max-w-lg mx-auto">{% trans "Thank you for registering your organization for the Green Naroda • Clean Naroda Competition 2026." %}</p>
+                
+                <div class="bg-gray-50 rounded-xl p-6 inline-block text-left mb-8 border border-gray-200">
+                    <div class="mb-4">
+                        <p class="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-1">{% trans "Registration ID" %}</p>
+                        <p class="text-2xl font-mono font-bold text-green-700" id="success-reg-id">GN-COMP-2026-00000</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-1">{% trans "Status" %}</p>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800">
+                            <span class="w-2 h-2 rounded-full bg-orange-500 mr-2"></span>
+                            {% trans "Under Review" %}
+                        </span>
+                    </div>
+                </div>
+                
+                <div>
+                    <a href="/" class="inline-flex items-center px-6 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors duration-200">
+                        <i class="fas fa-home mr-2 text-sm"></i>
+                        {% trans "Return to Homepage" %}
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Premium Stepper Animations */
+    .step-content {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .animate-fade-in {
+        animation: fadeIn 0.4s ease-out forwards;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // --- Form Navigation Logic ---
+        let currentStep = 1;
+        const totalSteps = 3;
+        
+        const form = document.getElementById('competition-form');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const successScreen = document.getElementById('success-screen');
+        
+        function updateUI() {
+            // Update Step Content Visibility
+            document.querySelectorAll('.step-content').forEach((el, index) => {
+                if (index + 1 === currentStep) {
+                    el.classList.remove('hidden');
+                    // Small delay for CSS animation to trigger
+                    setTimeout(() => {
+                        el.classList.remove('opacity-0', 'translate-x-8', '-translate-x-8');
+                        el.classList.add('opacity-100', 'translate-x-0');
+                    }, 50);
+                } else {
+                    const direction = index + 1 < currentStep ? '-translate-x-8' : 'translate-x-8';
+                    el.classList.add('opacity-0', direction);
+                    setTimeout(() => {
+                        if(index + 1 !== currentStep) el.classList.add('hidden');
+                    }, 400); // Wait for transition
+                }
+            });
+            
+            // Update Progress Bar
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // Update Step Indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator) => {
+                const stepNum = parseInt(indicator.dataset.step);
+                const circle = indicator.querySelector('div');
+                const text = indicator.querySelector('span');
+                
+                if (stepNum < currentStep) {
+                    // Completed
+                    circle.className = "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors duration-300 bg-green-500 border-green-500 text-white shadow-lg shadow-green-500/30";
+                    circle.innerHTML = '<i class="fas fa-check text-sm"></i>';
+                    text.classList.remove('text-gray-400');
+                    text.classList.add('text-green-600');
+                } else if (stepNum === currentStep) {
+                    // Active
+                    circle.className = "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors duration-300 bg-green-500 border-green-500 text-white shadow-lg shadow-green-500/30 ring-4 ring-green-100";
+                    circle.innerHTML = stepNum;
+                    text.classList.remove('text-gray-400');
+                    text.classList.add('text-gray-900', 'font-bold');
+                } else {
+                    // Pending
+                    circle.className = "w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm border-2 transition-colors duration-300 bg-white border-gray-300 text-gray-500";
+                    circle.innerHTML = stepNum;
+                    text.classList.remove('text-gray-900', 'font-bold', 'text-green-600');
+                    text.classList.add('text-gray-400');
+                }
+            });
+            
+            // Update Buttons
+            prevBtn.classList.toggle('hidden', currentStep === 1);
+            if (currentStep === totalSteps) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+        
+        function validateStep() {
+            // Native HTML5 validation check
+            const inputs = document.querySelector(`#step-${currentStep}`).querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    isValid = false;
+                }
+            });
+            return isValid;
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (validateStep()) {
+                currentStep++;
+                updateUI();
+                window.scrollTo({ top: document.getElementById('form-container').offsetTop - 100, behavior: 'smooth' });
+            }
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            currentStep--;
+            updateUI();
+            window.scrollTo({ top: document.getElementById('form-container').offsetTop - 100, behavior: 'smooth' });
+        });
+        
+        // --- Conditional Logic ---
+        
+        // Society Fields
+        const orgTypeSelect = document.getElementById('org_type');
+        const societyFields = document.getElementById('society_fields');
+        const homesCountInput = document.getElementById('homes_count');
+        
+        orgTypeSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'SOCIETY') {
+                societyFields.classList.remove('hidden');
+                setTimeout(() => {
+                    societyFields.classList.remove('scale-95', 'opacity-0');
+                    societyFields.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                homesCountInput.setAttribute('required', 'required');
+            } else {
+                societyFields.classList.remove('scale-100', 'opacity-100');
+                societyFields.classList.add('scale-95', 'opacity-0');
+                setTimeout(() => societyFields.classList.add('hidden'), 300);
+                homesCountInput.removeAttribute('required');
+            }
+        });
+        
+        // Solar Panel Logic
+        const solarRadios = document.querySelectorAll('input[name="solar_installed"]');
+        const solarCountContainer = document.getElementById('solar_count_container');
+        const solarCountInput = document.getElementById('solar_panels_count');
+        
+        solarRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.value === 'yes') {
+                    solarCountContainer.classList.remove('opacity-50', 'pointer-events-none');
+                    solarCountInput.setAttribute('required', 'required');
+                } else {
+                    solarCountContainer.classList.add('opacity-50', 'pointer-events-none');
+                    solarCountInput.removeAttribute('required');
+                    solarCountInput.value = '';
+                }
+            });
+        });
+        
+        // File Upload UI
+        const fileUpload = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name');
+        
+        fileUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // File Size Validation (20MB)
+                if (file.size > 20 * 1024 * 1024) {
+                    alert('File size exceeds 20MB limit.');
+                    this.value = '';
+                    fileNameDisplay.classList.add('hidden');
+                    return;
+                }
+                fileNameDisplay.textContent = 'Selected: ' + file.name;
+                fileNameDisplay.classList.remove('hidden');
+            } else {
+                fileNameDisplay.classList.add('hidden');
+            }
+        });
+        
+        // Form Submission (AJAX)
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!validateStep()) return;
+            
+            // Set loading state
+            submitBtn.disabled = true;
+            document.getElementById('submit-text').classList.add('opacity-0');
+            document.getElementById('submit-icon').classList.add('opacity-0');
+            document.getElementById('submit-loader').classList.remove('opacity-0');
+            
+            const formData = new FormData(form);
+            
+            try {
+                const response = await fetch('{% url "competitions:registration" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Success
+                    form.classList.add('hidden');
+                    successScreen.classList.remove('hidden');
+                    successScreen.classList.add('animate-fade-in');
+                    document.getElementById('success-reg-id').textContent = data.registration_id;
+                    window.scrollTo({ top: document.getElementById('form-container').offsetTop - 100, behavior: 'smooth' });
+                } else {
+                    // Error
+                    alert(data.message || 'An error occurred during submission.');
+                    resetSubmitButton();
+                }
+            } catch (error) {
+                alert('Network error. Please try again.');
+                resetSubmitButton();
+            }
+        });
+        
+        function resetSubmitButton() {
+            submitBtn.disabled = false;
+            document.getElementById('submit-text').classList.remove('opacity-0');
+            document.getElementById('submit-icon').classList.remove('opacity-0');
+            document.getElementById('submit-loader').classList.add('opacity-0');
+        }
+        
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Student Portal | Green Naroda • Clean Naroda{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/landing-premium.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="relative bg-[#020D07] pt-32 pb-24 min-h-screen overflow-hidden">
+  <!-- Cinematic Background -->
+  <div class="absolute inset-0 bg-gradient-to-br from-[#053B25] via-[#020D07] to-[#0A2210] z-0"></div>
+  <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] z-0"></div>
+  
+  <div class="max-w-[1440px] mx-auto px-8 lg:px-16 relative z-10">
+    
+    <!-- SECTION 1: HERO -->
+    <div class="flex flex-col lg:flex-row items-center gap-16 mb-24">
+      <div class="lg:w-1/2">
+        <h2 class="text-[#22C55E] text-lg font-bold tracking-widest uppercase mb-4">Student Portal</h2>
+        <h3 class="text-white text-5xl font-serif font-bold mb-6 leading-tight">
+          Grades 1–8 • Green Naroda • Clean Naroda
+        </h3>
+        <p class="text-gray-300 text-lg mb-8 leading-relaxed">
+          A special platform for young minds to participate in environmental and creativity competitions for a greener future.
+        </p>
+      </div>
+
+      <!-- Prime Minister Card -->
+      <div class="lg:w-1/2">
+        <div class="bg-white/10 backdrop-blur-xl border border-white/20 rounded-[32px] p-8 shadow-[0_20px_50px_rgba(0,0,0,0.3)] relative overflow-hidden group">
+          <div class="absolute top-0 right-0 w-32 h-32 bg-[#FF7500]/20 rounded-full blur-3xl group-hover:bg-[#FF7500]/30 transition-all"></div>
+          
+          <div class="flex gap-6 items-center">
+            <div class="w-24 h-24 rounded-full border-2 border-[#FF7500] overflow-hidden flex-shrink-0 shadow-[0_0_20px_rgba(245,158,11,0.3)]">
+              <img src="https://mynaroda.in/static/images/modi_ji.png" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/8/80/Prime_Minister_Shri_Narendra_Modi_%283%29.jpg'" alt="Shri Narendra Modi" class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h4 class="text-[#FF7500] font-bold text-sm uppercase tracking-wider mb-1">Dedicated to</h4>
+              <h3 class="text-white text-xl font-serif font-bold mb-2">Hon’ble Prime Minister Shri Narendra Modi</h3>
+            </div>
+          </div>
+          
+          <div class="mt-6 pt-6 border-t border-white/10">
+            <p class="text-gray-300 text-sm italic mb-4">
+              "This initiative is dedicated to Hon’ble Prime Minister Shri Narendra Modi. The creative work submitted by students through this portal will be compiled as part of the Green Naroda • Clean Naroda Mission, encouraging cleanliness, sustainability, environmental awareness, and nation-building."
+            </p>
+            <p class="text-[#22C55E] font-bold text-sm bg-[#22C55E]/10 inline-block px-3 py-1 rounded-full">
+              <i class="fa-solid fa-star mr-1"></i> Every participating student becomes a Young Green Ambassador of Naroda.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: COMPETITION SELECTION -->
+    <div class="mb-24">
+      <h3 class="text-white text-3xl font-serif font-bold text-center mb-12">Select Your Competition</h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <a href="{% url 'essay_form' %}" class="bg-[#053B25] rounded-2xl overflow-hidden border border-white/10 cursor-pointer transition-all hover:-translate-y-2 shadow-2xl hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] group relative block">
+          <div class="absolute top-4 right-4 bg-[#FF7500] text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-md">Grades 3–8</div>
+          <div class="h-56 overflow-hidden relative">
+            <img src="https://images.openai.com/static-rsc-4/6B9zo6bV5jW3PEEWKhw-04GVkv-pKMcfZ87MAObslYjUfOZCk4hLguz88BWkJ9osb1y5C8umJx6KmDUIW73tUY5OiuLflKVUkrUcfnewmiLJXgwaG7ggi1jtSDDupkiM4Gso4L3xWgVpnxkvJ3JRL5dQFoViWwShwQAqup81qxgqvl9qKN-Qh0H_6PFde-sb?purpose=fullsize" onerror="this.src='https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80'" alt="Essay Writing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#053B25] to-transparent"></div>
+          </div>
+          <div class="p-6 relative z-10">
+            <h4 class="text-white text-xl font-serif font-bold mb-3">Essay Writing Competition</h4>
+            <p class="text-gray-400 text-sm">Cleanliness, trees, water conservation, sustainability, and green India.</p>
+            <div class="mt-6 flex items-center gap-2 text-[#22C55E] font-bold text-sm bg-white/5 py-3 px-4 rounded-lg group-hover:bg-white/10 transition-colors">
+              Participate in Essay <i class="fa-solid fa-arrow-right ml-auto"></i>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="{% url 'drawing_form' %}" class="bg-[#053B25] rounded-2xl overflow-hidden border border-white/10 cursor-pointer transition-all hover:-translate-y-2 shadow-2xl hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] group relative block">
+          <div class="absolute top-4 right-4 bg-[#FF7500] text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-md">Grades 1–8</div>
+          <div class="h-56 overflow-hidden relative">
+            <img src="https://images.openai.com/static-rsc-4/9yV5xLqvklGnPcex4TMSrgRXAyB79ul-_T4_Xg3HIrVyFcaArwFOPEdcjYKnWVfEqw06hqA1UnVaiEk6DNvwdwFgdRs0xh-kb_Do0QnN5ex7dOEVBewXYkXPQrPULtlAQfHBJdZwxtyRY8e90L19fhjRO_a6bOT_Hjt2fHb5hzlAwZr-RK8HhwdNtOdb-XJ5?purpose=fullsize" onerror="this.src='https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=600&q=80'" alt="Drawing Competition" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#053B25] to-transparent"></div>
+          </div>
+          <div class="p-6 relative z-10">
+            <h4 class="text-white text-xl font-serif font-bold mb-3">Drawing Competition</h4>
+            <p class="text-gray-400 text-sm">Green Naroda, Clean Naroda, nature, and environmental protection.</p>
+            <div class="mt-6 flex items-center gap-2 text-[#22C55E] font-bold text-sm bg-white/5 py-3 px-4 rounded-lg group-hover:bg-white/10 transition-colors">
+              Participate in Drawing <i class="fa-solid fa-arrow-right ml-auto"></i>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="{% url 'project_form' %}" class="bg-[#053B25] rounded-2xl overflow-hidden border border-white/10 cursor-pointer transition-all hover:-translate-y-2 shadow-2xl hover:shadow-[0_20px_50px_rgba(34,197,94,0.15)] group relative block">
+          <div class="absolute top-4 right-4 bg-[#FF7500] text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-md">Grades 4–8</div>
+          <div class="h-56 overflow-hidden relative">
+            <img src="https://images.openai.com/static-rsc-4/1-KRqg87Xud7Ahv7TTRsxhxS21eOLC1Vo7YnFVl0QBfWvy7zOIvf6lxnLWTxX0KdUZ0A1UmiwoimyUQ9fjmiK1fA9POzXZh6BSdNX5rYBnYRpJIDDg2CKHfCDXRKVE3x2yilmzmXWThqsZ_EliO7RcDf6QlqcPvjPz4VlCLsS926lE3OEU6UgzjtlKO788UW?purpose=fullsize" onerror="this.src='https://images.unsplash.com/photo-1581093450021-4a7360e9a6b5?auto=format&fit=crop&w=600&q=80'" alt="Sustainable Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#053B25] to-transparent"></div>
+          </div>
+          <div class="p-6 relative z-10">
+            <h4 class="text-white text-xl font-serif font-bold mb-3">Sustainable Project Making</h4>
+            <p class="text-gray-400 text-sm">Eco-friendly models, reusable materials, and sustainable innovation.</p>
+            <div class="mt-6 flex items-center gap-2 text-[#22C55E] font-bold text-sm bg-white/5 py-3 px-4 rounded-lg group-hover:bg-white/10 transition-colors">
+              Participate in Project <i class="fa-solid fa-arrow-right ml-auto"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="text-center mt-16">
+        <a href="{% url 'student_showcase' %}" class="inline-block bg-white text-[#053B25] font-bold py-4 px-10 rounded-full shadow-[0_10px_30px_rgba(255,255,255,0.2)] hover:bg-gray-100 hover:-translate-y-1 transition-all">
+          View Student Showcase Gallery
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

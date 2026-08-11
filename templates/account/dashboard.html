@@ -1,0 +1,476 @@
+{% extends "base/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans "My Dashboard" %} — mynaroda{% endblock %}
+
+{% block content %}
+<!-- Tricolour Accent Strip -->
+<div class="tricolour-strip" ></div>
+
+<div class="min-h-screen bg-gray-50 flex flex-col lg:flex-row">
+  
+  <!-- Dashboard Sidebar -->
+  <aside class="dashboard-sidebar" aria-label="Dashboard Sidebar">
+    <div class="p-6 border-b border-gray-200">
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-forest-700 text-white font-bold text-sm">
+          {{ user.full_name|first|upper }}
+        </span>
+        <div>
+          <h4 class="font-serif font-bold text-gray-900 leading-tight">{{ user.full_name }}</h4>
+          <span class="text-xs text-gray-400 block">{{ user.get_role_display }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="flex flex-col py-4" aria-label="Dashboard Navigation">
+      <a href="?tab=overview" class="sidebar-link {% if active_tab == 'overview' %}active{% endif %}">
+        <!-- Bar chart icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        {% trans "Dashboard Overview" %}
+      </a>
+      <a href="?tab=trees" class="sidebar-link {% if active_tab == 'trees' %}active{% endif %}">
+        <!-- Tree / leaf icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3C7.03 3 3 7.03 3 12c0 3.97 2.44 7.36 5.93 8.72L9 21h6l.07-.28C18.56 19.36 21 15.97 21 12c0-4.97-4.03-9-9-9zm0 16c-.34 0-.67-.03-1-.07V17h2v1.93c-.33.04-.66.07-1 .07z"/>
+        </svg>
+        {% trans "My Planted Trees" %}
+      </a>
+      <a href="?tab=gallery" class="sidebar-link {% if active_tab == 'gallery' %}active{% endif %}">
+        <!-- Camera / photo icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        {% trans "My Uploaded Photos" %}
+      </a>
+      <a href="?tab=certificates" class="sidebar-link {% if active_tab == 'certificates' %}active{% endif %}">
+        <!-- Badge / award icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+        {% trans "My Certificates" %}
+      </a>
+      <a href="?tab=events" class="sidebar-link {% if active_tab == 'events' %}active{% endif %}">
+        <!-- Calendar icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        {% trans "Registered Events" %}
+      </a>
+      <a href="?tab=notifications" class="sidebar-link {% if active_tab == 'notifications' %}active{% endif %}">
+        <!-- Bell icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+        {% trans "Notifications" %}
+        {% if request.user.unread_notifications_count > 0 %}
+          <span class="ml-auto inline-flex items-center justify-center w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold">{{ request.user.unread_notifications_count }}</span>
+        {% endif %}
+      </a>
+      <a href="{% url 'accounts:profile' %}" class="sidebar-link">
+        <!-- Settings / cog icon -->
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        {% trans "Edit Profile" %}
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Dashboard Main Panel -->
+  <main class="flex-1 p-6 sm:p-10" id="dashboard-main">
+    
+    {% if active_tab == "overview" %}
+      <!-- ── OVERVIEW TAB ── -->
+      <div class="space-y-8 reveal">
+        <div class="bg-gradient-to-r from-forest-900 to-forest-700 p-8 rounded-2xl text-white shadow-sm relative overflow-hidden">
+          <div class="relative z-10">
+            <h2 class="font-serif text-3xl font-bold">{% trans "Welcome back," %} {{ user.full_name }}</h2>
+            <p class="text-forest-200 text-sm mt-1 max-w-md">
+              {% trans "Thank you for contributing to Naroda's civic green cover. Track your trees and upcoming drives below." %}
+            </p>
+          </div>
+          <!-- Decorative SVG overlay -->
+          <svg class="absolute -right-6 -bottom-6 w-40 h-40 text-white/5 pointer-events-none" viewBox="0 0 100 100" fill="currentColor">
+            <path d="M50 5C25.1 5 5 25.1 5 50s20.1 45 45 45 45-20.1 45-45S74.9 5 50 5zm0 75c-.8 0-1.7-.1-2.5-.2V70h5v9.8c-.8.1-1.7.2-2.5.2zM35 55c0-8.3 6.7-15 15-15s15 6.7 15 15v5H35v-5z"/>
+          </svg>
+        </div>
+
+        <!-- Quick Summary Stats Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-9 h-9 rounded-lg bg-forest-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-forest-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                </svg>
+              </div>
+              <span class="text-gray-500 text-xs font-semibold uppercase tracking-wider">{% trans "Trees Planted" %}</span>
+            </div>
+            <span class="font-serif text-3xl font-bold text-forest-900 block">{{ trees_verified }}</span>
+            <span class="text-xs text-gray-400 mt-1 block">{% trans "Verified contributions" %}</span>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-9 h-9 rounded-lg bg-earth-50 flex items-center justify-center">
+                <svg class="w-5 h-5 text-earth-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+              <span class="text-gray-500 text-xs font-semibold uppercase tracking-wider">{% trans "Volunteer Hours" %}</span>
+            </div>
+            <span class="font-serif text-3xl font-bold text-forest-900 block">{{ user.total_hours }}</span>
+            <span class="text-xs text-gray-400 mt-1 block">{% trans "Hours contributed" %}</span>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+            <div class="flex items-center gap-3 mb-3">
+              <div class="w-9 h-9 rounded-lg bg-saffron-500/10 flex items-center justify-center">
+                <svg class="w-5 h-5 text-saffron-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+              </div>
+              <span class="text-gray-500 text-xs font-semibold uppercase tracking-wider">{% trans "Certificates" %}</span>
+            </div>
+            <span class="font-serif text-3xl font-bold text-forest-900 block">{{ certificates.count }}</span>
+            <span class="text-xs text-gray-400 mt-1 block">{% trans "Digital certificates earned" %}</span>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <h3 class="font-serif text-xl font-bold text-gray-900 mb-4">{% trans "Recent Activity" %}</h3>
+          <ul class="space-y-4">
+            {% for tree in trees|slice:":3" %}
+              <li class="flex items-start gap-3 text-sm text-gray-600 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+                <div class="w-8 h-8 rounded-lg bg-forest-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg class="w-4 h-4 text-forest-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                  </svg>
+                </div>
+                <div>
+                  {% blocktrans with name=tree.species.name ward=tree.ward date=tree.planted_at %}
+                  You logged a <strong>{{ name }}</strong> tree in {{ ward }} on {{ date }}.
+                  {% endblocktrans %}
+                </div>
+              </li>
+            {% empty %}
+              <li class="text-gray-400 text-sm py-4">{% trans "No activities recorded. Start by logging a newly planted tree!" %}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+    {% elif active_tab == "trees" %}
+      <!-- ── TREES TAB — Count Summary, not per-row listing ── -->
+      <div class="space-y-6 reveal">
+        <div class="flex justify-between items-center">
+          <div>
+            <h3 class="font-serif text-2xl font-bold text-gray-900">{% trans "My Tree Contributions" %}</h3>
+            <p class="text-sm text-gray-500 mt-1">{% trans "Summary of all trees logged under your account." %}</p>
+          </div>
+          <a href="{% url 'trees:plant' %}" class="btn-primary text-xs" style="padding: 0.5rem 1.25rem;">
+            {% trans "Log a New Tree" %}
+          </a>
+        </div>
+
+        <!-- Count Summary Cards -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Total -->
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
+            <div class="w-12 h-12 rounded-2xl bg-forest-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-6 h-6 text-forest-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 6h18M3 14h10"/>
+              </svg>
+            </div>
+            <span class="font-serif text-4xl font-bold text-forest-900 block">{{ trees_total }}</span>
+            <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-1 block">{% trans "Total Logged" %}</span>
+          </div>
+
+          <!-- Verified -->
+          <div class="bg-white p-6 rounded-2xl border border-green-200 shadow-sm text-center">
+            <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span class="font-serif text-4xl font-bold text-green-700 block">{{ trees_verified }}</span>
+            <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-1 block">{% trans "Verified" %}</span>
+          </div>
+
+          <!-- Pending -->
+          <div class="bg-white p-6 rounded-2xl border border-amber-200 shadow-sm text-center">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span class="font-serif text-4xl font-bold text-amber-700 block">{{ trees_pending }}</span>
+            <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-1 block">{% trans "Pending Review" %}</span>
+          </div>
+
+          <!-- Rejected -->
+          <div class="bg-white p-6 rounded-2xl border border-red-200 shadow-sm text-center">
+            <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-3">
+              <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span class="font-serif text-4xl font-bold text-red-600 block">{{ trees_rejected }}</span>
+            <span class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-1 block">{% trans "Rejected" %}</span>
+          </div>
+        </div>
+
+        <!-- Information note -->
+        <div class="bg-forest-50 border border-forest-200 rounded-xl p-5 flex items-start gap-3">
+          <svg class="w-5 h-5 text-forest-700 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <div>
+            <h4 class="font-semibold text-forest-900 text-sm">{% trans "How Verification Works" %}</h4>
+            <p class="text-forest-700 text-xs mt-1 leading-relaxed">
+              {% trans "Trees you log are initially marked Pending Review. A campaign field officer or administrator verifies the record by checking the GPS location and photo evidence. Verified trees count towards the 28,855 Trees mission." %}
+            </p>
+          </div>
+        </div>
+
+        <!-- Campaign Progress -->
+        <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
+          <h4 class="font-serif text-lg font-bold text-gray-900 mb-4">{% trans "Campaign Contribution Progress" %}</h4>
+          <div class="flex items-center gap-4 mb-3">
+            <span class="text-3xl font-serif font-bold text-forest-900">{{ trees_verified }}</span>
+            <span class="text-gray-400 text-sm">/ 28,855 {% trans "total trees goal" %}</span>
+          </div>
+          {% if trees_verified %}
+            {% widthratio trees_verified 28855 100 as pct %}
+          {% else %}
+            {% with pct=0 %}{% endwith %}
+          {% endif %}
+          <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div class="h-full bg-forest-600 rounded-full transition-all duration-700" style="width: {% widthratio trees_verified 28855 100 %}%"></div>
+          </div>
+          <p class="text-xs text-gray-400 mt-2">{% trans "Your verified trees as a share of the national mission." %}</p>
+        </div>
+      </div>
+
+    {% elif active_tab == "gallery" %}
+      <!-- ── GALLERY TAB ── -->
+      <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <div class="flex justify-between items-center mb-6">
+          <div>
+            <h3 class="font-serif text-2xl font-bold text-gray-900">{% trans "My Submitted Photographs" %}</h3>
+            <p class="text-sm text-gray-500 mt-1">{% trans "Photos pending review will not appear in the public gallery until approved by an administrator." %}</p>
+          </div>
+          <a href="{% url 'gallery:submit' %}" class="btn-primary text-xs" style="padding: 0.5rem 1.25rem;">
+            {% trans "Upload Photo" %}
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {% for photo in photos %}
+            <div class="bg-gray-50 border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+              <div class="h-40 bg-gray-100 relative">
+                {% if photo.local_image %}
+                  <img src="{{ photo.local_image.url }}" alt="{{ photo.title }}" class="object-cover w-full h-full" />
+                {% elif photo.url %}
+                  <img src="{{ photo.url }}" alt="{{ photo.title }}" class="object-cover w-full h-full" />
+                {% else %}
+                  <div class="w-full h-full flex items-center justify-center">
+                    <svg class="w-10 h-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                    </svg>
+                  </div>
+                {% endif %}
+                <span class="absolute top-3 left-3 badge {% if photo.approval_status == 'APPROVED' %}badge-green{% elif photo.approval_status == 'PENDING' %}badge-amber{% else %}badge-red{% endif %}">
+                  {{ photo.get_approval_status_display }}
+                </span>
+              </div>
+              <div class="p-4">
+                <h4 class="font-semibold text-gray-900 text-sm leading-snug">{{ photo.title }}</h4>
+                {% if photo.location %}
+                  <div class="flex items-center gap-1.5 mt-1">
+                    <svg class="w-3 h-3 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    <span class="text-xs text-gray-500">{{ photo.location }}</span>
+                  </div>
+                {% endif %}
+                <span class="text-[10px] text-gray-400 block mt-2">{{ photo.created_at|date:"d M Y" }}</span>
+              </div>
+            </div>
+          {% empty %}
+            <div class="col-span-full text-center py-12 text-gray-400 text-sm">
+              <svg class="w-10 h-10 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              {% trans "You have not submitted any photographs yet." %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    {% elif active_tab == "certificates" %}
+      <!-- ── CERTIFICATES TAB ── -->
+      <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6">{% trans "My Digital Certificates" %}</h3>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {% for cert in certificates %}
+            <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 flex flex-col justify-between shadow-sm">
+              <div>
+                <div class="flex items-center gap-2 mb-3">
+                  <div class="w-8 h-8 rounded-lg bg-saffron-500/10 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-saffron-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                    </svg>
+                  </div>
+                  <h4 class="font-serif text-lg font-bold text-forest-900 leading-snug">
+                    {{ cert.get_certificate_type_display }}
+                  </h4>
+                </div>
+                <span class="text-[10px] text-saffron-600 font-bold uppercase tracking-wider block mb-2">
+                  {% trans "Verification No:" %} {{ cert.certificate_number }}
+                </span>
+                <p class="text-xs text-gray-500">{% trans "Issued at:" %} {{ cert.issued_at|date:"d M Y" }}</p>
+              </div>
+              <div class="pt-4 mt-4 border-t border-gray-200">
+                <a href="{% url 'certificates:verify' cert.certificate_number %}" class="btn-outline-dark text-xs justify-center w-full" style="padding: 0.4rem 1rem;">
+                  {% trans "Verify Certificate" %} &rarr;
+                </a>
+              </div>
+            </div>
+          {% empty %}
+            <div class="col-span-full text-center py-12 text-gray-400 text-sm">
+              <svg class="w-10 h-10 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+              </svg>
+              {% trans "No certificates have been issued under your account." %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    {% elif active_tab == "events" %}
+      <!-- ── EVENTS TAB ── -->
+      <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6">{% trans "My Registered Events and Drives" %}</h3>
+        
+        <div class="space-y-6">
+          {% for reg in event_registrations %}
+            <div class="bg-gray-50 border border-gray-200 p-5 rounded-2xl flex flex-col sm:flex-row justify-between gap-6">
+              <div>
+                <span class="text-xs text-saffron-600 font-bold uppercase block mb-1">
+                  {{ reg.event.get_event_type_display }}
+                </span>
+                <h4 class="font-serif text-xl font-bold text-gray-900">{{ reg.event.title }}</h4>
+                <div class="flex items-center gap-1.5 mt-2 text-xs text-gray-500">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                  </svg>
+                  {{ reg.event.starts_at|date:"d F Y, H:i" }} &ndash; {{ reg.event.ends_at|date:"H:i" }}
+                </div>
+                <div class="flex items-center gap-1.5 mt-1.5 text-xs text-gray-500">
+                  <svg class="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  {{ reg.event.location_name }}
+                </div>
+              </div>
+
+              <!-- Pass / Ticket -->
+              {% if not reg.is_cancelled %}
+                <div class="flex items-center gap-4 border-t sm:border-t-0 sm:border-l border-gray-200 pt-4 sm:pt-0 sm:pl-6 flex-shrink-0">
+                  <div class="w-16 h-16 bg-white border border-gray-300 p-1 rounded-lg flex items-center justify-center">
+                    <svg class="w-8 h-8 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                  </div>
+                  <div class="text-xs">
+                    <span class="badge badge-green">{% trans "Registered" %}</span>
+                    <span class="block text-[9px] text-gray-400 mt-1">{% trans "Show this pass at entrance" %}</span>
+                  </div>
+                </div>
+              {% else %}
+                <div class="flex items-center flex-shrink-0">
+                  <span class="badge badge-red">{% trans "Cancelled" %}</span>
+                </div>
+              {% endif %}
+            </div>
+          {% empty %}
+            <div class="text-center py-12 text-gray-400 text-sm">
+              <svg class="w-10 h-10 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              {% trans "You have not registered for any plantation drives." %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    {% elif active_tab == "notifications" %}
+      <!-- ── NOTIFICATIONS TAB ── -->
+      <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm reveal">
+        <h3 class="font-serif text-2xl font-bold text-gray-900 mb-6">{% trans "Notifications" %}</h3>
+        
+        <div class="space-y-4">
+          {% for notif in notifications %}
+            <div class="p-4 rounded-xl border flex gap-3 text-sm transition-colors {% if not notif.is_read %}bg-forest-50 border-forest-200{% else %}bg-white border-gray-200{% endif %}">
+              <!-- Notification type icon -->
+              <div class="flex-shrink-0 mt-0.5">
+                {% if notif.notification_type == "SUCCESS" %}
+                  <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                {% elif notif.notification_type == "WARNING" %}
+                  <div class="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                  </div>
+                {% elif notif.notification_type == "ERROR" %}
+                  <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                {% else %}
+                  <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                {% endif %}
+              </div>
+              <div class="flex-1">
+                <h5 class="font-semibold text-gray-900">{{ notif.title }}</h5>
+                <p class="text-gray-600 mt-0.5 leading-snug">{{ notif.message }}</p>
+                {% if notif.link %}
+                  <a href="{{ notif.link }}" class="text-xs text-forest-700 hover:underline font-bold mt-2 inline-block">
+                    {% trans "View Details" %} &rarr;
+                  </a>
+                {% endif %}
+                <span class="text-[10px] text-gray-400 block mt-2">{{ notif.created_at|date:"d M Y, H:i" }}</span>
+              </div>
+            </div>
+          {% empty %}
+            <div class="text-center py-12 text-gray-400 text-sm">
+              <svg class="w-10 h-10 mx-auto mb-3 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+              </svg>
+              {% trans "Your notification inbox is empty." %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+  </main>
+</div>
+{% endblock %}

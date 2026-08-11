@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission Control — Green Naroda · Clean Naroda</title>
+  <meta name="description" content="Mission Control Admin Panel — Green Naroda Clean Naroda, Mission 28,855">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --forest:#07150F; --deep:#0B5D2A; --card:#10211A; --card2:#112218;
+      --border:#1B4332; --border2:#243D2F;
+      --emerald:#10B981; --leaf:#84CC16; --gold:#F59E0B;
+      --tp:#E8F5EE; --tm:#7BAF8E; --td:#4A7A5C;
+      --sw:260px; --sh:88px;
+      --rl:24px; --rx:28px; --rm:16px; --rs:10px;
+      --glow:0 0 24px rgba(16,185,129,.18);
+      --shadow:0 4px 32px rgba(0,0,0,.35);
+      --t:.22s cubic-bezier(.4,0,.2,1);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{font-size:15px;scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(145deg,#06120D 0%,#07160F 40%,#081A11 100%);color:var(--tp);min-height:100vh;overflow-x:hidden}
+    a{text-decoration:none;color:inherit}
+    button{font-family:inherit;cursor:pointer;border:none;outline:none}
+    input,select,textarea{font-family:inherit;outline:none}
+    ::-webkit-scrollbar{width:5px;height:5px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+    ::-webkit-scrollbar-thumb:hover{background:var(--deep)}
+
+    /* HEADER */
+    .hdr{position:fixed;top:0;left:0;right:0;height:var(--sh);background:rgba(7,21,15,.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);z-index:1000;display:flex;align-items:center;padding:0 28px;gap:0}
+    .hdr-left{display:flex;align-items:center;gap:14px;width:var(--sw);flex-shrink:0}
+    .hdr-logo{width:48px;height:48px;background:linear-gradient(135deg,var(--deep),var(--emerald));border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 0 20px rgba(16,185,129,.35)}
+    .hdr-brand{display:flex;flex-direction:column}
+    .hdr-t1{font-size:13px;font-weight:800;color:var(--emerald);line-height:1.2;letter-spacing:.3px}
+    .hdr-t2{font-size:11px;font-weight:700;color:var(--gold);line-height:1.2}
+    .hdr-t3{font-size:9.5px;font-weight:500;color:var(--tm);letter-spacing:.8px;text-transform:uppercase;margin-top:2px}
+    .hdr-center{flex:1;display:flex;align-items:center;justify-content:center;gap:10px}
+    .spill{display:flex;align-items:center;gap:6px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.20);border-radius:99px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--emerald);white-space:nowrap}
+    .sdot{width:7px;height:7px;background:var(--emerald);border-radius:50%;animation:pdot 2s ease-in-out infinite;flex-shrink:0}
+    @keyframes pdot{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,185,129,.4)}50%{opacity:.8;box-shadow:0 0 0 5px rgba(16,185,129,0)}}
+    .hdr-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+    .hbtn{width:40px;height:40px;background:rgba(16,185,129,.07);border:1px solid var(--border);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--tm);transition:var(--t);position:relative}
+    .hbtn:hover{background:rgba(16,185,129,.15);border-color:var(--emerald);color:var(--emerald)}
+    .nbadge{position:absolute;top:6px;right:6px;width:8px;height:8px;background:var(--gold);border-radius:50%;border:1.5px solid var(--forest)}
+    .havatar{width:40px;height:40px;background:linear-gradient(135deg,var(--deep),var(--emerald));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:white;border:2px solid rgba(16,185,129,.35);cursor:pointer;transition:var(--t)}
+    .havatar:hover{box-shadow:var(--glow)}
+
+    /* SIDEBAR */
+    .sb{position:fixed;top:var(--sh);left:0;bottom:0;width:var(--sw);background:rgba(7,18,12,.97);border-right:1px solid var(--border);overflow-y:auto;z-index:900;display:flex;flex-direction:column;padding:20px 14px 24px;gap:4px}
+    .sb-lbl{font-size:9.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--td);padding:12px 10px 6px}
+    .ni{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--rs);cursor:pointer;transition:var(--t);border:1px solid transparent;position:relative;user-select:none}
+    .ni:hover{background:rgba(16,185,129,.07);border-color:rgba(16,185,129,.12);color:var(--emerald)}
+    .ni.active{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.22);color:var(--emerald)}
+    .ni.active::before{content:'';position:absolute;left:-14px;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--emerald);border-radius:0 3px 3px 0;box-shadow:0 0 8px var(--emerald)}
+    .ni-icon{font-size:17px;width:22px;text-align:center;flex-shrink:0}
+    .ni-label{font-size:13px;font-weight:600}
+    .ni-badge{margin-left:auto;background:rgba(245,158,11,.18);color:var(--gold);font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;border:1px solid rgba(245,158,11,.25)}
+    .ni-badge.g{background:rgba(16,185,129,.15);color:var(--emerald);border-color:rgba(16,185,129,.25)}
+    .sb-bot{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
+
+    /* MAIN */
+    .main{margin-left:var(--sw);margin-top:var(--sh);min-height:calc(100vh - var(--sh));padding:28px 28px 100px}
+    .pv{display:none;animation:fup .32s ease}
+    .pv.active{display:block}
+    @keyframes fup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+    /* PAGE HEADER */
+    .ph{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap}
+    .pt{font-size:26px;font-weight:800;color:var(--tp);line-height:1.2}
+    .ps{font-size:13px;color:var(--tm);margin-top:4px;font-weight:500}
+    .pa{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+    /* BUTTONS */
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--rs);font-size:12.5px;font-weight:700;transition:var(--t);border:1px solid transparent;cursor:pointer}
+    .btn-p{background:var(--emerald);color:#07150F}
+    .btn-p:hover{background:#0ECC90;box-shadow:0 0 18px rgba(16,185,129,.4)}
+    .btn-o{background:transparent;border-color:var(--border);color:var(--tm)}
+    .btn-o:hover{border-color:var(--emerald);color:var(--emerald)}
+    .btn-g{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.25);color:var(--gold)}
+    .btn-g:hover{background:rgba(245,158,11,.22)}
+    .btn-d{background:rgba(239,68,68,.10);border-color:rgba(239,68,68,.22);color:#F87171}
+    .btn-sm{padding:6px 12px;font-size:11.5px}
+    .btn-xs{padding:4px 9px;font-size:10.5px;border-radius:6px}
+
+    /* CARDS */
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:24px;transition:var(--t)}
+    .card:hover{border-color:var(--border2);box-shadow:var(--shadow)}
+    .card-sm{border-radius:var(--rm);padding:18px}
+
+    /* STAT CARDS */
+    .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px}
+    .sc{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px 24px;position:relative;overflow:hidden;transition:var(--t);cursor:default}
+    .sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ac,var(--emerald)),transparent);opacity:.6}
+    .sc:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.4),0 0 0 1px var(--border2)}
+    .sc-glow{position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:var(--ac,var(--emerald));opacity:.06;filter:blur(30px)}
+    .sc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px;background:rgba(16,185,129,.10);border:1px solid rgba(16,185,129,.20)}
+    .sc-val{font-size:34px;font-weight:900;color:var(--tp);line-height:1;letter-spacing:-1px}
+    .sc-lbl{font-size:12px;font-weight:600;color:var(--tm);margin-top:5px}
+    .sbadge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;margin-top:10px}
+    .sbadge.up{background:rgba(16,185,129,.12);color:var(--emerald);border:1px solid rgba(16,185,129,.22)}
+    .sbadge.go{background:rgba(245,158,11,.12);color:var(--gold);border:1px solid rgba(245,158,11,.22)}
+
+    /* DASHBOARD GRID */
+    .dg{display:grid;grid-template-columns:1fr 340px;gap:20px}
+    .dgl,.dgr{display:flex;flex-direction:column;gap:20px}
+    .stitle{font-size:15px;font-weight:700;color:var(--tp);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .stitle::after{content:'';flex:1;height:1px;background:var(--border);margin-left:8px}
+
+    /* PROGRESS RING */
+    .prw{display:flex;flex-direction:column;align-items:center;padding:28px 0 20px}
+    .ring-track{fill:none;stroke:rgba(16,185,129,.10)}
+    .ring-fill{fill:none;stroke:var(--emerald);stroke-linecap:round;stroke-dasharray:502.65;stroke-dashoffset:502.65;filter:drop-shadow(0 0 6px rgba(16,185,129,.55));transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1)}
+    .rct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+    .rpct{font-size:38px;font-weight:900;color:var(--emerald);line-height:1;letter-spacing:-2px}
+    .rlbl{font-size:10px;font-weight:600;color:var(--tm);margin-top:2px;letter-spacing:.5px}
+    .pstats{display:flex;gap:20px;margin-top:20px;text-align:center}
+    .psi{display:flex;flex-direction:column;gap:3px}
+    .psv{font-size:18px;font-weight:800;color:var(--tp)}
+    .psl{font-size:10px;font-weight:600;color:var(--tm);letter-spacing:.5px}
+
+    /* CHART */
+    .chart-wrap{position:relative;height:220px}
+
+    /* ACTIVITY */
+    .alist{display:flex;flex-direction:column;gap:10px}
+    .ai{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid rgba(27,67,50,.5)}
+    .ai:last-child{border-bottom:none}
+    .adot{width:8px;height:8px;border-radius:50%;background:var(--emerald);margin-top:5px;flex-shrink:0;box-shadow:0 0 6px rgba(16,185,129,.5)}
+    .adot.go{background:var(--gold);box-shadow:0 0 6px rgba(245,158,11,.5)}
+    .adot.lf{background:var(--leaf);box-shadow:0 0 6px rgba(132,204,22,.5)}
+    .atext{font-size:12px;color:var(--tm);line-height:1.5}
+    .atext strong{color:var(--tp);font-weight:600}
+    .atime{font-size:10.5px;color:var(--td);margin-top:2px}
+
+    /* WARD BARS */
+    .wbl{display:flex;flex-direction:column;gap:11px}
+    .wbi{display:flex;flex-direction:column;gap:5px}
+    .wbh{display:flex;justify-content:space-between;align-items:center}
+    .wbn{font-size:12px;font-weight:600;color:var(--tp)}
+    .wbv{font-size:11px;font-weight:700;color:var(--emerald)}
+    .wbt{height:6px;background:rgba(27,67,50,.6);border-radius:99px;overflow:hidden}
+    .wbf{height:100%;background:linear-gradient(90deg,var(--emerald),var(--leaf));border-radius:99px;transition:width 1.2s cubic-bezier(.4,0,.2,1)}
+
+    /* TABLE */
+    .tbar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+    .sw-wrap{position:relative;flex:1;min-width:200px}
+    .sw-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;color:var(--td);pointer-events:none}
+    .sw-inp{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 14px 9px 36px;color:var(--tp);font-size:13px;transition:var(--t)}
+    .sw-inp:focus{border-color:var(--emerald);box-shadow:0 0 0 3px rgba(16,185,129,.12)}
+    .fsel{background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:9px 30px 9px 14px;color:var(--tm);font-size:12.5px;font-weight:600;cursor:pointer;transition:var(--t);appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%234A7A5C' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-size:12px}
+    .fsel:focus{border-color:var(--emerald);outline:none}
+    .dtw{border:1px solid var(--border);border-radius:var(--rm);overflow:hidden}
+    .dt{width:100%;border-collapse:collapse;font-size:12.5px}
+    .dt thead tr{background:rgba(27,67,50,.5)}
+    .dt th{padding:12px 16px;text-align:left;font-size:10.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--td);white-space:nowrap;border-bottom:1px solid var(--border)}
+    .dt th input[type=checkbox],.dt td input[type=checkbox]{accent-color:var(--emerald);width:14px;height:14px;cursor:pointer}
+    .dt tbody tr{border-bottom:1px solid rgba(27,67,50,.4);transition:background var(--t)}
+    .dt tbody tr:last-child{border-bottom:none}
+    .dt tbody tr:hover{background:rgba(16,185,129,.04)}
+    .dt td{padding:12px 16px;color:var(--tm);vertical-align:middle}
+    .tdn{color:var(--tp);font-weight:600}
+    .tdm{font-family:monospace;font-size:12px}
+    .sbadge2{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:99px;font-size:10.5px;font-weight:700;white-space:nowrap}
+    .sbadge2.v{background:rgba(16,185,129,.12);color:var(--emerald);border:1px solid rgba(16,185,129,.22)}
+    .sbadge2.p{background:rgba(245,158,11,.12);color:var(--gold);border:1px solid rgba(245,158,11,.22)}
+    .sbadge2.r{background:rgba(239,68,68,.10);color:#F87171;border:1px solid rgba(239,68,68,.20)}
+    .tpag{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-top:1px solid var(--border);font-size:12px;color:var(--td);background:rgba(10,25,16,.5)}
+    .pagbtns{display:flex;gap:4px}
+    .pbtn{width:30px;height:30px;border-radius:7px;background:transparent;border:1px solid var(--border);color:var(--tm);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--t)}
+    .pbtn:hover,.pbtn.active{background:rgba(16,185,129,.12);border-color:var(--emerald);color:var(--emerald)}
+
+    /* ORG CARDS */
+    .og{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+    .oc{background:var(--card);border:1px solid var(--border);border-radius:var(--rl);padding:22px;transition:var(--t);position:relative;overflow:hidden}
+    .oc:hover{border-color:rgba(16,185,129,.25);transform:translateY(-3px);box-shadow:var(--shadow)}
+    .oc-bar{position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--emerald),var(--leaf))}
+    .oc-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+    .oi{font-size:28px}
+    .on{font-size:15px;font-weight:700;color:var(--tp);margin:6px 0 2px}
+    .oty{font-size:11px;color:var(--tm);font-weight:500}
+    .ometa{display:flex;gap:16px;margin:14px 0}
+    .omi{display:flex;flex-direction:column;gap:2px}
+    .omv{font-size:18px;font-weight:800;color:var(--emerald)}
+    .oml{font-size:10px;color:var(--td);font-weight:600}
+    .ocon{font-size:12px;color:var(--tm);margin-bottom:14px}
+    .oact{display:flex;gap:6px;flex-wrap:wrap}
+
+    /* GALLERY */
+    .gm{columns:3;column-gap:16px}
+    .gi{break-inside:avoid;margin-bottom:16px;border-radius:var(--rm);overflow:hidden;position:relative;background:var(--card2);border:1px solid var(--border);cursor:pointer}
+    .gth{width:100%;display:flex;align-items:center;justify-content:center;padding:32px 0;background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(132,204,22,.05));font-size:56px}
+    .gov{position:absolute;inset:0;background:rgba(7,21,15,.78);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;gap:8px;opacity:0;transition:var(--t)}
+    .gi:hover .gov{opacity:1}
+    .ginfo{padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
+    .gtags{display:flex;gap:5px;flex-wrap:wrap}
+    .gtag{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:99px;background:rgba(16,185,129,.10);color:var(--emerald);border:1px solid rgba(16,185,129,.18)}
+
+    /* HERO MANAGER */
+    .hmg{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .fg{margin-bottom:16px}
+    .fl{display:block;font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--td);margin-bottom:7px}
+    .fi{width:100%;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;color:var(--tp);font-size:13px;transition:var(--t)}
+    .fi:focus{border-color:var(--emerald);box-shadow:0 0 0 3px rgba(16,185,129,.10)}
+    .fta{min-height:90px;resize:vertical}
+    .uz{border:2px dashed var(--border);border-radius:var(--rm);padding:36px 20px;text-align:center;transition:var(--t);cursor:pointer;background:rgba(16,185,129,.02)}
+    .uz:hover{border-color:var(--emerald);background:rgba(16,185,129,.05)}
+    .sti{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+    .sth{width:80px;height:54px;border-radius:8px;background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(132,204,22,.10));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;cursor:grab;transition:var(--t);position:relative}
+    .sth:hover{border-color:var(--emerald)}
+    .sth.act{border-color:var(--emerald);box-shadow:0 0 10px rgba(16,185,129,.35)}
+    .sthn{position:absolute;bottom:2px;right:4px;font-size:9px;font-weight:700;color:var(--emerald)}
+    .ctr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .ctl{font-size:12.5px;color:var(--tm);font-weight:600}
+    .tog{width:40px;height:22px;background:var(--border);border-radius:99px;position:relative;cursor:pointer;transition:var(--t)}
+    .tog.on{background:var(--emerald)}
+    .tog::after{content:'';position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;transition:var(--t);box-shadow:0 2px 4px rgba(0,0,0,.3)}
+    .tog.on::after{left:21px}
+    .pmini{background:linear-gradient(135deg,rgba(6,53,26,.8),rgba(11,93,42,.6));border-radius:var(--rm);border:1px solid var(--border);padding:20px;min-height:140px;display:flex;align-items:center;position:relative;overflow:hidden;margin-top:14px}
+    .pm-ey{font-size:9px;color:var(--gold);font-weight:700;letter-spacing:1px;margin-bottom:6px}
+    .pm-h{font-size:20px;font-weight:900;color:white;line-height:1.2}
+    .pm-s{font-size:11px;color:rgba(255,255,255,.6);margin-top:6px}
+    .pm-em{position:absolute;right:16px;bottom:16px;font-size:36px;opacity:.4}
+
+    /* EVENTS */
+    .etl{display:flex;flex-direction:column;gap:0}
+    .eti{display:flex;gap:18px;padding-bottom:24px;position:relative}
+    .eti::before{content:'';position:absolute;left:35px;top:40px;bottom:0;width:2px;background:var(--border)}
+    .eti:last-child::before{display:none}
+    .etdc{width:70px;flex-shrink:0;text-align:center}
+    .etcc{width:52px;height:52px;border-radius:50%;background:var(--card);border:2px solid var(--emerald);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;box-shadow:0 0 12px rgba(16,185,129,.25)}
+    .etcd{font-size:17px;color:var(--emerald);line-height:1}
+    .etcm{font-size:9px;color:var(--tm);font-weight:600;letter-spacing:.5px}
+    .etc{flex:1;background:var(--card);border:1px solid var(--border);border-radius:var(--rm);padding:16px 20px;transition:var(--t)}
+    .etc:hover{border-color:rgba(16,185,129,.25)}
+    .etch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+    .etn{font-size:15px;font-weight:700;color:var(--tp)}
+    .etm{display:flex;gap:14px;margin-top:8px;flex-wrap:wrap}
+    .etmi{display:flex;align-items:center;gap:5px;font-size:11.5px;color:var(--tm)}
+
+    /* ANALYTICS */
+    .ag{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+    .aw{grid-column:span 2}
+
+    /* FAB */
+    .fab{position:fixed;bottom:28px;right:28px;z-index:800;display:flex;flex-direction:column-reverse;align-items:flex-end;gap:10px}
+    .fab-main{width:56px;height:56px;background:linear-gradient(135deg,var(--emerald),#0ECC90);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 8px 24px rgba(16,185,129,.40);transition:var(--t);border:none;color:#07150F;font-weight:900}
+    .fab-main:hover{transform:scale(1.08);box-shadow:0 12px 32px rgba(16,185,129,.55)}
+    .fab-items{display:flex;flex-direction:column-reverse;gap:10px;overflow:hidden;max-height:0;opacity:0;transition:max-height .32s ease,opacity .22s ease}
+    .fab:hover .fab-items{max-height:300px;opacity:1}
+    .fabi{display:flex;align-items:center;gap:10px;justify-content:flex-end;cursor:pointer}
+    .fabib{width:44px;height:44px;background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;transition:var(--t);box-shadow:0 4px 16px rgba(0,0,0,.3)}
+    .fabi:hover .fabib{background:rgba(16,185,129,.12);border-color:var(--emerald);box-shadow:0 0 14px rgba(16,185,129,.25)}
+    .fabll{background:rgba(7,21,15,.92);border:1px solid var(--border);border-radius:7px;padding:5px 10px;font-size:12px;font-weight:600;color:var(--tm);white-space:nowrap;backdrop-filter:blur(8px)}
+
+    /* RANGE */
+    .ri{width:100%;-webkit-appearance:none;height:5px;border-radius:99px;background:var(--border);outline:none}
+    .ri::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--emerald);cursor:pointer;box-shadow:0 0 8px rgba(16,185,129,.45)}
+
+    /* VIEW TABS */
+    .vtabs{display:flex;gap:4px;background:var(--card2);border:1px solid var(--border);border-radius:var(--rs);padding:4px}
+    .vtab{padding:7px 16px;border-radius:7px;font-size:12px;font-weight:600;color:var(--td);cursor:pointer;transition:var(--t);border:1px solid transparent}
+    .vtab.active{background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.22);color:var(--emerald)}
+
+    /* TAG */
+    .tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:99px;font-size:10.5px;font-weight:700}
+    .te{background:rgba(16,185,129,.10);color:var(--emerald);border:1px solid rgba(16,185,129,.20)}
+    .tg{background:rgba(245,158,11,.10);color:var(--gold);border:1px solid rgba(245,158,11,.20)}
+    .tl{background:rgba(132,204,22,.10);color:var(--leaf);border:1px solid rgba(132,204,22,.20)}
+
+    /* MOBILE */
+    .bnav{display:none;position:fixed;bottom:0;left:0;right:0;height:64px;background:rgba(7,21,15,.97);border-top:1px solid var(--border);z-index:1000;padding:0 10px;align-items:center;justify-content:space-around;backdrop-filter:blur(16px)}
+    .bni{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 10px;border-radius:10px;cursor:pointer;transition:var(--t);min-width:48px}
+    .bni.active{background:rgba(16,185,129,.12)}
+    .bni-icon{font-size:20px}
+    .bni-label{font-size:9px;font-weight:700;color:var(--td)}
+    .bni.active .bni-label{color:var(--emerald)}
+
+    @media(max-width:900px){
+      .sb{display:none}
+      .main{margin-left:0;padding:18px 14px 90px}
+      .sg{grid-template-columns:repeat(2,1fr)}
+      .dg{grid-template-columns:1fr}
+      .ag{grid-template-columns:1fr}
+      .aw{grid-column:span 1}
+      .hmg{grid-template-columns:1fr}
+      .gm{columns:2}
+      .hdr-center{display:none}
+      .bnav{display:flex}
+      .fab{bottom:80px;right:18px}
+    }
+    @media(max-width:600px){
+      .sg{grid-template-columns:1fr 1fr}
+      .gm{columns:1}
+      .og{grid-template-columns:1fr}
+      .pt{font-size:20px}
+    }
+    .counter{display:inline}
+    .w-full{width:100%}
+    .flex{display:flex}
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-logo">🌿</div>
+    <div class="hdr-brand">
+      <div class="hdr-t1">Green Naroda</div>
+      <div class="hdr-t2">Clean Naroda</div>
+      <div class="hdr-t3">Mission Control Center</div>
+    </div>
+  </div>
+  <div class="hdr-center">
+    <div class="spill"><span class="sdot"></span>Public Website Online</div>
+    <div class="spill"><span class="sdot"></span>Pledge System Active</div>
+    <div class="spill"><span class="sdot"></span>Gallery Sync Active</div>
+  </div>
+  <div class="hdr-right">
+    <button class="hbtn" title="Notifications">🔔<span class="nbadge"></span></button>
+    <button class="hbtn" title="Quick Upload">📤</button>
+    <div class="havatar" title="Admin">A</div>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <div class="sb-lbl">Main</div>
+  <div class="ni active" onclick="sp('dashboard',this)"><span class="ni-icon">📊</span><span class="ni-label">Dashboard</span></div>
+  <div class="ni" onclick="sp('hero',this)"><span class="ni-icon">🎬</span><span class="ni-label">Hero & Media</span></div>
+  <div class="ni" onclick="sp('events',this)"><span class="ni-icon">📅</span><span class="ni-label">Events</span><span class="ni-badge g">8</span></div>
+  <div class="ni" onclick="sp('news',this)"><span class="ni-icon">📰</span><span class="ni-label">News</span></div>
+  <div class="sb-lbl" style="margin-top:8px">Community</div>
+  <div class="ni" onclick="sp('pledges',this)"><span class="ni-icon">💚</span><span class="ni-label">Pledges</span><span class="ni-badge">12,847</span></div>
+  <div class="ni" onclick="sp('students',this)"><span class="ni-icon">🎓</span><span class="ni-label">Students</span></div>
+  <div class="ni" onclick="sp('organizations',this)"><span class="ni-icon">🏢</span><span class="ni-label">Organizations</span></div>
+  <div class="ni" onclick="sp('gallery',this)"><span class="ni-icon">🖼️</span><span class="ni-label">Gallery</span><span class="ni-badge">5 new</span></div>
+  <div class="sb-lbl" style="margin-top:8px">Insights</div>
+  <div class="ni" onclick="sp('analytics',this)"><span class="ni-icon">📈</span><span class="ni-label">Analytics</span></div>
+  <div class="ni" onclick="sp('settings',this)"><span class="ni-icon">⚙️</span><span class="ni-label">Settings</span></div>
+  <div class="sb-bot">
+    <div class="ni"><span class="ni-icon">🚪</span><span class="ni-label" style="color:#F87171">Sign Out</span></div>
+    <div style="margin-top:14px;padding:10px 12px;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.12);border-radius:10px;font-size:11px;color:var(--td)">
+      <div style="font-weight:700;color:var(--tm);margin-bottom:4px">Mission 28,855</div>
+      <div style="font-size:10px">20,542 / 28,855 trees</div>
+      <div style="margin-top:6px;height:4px;background:var(--border);border-radius:99px;overflow:hidden">
+        <div style="width:71.2%;height:100%;background:linear-gradient(90deg,var(--emerald),var(--leaf));border-radius:99px"></div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- DASHBOARD -->
+  <div id="page-dashboard" class="pv active">
+    <div class="ph">
+      <div><div class="pt">Mission Overview 🌿</div><div class="ps">Green Naroda • Clean Naroda — Thursday, 6 August 2026</div></div>
+      <div class="pa"><button class="btn btn-o btn-sm">📄 Export Report</button><button class="btn btn-p btn-sm">🔄 Refresh</button></div>
+    </div>
+    <div class="sg">
+      <div class="sc" style="--ac:#10B981"><div class="sc-glow"></div>
+        <div class="sc-icon">💚</div><div class="sc-val"><span class="counter" data-t="12847">0</span></div>
+        <div class="sc-lbl">Pledges Taken</div><div class="sbadge up">↑ +247 today</div></div>
+      <div class="sc" style="--ac:#84CC16"><div class="sc-glow" style="background:var(--leaf)"></div>
+        <div class="sc-icon" style="background:rgba(132,204,22,.10);border-color:rgba(132,204,22,.22)">🎓</div>
+        <div class="sc-val"><span class="counter" data-t="3284">0</span></div><div class="sc-lbl">Students Registered</div>
+        <div class="sbadge up" style="background:rgba(132,204,22,.10);color:var(--leaf);border-color:rgba(132,204,22,.22)">↑ +34 today</div></div>
+      <div class="sc" style="--ac:#F59E0B"><div class="sc-glow" style="background:var(--gold)"></div>
+        <div class="sc-icon" style="background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.22)">🏢</div>
+        <div class="sc-val"><span class="counter" data-t="418">0</span></div><div class="sc-lbl">Organizations Joined</div>
+        <div class="sbadge go">↑ +12 this week</div></div>
+      <div class="sc" style="--ac:#10B981"><div class="sc-glow"></div>
+        <div class="sc-icon">🖼️</div><div class="sc-val"><span class="counter" data-t="6742">0</span></div>
+        <div class="sc-lbl">Gallery Photos</div><div class="sbadge go">5 pending review</div></div>
+    </div>
+    <div class="dg">
+      <div class="dgl">
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+            <div class="stitle" style="margin-bottom:0;flex:1">Pledge Registrations — Last 30 Days</div>
+            <select class="fsel"><option>Last 30 Days</option><option>Last 7 Days</option><option>This Month</option></select>
+          </div>
+          <div class="chart-wrap"><canvas id="pledgeChart"></canvas></div>
+        </div>
+        <div class="card"><div class="stitle">Ward-wise Participation</div><div class="wbl" id="wardBars"></div></div>
+      </div>
+      <div class="dgr">
+        <div class="card" style="text-align:center">
+          <div class="stitle">Mission Progress</div>
+          <div class="prw">
+            <div style="position:relative;display:inline-block">
+              <svg width="180" height="180" viewBox="0 0 180 180">
+                <circle class="ring-track" cx="90" cy="90" r="80" stroke-width="12"></circle>
+                <circle class="ring-fill" cx="90" cy="90" r="80" stroke-width="12" transform="rotate(-90 90 90)" id="ringFill"></circle>
+              </svg>
+              <div class="rct"><div class="rpct">71%</div><div class="rlbl">MISSION<br>COMPLETE</div></div>
+            </div>
+            <div class="pstats">
+              <div class="psi"><div class="psv" style="color:var(--emerald)">20,542</div><div class="psl">Trees Planted</div></div>
+              <div class="psi"><div class="psv" style="color:var(--gold)">8,313</div><div class="psl">Remaining</div></div>
+              <div class="psi"><div class="psv" style="color:var(--tm)">28,855</div><div class="psl">Target</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card"><div class="stitle">Live Activity</div><div class="alist" id="actList"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO MANAGER -->
+  <div id="page-hero" class="pv">
+    <div class="ph">
+      <div><div class="pt">🎬 Hero & Media Manager</div><div class="ps">Edit the public homepage hero — live preview included</div></div>
+      <div class="pa"><button class="btn btn-o btn-sm">👁️ Preview</button><button class="btn btn-o btn-sm">💾 Save Draft</button><button class="btn btn-p btn-sm">🚀 Publish</button></div>
+    </div>
+    <div class="hmg">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="card">
+          <div class="stitle">Slide Content</div>
+          <div class="fg"><label class="fl">Eyebrow Label (English)</label><input class="fi" value="CLEAN NARODA CAMPAIGN"></div>
+          <div class="fg"><label class="fl">Eyebrow Label (Gujarati)</label><input class="fi" value="ક્લીન નારોડા ઝુંબેશ" style="font-family:'Noto Sans Gujarati',sans-serif"></div>
+          <div class="fg"><label class="fl">Main Headline</label><textarea class="fi fta">Clean Streets,
+Clean Minds,
+Clean Future</textarea></div>
+          <div class="fg"><label class="fl">Sub Description</label><textarea class="fi fta" style="min-height:60px">Community-led initiative across all 14 wards.</textarea></div>
+          <div class="fg"><label class="fl">Mission Badge Text</label><input class="fi" value="MISSION 28,855"></div>
+        </div>
+        <div class="card">
+          <div class="stitle">CTA Buttons</div>
+          <div class="ctr"><span class="ctl">Primary — "Explore Clean Mission"</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="fg" style="margin-top:8px"><input class="fi" value="Explore Clean Mission"></div>
+          <div class="ctr"><span class="ctl">Secondary — "View Gallery"</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="fg" style="margin-top:8px"><input class="fi" value="View Gallery"></div>
+          <div class="ctr"><span class="ctl">Show Scroll Indicator</span><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+        <div class="card">
+          <div class="stitle">Live Preview</div>
+          <div class="pmini">
+            <div class="pm-ov">
+              <div class="pm-ey">CLEAN NARODA CAMPAIGN</div>
+              <div class="pm-h">Clean Streets,<br><span style="color:var(--gold)">Clean Minds,</span><br>Clean Future</div>
+              <div class="pm-s">Community-led initiative across 14 wards.</div>
+            </div>
+            <div class="pm-em">🌿</div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div class="card">
+          <div class="stitle">Upload Hero Slides</div>
+          <div class="uz">
+            <div style="font-size:36px;margin-bottom:12px">☁️</div>
+            <div style="font-size:13px;color:var(--tm)">Drag & drop slides here</div>
+            <div style="font-size:11px;color:var(--td);margin-top:5px">PNG, JPG, MP4 — Max 20MB each</div>
+            <button class="btn btn-o btn-sm" style="margin-top:14px">Browse Files</button>
+          </div>
+          <div style="margin-top:18px">
+            <div style="font-size:12px;font-weight:700;color:var(--td);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Slide Thumbnails</div>
+            <div class="sti">
+              <div class="sth act">🏙️<span class="sthn">1</span></div>
+              <div class="sth">🌲<span class="sthn">2</span></div>
+              <div class="sth">🌿<span class="sthn">3</span></div>
+              <div class="sth" style="border-style:dashed;background:transparent;color:var(--td)">+</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="stitle">Overlay Strength</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <span style="font-size:12px;color:var(--tm)">Dark overlay intensity</span>
+            <span style="font-size:12px;font-weight:700;color:var(--emerald)" id="ovVal">65%</span>
+          </div>
+          <input type="range" class="ri" min="0" max="100" value="65" oninput="document.getElementById('ovVal').textContent=this.value+'%'">
+          <div style="display:flex;justify-content:space-between;margin-top:5px">
+            <span style="font-size:10px;color:var(--td)">Light</span>
+            <span style="font-size:10px;color:var(--td)">Dark</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="stitle">Upload from</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <button class="btn btn-o w-full" style="justify-content:flex-start;gap:10px">💻 From Device</button>
+            <button class="btn btn-o w-full" style="justify-content:flex-start;gap:10px">🟡 From Google Drive</button>
+            <button class="btn btn-o w-full" style="justify-content:flex-start;gap:10px">🔗 From URL</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLEDGES -->
+  <div id="page-pledges" class="pv">
+    <div class="ph">
+      <div><div class="pt">💚 Pledge Management</div><div class="ps">12,847 total pledges — 247 new today</div></div>
+      <div class="pa">
+        <button class="btn btn-o btn-sm">📊 Excel</button><button class="btn btn-o btn-sm">📄 CSV</button>
+        <button class="btn btn-o btn-sm">🖨️ Print</button><button class="btn btn-p btn-sm">🔄 Refresh</button>
+      </div>
+    </div>
+    <div class="card" style="padding:20px">
+      <div class="tbar">
+        <div class="sw-wrap"><span class="sw-icon">🔍</span><input class="sw-inp" placeholder="Search name, mobile, ward..."></div>
+        <select class="fsel"><option>All Wards</option><option>Ward 1</option><option>Ward 7</option><option>Ward 12</option></select>
+        <select class="fsel"><option>All Dates</option><option>Today</option><option>Last 7 Days</option></select>
+        <select class="fsel"><option>All Status</option><option>Verified</option><option>Pending</option><option>Rejected</option></select>
+      </div>
+      <div class="dtw">
+        <table class="dt">
+          <thead><tr><th><input type="checkbox"></th><th>#</th><th>Full Name</th><th>Mobile</th><th>Ward</th><th>Date</th><th>Status</th><th>Certificate</th><th>Actions</th></tr></thead>
+          <tbody id="pledgeTbody"></tbody>
+        </table>
+        <div class="tpag"><span>Showing 1–10 of 12,847 entries</span><div class="pagbtns"><button class="pbtn">‹</button><button class="pbtn active">1</button><button class="pbtn">2</button><button class="pbtn">3</button><button class="pbtn">…</button><button class="pbtn">›</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STUDENTS -->
+  <div id="page-students" class="pv">
+    <div class="ph">
+      <div><div class="pt">🎓 Student Registration</div><div class="ps">3,284 students across 47 colleges</div></div>
+      <div class="pa"><button class="btn btn-o btn-sm">📊 Export</button><button class="btn btn-p btn-sm">+ Add Student</button></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div class="card card-sm" style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--emerald)">3,284</div><div style="font-size:12px;color:var(--tm);margin-top:4px">Total Students</div></div>
+      <div class="card card-sm" style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--leaf)">1,847</div><div style="font-size:12px;color:var(--tm);margin-top:4px">Active Volunteers</div></div>
+      <div class="card card-sm" style="text-align:center"><div style="font-size:28px;font-weight:900;color:var(--gold)">47</div><div style="font-size:12px;color:var(--tm);margin-top:4px">Colleges</div></div>
+    </div>
+    <div class="card" style="padding:20px">
+      <div class="tbar">
+        <div class="sw-wrap"><span class="sw-icon">🔍</span><input class="sw-inp" placeholder="Search students..."></div>
+        <select class="fsel"><option>All Colleges</option><option>LDCE</option><option>Nirma University</option></select>
+        <select class="fsel"><option>All Semesters</option><option>Sem 1</option><option>Sem 3</option><option>Sem 5</option><option>Sem 7</option></select>
+        <select class="fsel"><option>All Wards</option><option>Ward 1–5</option><option>Ward 6–10</option></select>
+      </div>
+      <div class="dtw">
+        <table class="dt">
+          <thead><tr><th><input type="checkbox"></th><th>Student</th><th>College</th><th>Semester</th><th>Ward</th><th>Hours</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="studentTbody"></tbody>
+        </table>
+        <div class="tpag"><span>Showing 1–10 of 3,284</span><div class="pagbtns"><button class="pbtn">‹</button><button class="pbtn active">1</button><button class="pbtn">2</button><button class="pbtn">3</button><button class="pbtn">›</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORGANIZATIONS -->
+  <div id="page-organizations" class="pv">
+    <div class="ph">
+      <div><div class="pt">🏢 Organizations</div><div class="ps">418 organizations — schools, NGOs, colleges, societies</div></div>
+      <div class="pa"><button class="btn btn-o btn-sm">📊 Export</button><button class="btn btn-p btn-sm">+ Register Org</button></div>
+    </div>
+    <div class="tbar" style="margin-bottom:20px">
+      <div class="sw-wrap"><span class="sw-icon">🔍</span><input class="sw-inp" placeholder="Search organizations..."></div>
+      <select class="fsel"><option>All Types</option><option>School</option><option>College</option><option>NGO</option><option>Society</option></select>
+      <select class="fsel"><option>All Status</option><option>Approved</option><option>Pending</option></select>
+    </div>
+    <div class="og" id="orgGrid"></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div id="page-gallery" class="pv">
+    <div class="ph">
+      <div><div class="pt">🖼️ Gallery Moderation</div><div class="ps">6,742 photos — 5 pending approval</div></div>
+      <div class="pa">
+        <button class="btn btn-o btn-sm">💻 Device</button><button class="btn btn-o btn-sm">🟡 Drive</button>
+        <button class="btn btn-o btn-sm">🔗 URL</button><button class="btn btn-p btn-sm">✅ Approve All</button>
+      </div>
+    </div>
+    <div class="tbar" style="margin-bottom:20px">
+      <div class="sw-wrap"><span class="sw-icon">🔍</span><input class="sw-inp" placeholder="Search gallery..."></div>
+      <select class="fsel"><option>All Events</option><option>Tree Plantation</option><option>Cleanliness Drive</option></select>
+      <select class="fsel"><option>All Wards</option><option>Ward 7</option><option>Ward 12</option></select>
+      <select class="fsel"><option>All Status</option><option>Approved</option><option>Pending</option><option>Rejected</option></select>
+    </div>
+    <div class="gm" id="galleryGrid"></div>
+  </div>
+
+  <!-- EVENTS -->
+  <div id="page-events" class="pv">
+    <div class="ph">
+      <div><div class="pt">📅 Events Manager</div><div class="ps">8 upcoming events — 32 total this campaign</div></div>
+      <div class="pa">
+        <div class="vtabs">
+          <div class="vtab active" onclick="sev('timeline',this)">Timeline</div>
+          <div class="vtab" onclick="sev('calendar',this)">Calendar</div>
+          <div class="vtab" onclick="sev('list',this)">List</div>
+        </div>
+        <button class="btn btn-p btn-sm">+ Add Event</button>
+      </div>
+    </div>
+    <div id="ev-timeline" class="etl"></div>
+    <div id="ev-calendar" style="display:none"><div class="card" style="padding:28px;text-align:center;color:var(--tm)">📅 Calendar view — connect to a calendar library to enable full month view.</div></div>
+    <div id="ev-list" style="display:none"></div>
+  </div>
+
+  <!-- NEWS -->
+  <div id="page-news" class="pv">
+    <div class="ph">
+      <div><div class="pt">📰 News Manager</div><div class="ps">Publish and manage articles for the public site</div></div>
+      <div class="pa"><button class="btn btn-p btn-sm">+ New Article</button></div>
+    </div>
+    <div class="card" style="padding:20px">
+      <div class="tbar">
+        <div class="sw-wrap"><span class="sw-icon">🔍</span><input class="sw-inp" placeholder="Search articles..."></div>
+        <select class="fsel"><option>All Status</option><option>Published</option><option>Draft</option></select>
+      </div>
+      <div class="dtw">
+        <table class="dt">
+          <thead><tr><th>Title</th><th>Category</th><th>Date</th><th>Status</th><th>Views</th><th>Actions</th></tr></thead>
+          <tbody id="newsTbody"></tbody>
+        </table>
+        <div class="tpag"><span>Showing 1–8 of 24</span><div class="pagbtns"><button class="pbtn">‹</button><button class="pbtn active">1</button><button class="pbtn">2</button><button class="pbtn">3</button><button class="pbtn">›</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS -->
+  <div id="page-analytics" class="pv">
+    <div class="ph">
+      <div><div class="pt">📈 Campaign Analytics</div><div class="ps">Live mission data and growth insights</div></div>
+      <div class="pa"><select class="fsel"><option>Last 30 Days</option><option>Last 3 Months</option><option>All Time</option></select><button class="btn btn-o btn-sm">📄 Download</button></div>
+    </div>
+    <div class="ag">
+      <div class="card aw"><div class="stitle">Pledges Over Time</div><div class="chart-wrap" style="height:240px"><canvas id="mainChart"></canvas></div></div>
+      <div class="card"><div class="stitle">Student Enrollment Growth</div><div class="chart-wrap"><canvas id="stuChart"></canvas></div></div>
+      <div class="card"><div class="stitle">Organization Registrations</div><div class="chart-wrap"><canvas id="orgChart"></canvas></div></div>
+      <div class="card"><div class="stitle">Ward Participation Heatmap</div><div id="wheatmap" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:8px 0"></div></div>
+      <div class="card"><div class="stitle">Daily Activity</div><div class="chart-wrap"><canvas id="dayChart"></canvas></div></div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div id="page-settings" class="pv">
+    <div class="ph"><div><div class="pt">⚙️ Settings</div><div class="ps">Campaign configuration and system controls</div></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="card">
+        <div class="stitle">Campaign Info</div>
+        <div class="fg"><label class="fl">Campaign Name</label><input class="fi" value="Green Naroda • Clean Naroda"></div>
+        <div class="fg"><label class="fl">Mission Target</label><input class="fi" value="28,855 Trees"></div>
+        <div class="fg"><label class="fl">Campaign End Date</label><input class="fi" type="date" value="2026-12-31"></div>
+        <button class="btn btn-p">💾 Save Settings</button>
+      </div>
+      <div class="card">
+        <div class="stitle">System Controls</div>
+        <div class="ctr" style="margin-bottom:16px"><span class="ctl">Public Website</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="ctr" style="margin-bottom:16px"><span class="ctl">Pledge Registration</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="ctr" style="margin-bottom:16px"><span class="ctl">Student Portal</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="ctr" style="margin-bottom:16px"><span class="ctl">Organization Registration</span><div class="tog on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="ctr"><span class="ctl">Maintenance Mode</span><div class="tog" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- FAB -->
+<div class="fab">
+  <button class="fab-main" title="Quick Actions">⚡</button>
+  <div class="fab-items">
+    <div class="fabi"><span class="fabll">Add Event</span><div class="fabib">📅</div></div>
+    <div class="fabi"><span class="fabll">Upload Photos</span><div class="fabib">📷</div></div>
+    <div class="fabi"><span class="fabll">Export Excel</span><div class="fabib">📗</div></div>
+    <div class="fabi"><span class="fabll">Sync Website</span><div class="fabib">🔄</div></div>
+  </div>
+</div>
+
+<!-- MOBILE NAV -->
+<nav class="bnav">
+  <div class="bni active" onclick="sp('dashboard',this)"><span class="bni-icon">📊</span><span class="bni-label">Home</span></div>
+  <div class="bni" onclick="sp('pledges',this)"><span class="bni-icon">💚</span><span class="bni-label">Pledges</span></div>
+  <div class="bni" onclick="sp('gallery',this)"><span class="bni-icon">🖼️</span><span class="bni-label">Gallery</span></div>
+  <div class="bni" onclick="sp('analytics',this)"><span class="bni-icon">📈</span><span class="bni-label">Analytics</span></div>
+  <div class="bni" onclick="sp('settings',this)"><span class="bni-icon">⚙️</span><span class="bni-label">Settings</span></div>
+</nav>
+
+<script>
+/* ── Navigation ── */
+function sp(id,el){
+  document.querySelectorAll('.pv').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.bni').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  if(id==='analytics')setTimeout(initAnalytics,80);
+  if(id==='dashboard')setTimeout(initDashboard,80);
+}
+function sev(v,tab){
+  document.querySelectorAll('.vtab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  ['timeline','calendar','list'].forEach(x=>document.getElementById('ev-'+x).style.display=x===v?'':'none');
+}
+
+/* ── Counter Anim ── */
+function animCounters(){
+  document.querySelectorAll('.counter').forEach(el=>{
+    const t=parseInt(el.dataset.t),dur=1800,step=t/(dur/16);let c=0;
+    const tmr=setInterval(()=>{c=Math.min(c+step,t);el.textContent=Math.floor(c).toLocaleString('en-IN');if(c>=t)clearInterval(tmr);},16);
+  });
+}
+
+/* ── Sample Data ── */
+const pledges=[
+  ['Rajesh Patel','9876543210','Ward 12','05 Aug 2026','v'],
+  ['Komal Shah','9824567891','Ward 7','05 Aug 2026','v'],
+  ['Prakash Mehta','9825634120','Ward 3','04 Aug 2026','p'],
+  ['Geeta Rao','9823456781','Ward 14','04 Aug 2026','v'],
+  ['Arvind Joshi','9801234560','Ward 9','03 Aug 2026','v'],
+  ['Nisha Trivedi','9844321090','Ward 1','03 Aug 2026','p'],
+  ['Suresh Bhai','9899012340','Ward 11','02 Aug 2026','v'],
+  ['Priya Desai','9871234560','Ward 6','02 Aug 2026','r'],
+  ['Dinesh Kumar','9834561230','Ward 5','01 Aug 2026','v'],
+  ['Manjula Ben','9861230981','Ward 13','01 Aug 2026','p'],
+];
+const students=[
+  ['Harsh Patel','LDCE, Ahmedabad','Sem 5','Ward 12','24 hrs','v'],
+  ['Disha Trivedi','Nirma University','Sem 3','Ward 7','18 hrs','v'],
+  ['Raj Shah','Gujarat University','Sem 7','Ward 3','32 hrs','v'],
+  ['Neha Joshi','LD Arts College','Sem 1','Ward 14','8 hrs','p'],
+  ['Vikas Mehta','CEPT University','Sem 5','Ward 9','21 hrs','v'],
+  ['Shruti Dave','Ahmedabad University','Sem 3','Ward 1','14 hrs','v'],
+  ['Arjun Patel','LDCE, Ahmedabad','Sem 7','Ward 11','40 hrs','v'],
+  ['Kavya Shah','NID Ahmedabad','Sem 3','Ward 6','16 hrs','p'],
+  ['Rohan Desai','Gujarat University','Sem 5','Ward 5','28 hrs','v'],
+  ['Mira Bhai','NIRMA University','Sem 1','Ward 13','6 hrs','p'],
+];
+const orgs=[
+  {i:'🏫',n:'Lotus Public School',t:'School',p:'Ramesh Shah',v:48,e:6,s:'v'},
+  {i:'🏛️',n:'Nirma University',t:'College',p:'Prof. A.K. Mehta',v:124,e:12,s:'v'},
+  {i:'🌿',n:'Green Earth Foundation',t:'NGO',p:'Priya Desai',v:35,e:8,s:'v'},
+  {i:'🏘️',n:'New Naroda Society',t:'Society',p:'Vijay Patel',v:22,e:4,s:'p'},
+  {i:'🕌',n:'Naroda Trust',t:'Trust',p:'Abdul Bhai',v:40,e:5,s:'v'},
+  {i:'🏫',n:'Ekta Vidyalaya',t:'School',p:'Sunita Ben',v:60,e:7,s:'v'},
+];
+const gallery=[
+  {em:'🌳',ev:'Tree Plantation',w:'Ward 7',s:'v'},
+  {em:'🧹',ev:'Cleanliness Drive',w:'Ward 12',s:'v'},
+  {em:'👩‍🎓',ev:'Awareness Walk',w:'Ward 3',s:'p'},
+  {em:'🏘️',ev:'Plantation',w:'Ward 14',s:'v'},
+  {em:'🌱',ev:'Plantation',w:'Ward 1',s:'p'},
+  {em:'👨‍👩‍👧',ev:'Rally',w:'Ward 9',s:'v'},
+  {em:'🚶',ev:'Awareness Walk',w:'Ward 6',s:'p'},
+  {em:'🌿',ev:'Plantation',w:'Ward 11',s:'v'},
+  {em:'♻️',ev:'Cleanliness',w:'Ward 5',s:'r'},
+];
+const events=[
+  {d:'10',m:'AUG',n:'Ward 7 Mega Tree Plantation Drive',l:'Naroda Garden, Sector 7',w:'Ward 7',v:85,s:'v'},
+  {d:'12',m:'AUG',n:'All-Ward Cleanliness Campaign',l:'Naroda Main Road',w:'All Wards',v:220,s:'v'},
+  {d:'15',m:'AUG',n:'Independence Day Green March',l:'Naroda Circle',w:'All Wards',v:500,s:'v'},
+  {d:'18',m:'AUG',n:'Student Volunteer Orientation',l:'LDCE Campus',w:'Ward 3',v:120,s:'p'},
+  {d:'22',m:'AUG',n:'Ward 12 Plantation Drive',l:'Sector 12 Park',w:'Ward 12',v:60,s:'p'},
+  {d:'26',m:'AUG',n:'Community NGO Meet',l:'Naroda Hall',w:'All Wards',v:45,s:'v'},
+];
+const news=[
+  ['Green Naroda Reaches 20,000 Trees Milestone 🌳','Campaign News','4 Aug 2026','v','3,241'],
+  ['Independence Day Green March Announced','Events','3 Aug 2026','v','2,104'],
+  ['Student Volunteers Cross 3000 Enrollment','Community','1 Aug 2026','v','1,847'],
+  ['New Partnership with Nirma University','Organizations','30 Jul 2026','p','—'],
+  ['Ward 7 Recognized as Most Active Constituency','Awards','28 Jul 2026','v','4,521'],
+  ['Cleanliness Drive Report — July 2026','Reports','27 Jul 2026','v','987'],
+  ['Photo Gallery: Tree Plantation Drive Vol.3','Gallery','25 Jul 2026','v','6,312'],
+  ['Draft: Green Naroda 2027 Roadmap','Planning','—','p','—'],
+];
+const wards=[{n:'Ward 7',p:92},{n:'Ward 12',p:88},{n:'Ward 3',p:81},{n:'Ward 14',p:76},{n:'Ward 1',p:72},{n:'Ward 9',p:68},{n:'Ward 6',p:61},{n:'Ward 11',p:55},{n:'Ward 5',p:48},{n:'Ward 13',p:42}];
+const activity=[
+  ['','Rajesh Patel took the Green Pledge from Ward 12','2 minutes ago'],
+  ['go','Lotus Public School registered as an organization','8 minutes ago'],
+  ['lf','New gallery photo uploaded for Tree Plantation Drive','14 minutes ago'],
+  ['','Komal Shah enrolled in student volunteer program','22 minutes ago'],
+  ['go','Event "Ward 7 Cleanliness Drive" published','41 minutes ago'],
+  ['lf','248 new pledges recorded overnight','6 hours ago'],
+];
+
+/* ── Renders ── */
+function sBadge(s){const m={v:'v ✅ Verified',p:'p ⏳ Pending',r:'r ❌ Rejected'};const[cls,...rest]=m[s].split(' ');return`<span class="sbadge2 ${cls}">${rest.join(' ')}</span>`;}
+function tag(t,cls='te'){return`<span class="tag ${cls}">${t}</span>`;}
+
+function renderPledges(){
+  const b=document.getElementById('pledgeTbody');if(!b)return;
+  b.innerHTML=pledges.map((r,i)=>`<tr>
+    <td><input type="checkbox"></td>
+    <td class="tdm" style="color:var(--td)">${String(12847-i).padStart(5,'0')}</td>
+    <td class="tdn">${r[0]}</td>
+    <td class="tdm">${r[1]}</td>
+    <td>${tag(r[2])}</td>
+    <td style="color:var(--tm);font-size:12px">${r[3]}</td>
+    <td>${sBadge(r[4])}</td>
+    <td><button class="btn btn-o btn-xs">⬇ Download</button></td>
+    <td><div style="display:flex;gap:4px"><button class="btn btn-o btn-xs">👁</button><button class="btn btn-o btn-xs">✏️</button></div></td>
+  </tr>`).join('');
+}
+function renderStudents(){
+  const b=document.getElementById('studentTbody');if(!b)return;
+  b.innerHTML=students.map(r=>`<tr>
+    <td><input type="checkbox"></td>
+    <td class="tdn">${r[0]}</td>
+    <td style="color:var(--tm);font-size:12px">${r[1]}</td>
+    <td style="color:var(--tm)">${r[2]}</td>
+    <td>${tag(r[3])}</td>
+    <td style="color:var(--leaf);font-weight:700">${r[4]}</td>
+    <td>${sBadge(r[5])}</td>
+    <td><div style="display:flex;gap:4px"><button class="btn btn-o btn-xs">👁</button><button class="btn btn-o btn-xs">✏️</button><button class="btn btn-o btn-xs">📜</button></div></td>
+  </tr>`).join('');
+}
+function renderOrgs(){
+  const g=document.getElementById('orgGrid');if(!g)return;
+  g.innerHTML=orgs.map(o=>`<div class="oc">
+    <div class="oc-bar"></div>
+    <div class="oc-hdr"><div class="oi">${o.i}</div>${sBadge(o.s)}</div>
+    <div class="on">${o.n}</div><div class="oty">${o.t}</div>
+    <div class="ocon">👤 ${o.p}</div>
+    <div class="ometa">
+      <div class="omi"><div class="omv">${o.v}</div><div class="oml">Volunteers</div></div>
+      <div class="omi"><div class="omv" style="color:var(--gold)">${o.e}</div><div class="oml">Events</div></div>
+    </div>
+    <div class="oact">
+      <button class="btn btn-o btn-xs">👁 View</button>
+      <button class="btn btn-o btn-xs">✏️ Edit</button>
+      <button class="btn btn-g btn-xs">📊 Export</button>
+      ${o.s!=='v'?'<button class="btn btn-p btn-xs">✅ Approve</button>':''}
+    </div>
+  </div>`).join('');
+}
+function renderGallery(){
+  const g=document.getElementById('galleryGrid');if(!g)return;
+  g.innerHTML=gallery.map(x=>`<div class="gi">
+    <div class="gth">${x.em}</div>
+    <div class="gov">
+      <button class="btn btn-p btn-xs">✅ Approve</button>
+      <button class="btn btn-d btn-xs">❌ Reject</button>
+      <button class="btn btn-g btn-xs">⭐ Feature</button>
+    </div>
+    <div class="ginfo">
+      <div class="gtags"><span class="gtag">${x.ev}</span><span class="gtag" style="background:rgba(245,158,11,.10);color:var(--gold);border-color:rgba(245,158,11,.20)">${x.w}</span></div>
+      ${sBadge(x.s)}
+    </div>
+  </div>`).join('');
+}
+function renderEvents(){
+  const tl=document.getElementById('ev-timeline');if(!tl)return;
+  tl.innerHTML=events.map(e=>`<div class="eti">
+    <div class="etdc"><div class="etcc"><div class="etcd">${e.d}</div><div class="etcm">${e.m}</div></div></div>
+    <div class="etc">
+      <div class="etch"><div class="etn">${e.n}</div>${sBadge(e.s)}</div>
+      <div class="etm">
+        <div class="etmi">📍 ${e.l}</div>
+        <div class="etmi">${tag(e.w)}</div>
+        <div class="etmi">👥 ${e.v} volunteers</div>
+      </div>
+      <div style="display:flex;gap:6px;margin-top:12px">
+        <button class="btn btn-o btn-xs">✏️ Edit</button>
+        <button class="btn btn-o btn-xs">📋 Clone</button>
+        ${e.s!=='v'?'<button class="btn btn-p btn-xs">🚀 Publish</button>':'<button class="btn btn-o btn-xs">👁 View</button>'}
+      </div>
+    </div>
+  </div>`).join('');
+  const lv=document.getElementById('ev-list');
+  if(lv)lv.innerHTML=`<div class="card" style="padding:0;overflow:hidden"><table class="dt"><thead><tr><th>Date</th><th>Event</th><th>Location</th><th>Ward</th><th>Volunteers</th><th>Status</th><th>Actions</th></tr></thead><tbody>${events.map(e=>`<tr><td style="color:var(--tm)">${e.d} ${e.m}</td><td class="tdn">${e.n}</td><td style="color:var(--tm);font-size:12px">${e.l}</td><td>${tag(e.w)}</td><td style="color:var(--leaf);font-weight:700">${e.v}</td><td>${sBadge(e.s)}</td><td><button class="btn btn-o btn-xs">✏️</button></td></tr>`).join('')}</tbody></table></div>`;
+}
+function renderNews(){
+  const b=document.getElementById('newsTbody');if(!b)return;
+  b.innerHTML=news.map(r=>`<tr>
+    <td class="tdn">${r[0]}</td>
+    <td>${tag(r[1])}</td>
+    <td style="color:var(--tm);font-size:12px">${r[2]}</td>
+    <td>${sBadge(r[3])}</td>
+    <td style="color:var(--leaf);font-weight:700">${r[4]}</td>
+    <td><div style="display:flex;gap:4px"><button class="btn btn-o btn-xs">✏️</button><button class="btn btn-d btn-xs">🗑</button></div></td>
+  </tr>`).join('');
+}
+function renderWardBars(){
+  const c=document.getElementById('wardBars');if(!c)return;
+  c.innerHTML=wards.map(w=>`<div class="wbi">
+    <div class="wbh"><span class="wbn">${w.n}</span><span class="wbv">${w.p}%</span></div>
+    <div class="wbt"><div class="wbf" style="width:${w.p}%"></div></div>
+  </div>`).join('');
+}
+function renderActivity(){
+  const c=document.getElementById('actList');if(!c)return;
+  c.innerHTML=activity.map(a=>`<div class="ai">
+    <div class="adot ${a[0]}"></div>
+    <div><div class="atext">${a[1].replace(/([\w\s]+(?:Drive|School|Foundation|Guild|campaign|University|volunteered|pledges))/g,'<strong>$1</strong>')}</div><div class="atime">${a[2]}</div></div>
+  </div>`).join('');
+}
+
+/* ── Charts ── */
+Chart.defaults.color='#4A7A5C';
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.font.size=11;
+function rArr(n,a,b){return Array.from({length:n},()=>Math.floor(Math.random()*(b-a)+a))}
+function days(n){return Array.from({length:n},(_,i)=>{const d=new Date();d.setDate(d.getDate()-n+i+1);return d.toLocaleDateString('en-IN',{month:'short',day:'numeric'})})}
+const months=['Mar','Apr','May','Jun','Jul','Aug'];
+
+let dInit=false;
+function initDashboard(){
+  if(dInit)return;dInit=true;
+  const ctx=document.getElementById('pledgeChart');if(!ctx)return;
+  new Chart(ctx,{type:'line',data:{labels:days(30),datasets:[{label:'Pledges',data:rArr(30,120,420),borderColor:'#10B981',backgroundColor:'rgba(16,185,129,.08)',borderWidth:2.5,fill:true,tension:.45,pointBackgroundColor:'#10B981',pointRadius:3,pointHoverRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C',maxTicksLimit:8}},y:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}}}}});
+}
+
+let aInit=false;
+function initAnalytics(){
+  if(aInit)return;aInit=true;
+  const d30=days(30);
+  const mCtx=document.getElementById('mainChart');
+  if(mCtx)new Chart(mCtx,{type:'line',data:{labels:d30,datasets:[{label:'Pledges',data:rArr(30,180,460),borderColor:'#10B981',backgroundColor:'rgba(16,185,129,.07)',fill:true,tension:.4,borderWidth:2.5,pointRadius:2},{label:'Students',data:rArr(30,20,80),borderColor:'#84CC16',backgroundColor:'rgba(132,204,22,.06)',fill:true,tension:.4,borderWidth:2,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,labels:{color:'#7BAF8E'}}},scales:{x:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C',maxTicksLimit:10}},y:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}}}}});
+  const sCtx=document.getElementById('stuChart');
+  if(sCtx)new Chart(sCtx,{type:'bar',data:{labels:months,datasets:[{label:'Students',data:[120,340,680,1200,2100,3284],backgroundColor:'rgba(132,204,22,.25)',borderColor:'#84CC16',borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}},y:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}}}}});
+  const oCtx=document.getElementById('orgChart');
+  if(oCtx)new Chart(oCtx,{type:'bar',data:{labels:months,datasets:[{label:'Orgs',data:[18,52,110,210,340,418],backgroundColor:'rgba(245,158,11,.20)',borderColor:'#F59E0B',borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}},y:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}}}}});
+  const dCtx=document.getElementById('dayChart');
+  if(dCtx)new Chart(dCtx,{type:'bar',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Pledges',data:[220,310,185,420,380,540,290],backgroundColor:'rgba(16,185,129,.22)',borderColor:'#10B981',borderWidth:2,borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}},y:{grid:{color:'rgba(27,67,50,.4)'},ticks:{color:'#4A7A5C'}}}}});
+  const wh=document.getElementById('wheatmap');
+  if(wh)wh.innerHTML=Array.from({length:14},(_,i)=>{const v=Math.floor(Math.random()*100);const o=(0.08+(v/100)*0.72).toFixed(2);return`<div style="aspect-ratio:1;border-radius:8px;background:rgba(16,185,129,${o});border:1px solid rgba(16,185,129,.15);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:default" title="Ward ${i+1}: ${v}%"><div style="font-size:10px;font-weight:800;color:var(--emerald)">${i+1}</div><div style="font-size:8px;color:var(--td)">${v}%</div></div>`;}).join('');
+}
+
+/* ── Init ── */
+window.addEventListener('DOMContentLoaded',()=>{
+  renderPledges();renderStudents();renderOrgs();renderGallery();
+  renderEvents();renderNews();renderWardBars();renderActivity();
+  animCounters();
+  setTimeout(initDashboard,300);
+  setTimeout(()=>{
+    const r=document.getElementById('ringFill');
+    if(r){const c=2*Math.PI*80;r.style.strokeDasharray=c;r.style.strokeDashoffset=c*(1-0.712);}
+  },600);
+});
+</script>
+</body>
+</html>

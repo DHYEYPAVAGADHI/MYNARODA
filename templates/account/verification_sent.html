@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Verify Your E-mail Address" %} — Green Naroda{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-earth-50 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-earth-100 text-center">
+    
+    <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-forest-100">
+      <svg class="h-8 w-8 text-forest-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      </svg>
+    </div>
+
+    <div>
+      <h2 class="text-3xl font-playfair font-bold text-forest-900 mt-6">
+        {% trans "Verify Your E-mail Address" %}
+      </h2>
+      <p class="mt-4 text-earth-600 leading-relaxed">
+        {% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}
+      </p>
+    </div>
+    
+    <div class="mt-8">
+      <a href="{% url 'account_login' %}" class="w-full flex justify-center py-3 px-4 border border-earth-300 rounded-lg shadow-sm bg-white text-sm font-medium text-earth-700 hover:bg-earth-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-forest-500">
+        &larr; {% trans "Return to Login" %}
+      </a>
+    </div>
+    
+  </div>
+</div>
+{% endblock %}

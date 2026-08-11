@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Mission Control{% endblock %} — Green Naroda</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Gujarati:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ─── Design Tokens ─────────────────────────────────────── */
+    :root {
+      --bg:       #F7F8F5;
+      --surface:  #FFFFFF;
+      --green:    #0B5D2A;
+      --green2:   #0E7234;
+      --green-lt: #E8F5EE;
+      --green-bd: #C8E6D4;
+      --gold:     #F59E0B;
+      --gold-lt:  #FEF3C7;
+      --red:      #DC2626;
+      --red-lt:   #FEE2E2;
+      --blue:     #2563EB;
+      --blue-lt:  #DBEAFE;
+      --text:     #111827;
+      --text2:    #374151;
+      --text3:    #6B7280;
+      --border:   #E5E7EB;
+      --border2:  #D1D5DB;
+      --shadow:   0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+      --shadow2:  0 4px 12px rgba(0,0,0,.10);
+      --radius:   12px;
+      --radius-sm:8px;
+      --sidebar-w:256px;
+      --header-h: 64px;
+      --t:        .18s ease;
+    }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+    html { font-size:14px; scroll-behavior:smooth }
+    body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden }
+    a { text-decoration:none; color:inherit }
+    button { font-family:inherit; cursor:pointer; border:none; outline:none }
+    input,select,textarea { font-family:inherit; outline:none }
+    img { max-width:100%; display:block }
+    ::-webkit-scrollbar { width:5px; height:5px }
+    ::-webkit-scrollbar-track { background:transparent }
+    ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:99px }
+
+    /* ─── Top Header ─────────────────────────────────────────── */
+    .hdr {
+      position:fixed; top:0; left:0; right:0; height:var(--header-h);
+      background:var(--green);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      display:flex; align-items:center; gap:0; z-index:1000;
+      box-shadow:0 2px 8px rgba(11,93,42,.25);
+    }
+    .hdr-brand {
+      width:var(--sidebar-w); flex-shrink:0; display:flex; align-items:center;
+      gap:10px; padding:0 20px; border-right:1px solid rgba(255,255,255,.12);
+    }
+    .hdr-logo {
+      width:36px; height:36px; border-radius:8px; flex-shrink:0;
+      background:rgba(255,255,255,.15); display:flex; align-items:center;
+      justify-content:center; overflow:hidden;
+    }
+    .hdr-logo img { width:100%; height:100%; object-fit:contain }
+    .hdr-title { display:flex; flex-direction:column; line-height:1.25 }
+    .hdr-t1 { font-size:12.5px; font-weight:700; color:#fff; letter-spacing:.2px }
+    .hdr-t2 { font-size:10px; font-weight:500; color:rgba(255,255,255,.65); letter-spacing:.5px }
+    .hdr-center { flex:1; display:flex; align-items:center; padding:0 24px; gap:16px }
+    .hdr-badge {
+      display:flex; align-items:center; gap:6px; background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.18); border-radius:99px;
+      padding:4px 12px; font-size:11px; font-weight:600; color:rgba(255,255,255,.90);
+    }
+    .hdr-dot { width:6px; height:6px; border-radius:50%; background:#6EE7B7; flex-shrink:0; animation:pulse 2s infinite }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+    .hdr-right { display:flex; align-items:center; gap:8px; padding:0 20px; margin-left:auto }
+    .hbtn {
+      width:36px; height:36px; border-radius:8px;
+      background:rgba(255,255,255,.10); border:1px solid rgba(255,255,255,.15);
+      display:flex; align-items:center; justify-content:center;
+      color:rgba(255,255,255,.80); font-size:15px; cursor:pointer; transition:var(--t);
+    }
+    .hbtn:hover { background:rgba(255,255,255,.20); color:#fff }
+    .havatar {
+      width:36px; height:36px; border-radius:8px; background:var(--gold);
+      display:flex; align-items:center; justify-content:center;
+      font-size:13px; font-weight:700; color:#fff; cursor:pointer;
+      border:2px solid rgba(255,255,255,.25); transition:var(--t);
+    }
+    .havatar:hover { box-shadow:0 0 0 3px rgba(245,158,11,.3) }
+
+    /* ─── Sidebar ─────────────────────────────────────────────── */
+    .sb {
+      position:fixed; top:var(--header-h); left:0; bottom:0;
+      width:var(--sidebar-w); background:var(--surface);
+      border-right:1px solid var(--border); overflow-y:auto; z-index:900;
+      display:flex; flex-direction:column; padding:16px 12px 24px;
+    }
+    .sb-lbl {
+      font-size:9.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase;
+      color:var(--text3); padding:12px 10px 6px;
+    }
+    .ni {
+      display:flex; align-items:center; gap:9px; padding:9px 12px;
+      border-radius:var(--radius-sm); cursor:pointer; transition:var(--t);
+      border:1px solid transparent; user-select:none; margin-bottom:1px;
+      color:var(--text2); font-size:13px; font-weight:500;
+    }
+    .ni:hover { background:var(--green-lt); color:var(--green) }
+    .ni.active { background:var(--green-lt); color:var(--green); border-color:var(--green-bd); font-weight:600 }
+    .ni-icon { font-size:16px; width:20px; text-align:center; flex-shrink:0 }
+    .ni-badge {
+      margin-left:auto; background:var(--green); color:#fff;
+      font-size:10px; font-weight:700; padding:1px 7px; border-radius:99px;
+    }
+    .ni-badge.gold { background:var(--gold) }
+    .sb-divider { height:1px; background:var(--border); margin:10px 0 }
+    .sb-bot { margin-top:auto; padding-top:12px; border-top:1px solid var(--border) }
+
+    /* Mission progress mini-card in sidebar */
+    .sb-mission {
+      background:var(--green-lt); border:1px solid var(--green-bd);
+      border-radius:var(--radius-sm); padding:12px; margin:8px 0 16px;
+    }
+    .sb-mission-title { font-size:11px; font-weight:700; color:var(--green); margin-bottom:4px }
+    .sb-mission-sub { font-size:10px; color:var(--text3); margin-bottom:8px }
+    .progress-bar { height:5px; background:var(--border2); border-radius:99px; overflow:hidden }
+    .progress-fill { height:100%; background:var(--green); border-radius:99px; transition:width 1s ease }
+
+    /* ─── Main Content ────────────────────────────────────────── */
+    .main { margin-left:var(--sidebar-w); margin-top:var(--header-h); min-height:calc(100vh - var(--header-h)); padding:28px }
+
+    /* ─── Page Header ─────────────────────────────────────────── */
+    .ph { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:24px; gap:16px; flex-wrap:wrap }
+    .ph-left { display:flex; flex-direction:column; gap:4px }
+    .ph-title { font-size:22px; font-weight:800; color:var(--text); line-height:1.2 }
+    .ph-sub { font-size:13px; color:var(--text3); font-weight:400 }
+    .ph-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center }
+
+    /* ─── Buttons ─────────────────────────────────────────────── */
+    .btn {
+      display:inline-flex; align-items:center; gap:6px; padding:8px 16px;
+      border-radius:var(--radius-sm); font-size:12.5px; font-weight:600;
+      transition:var(--t); border:1px solid transparent; cursor:pointer; white-space:nowrap;
+    }
+    .btn-primary { background:var(--green); color:#fff; border-color:var(--green) }
+    .btn-primary:hover { background:var(--green2); box-shadow:0 4px 12px rgba(11,93,42,.3) }
+    .btn-outline { background:#fff; border-color:var(--border2); color:var(--text2) }
+    .btn-outline:hover { border-color:var(--green); color:var(--green) }
+    .btn-gold { background:var(--gold); color:#fff }
+    .btn-gold:hover { background:#D97706 }
+    .btn-danger { background:#fff; border-color:#FECACA; color:var(--red) }
+    .btn-danger:hover { background:var(--red-lt) }
+    .btn-sm { padding:6px 12px; font-size:11.5px }
+    .btn-xs { padding:4px 9px; font-size:11px; border-radius:6px }
+    .btn-icon { width:34px; height:34px; padding:0; justify-content:center; border-radius:var(--radius-sm) }
+
+    /* ─── Cards ──────────────────────────────────────────────── */
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow) }
+    .card-sm { border-radius:var(--radius-sm); padding:18px }
+
+    /* ─── Stat Cards ─────────────────────────────────────────── */
+    .stat-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px }
+    .stat-card {
+      background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+      padding:20px; position:relative; overflow:hidden; transition:var(--t);
+      box-shadow:var(--shadow);
+    }
+    .stat-card:hover { transform:translateY(-2px); box-shadow:var(--shadow2) }
+    .stat-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px }
+    .stat-icon {
+      width:40px; height:40px; border-radius:10px; display:flex;
+      align-items:center; justify-content:center; font-size:18px; flex-shrink:0;
+    }
+    .stat-icon.green { background:var(--green-lt); color:var(--green) }
+    .stat-icon.gold { background:var(--gold-lt); color:#B45309 }
+    .stat-icon.blue { background:var(--blue-lt); color:var(--blue) }
+    .stat-icon.red { background:var(--red-lt); color:var(--red) }
+    .stat-val { font-size:30px; font-weight:800; color:var(--text); line-height:1; letter-spacing:-1px }
+    .stat-lbl { font-size:12px; font-weight:500; color:var(--text3); margin-top:4px }
+    .stat-trend { font-size:11px; font-weight:600; display:flex; align-items:center; gap:3px; margin-top:8px }
+    .stat-trend.up { color:#059669 }
+    .stat-trend.warn { color:var(--gold) }
+
+    /* ─── Quick Actions ──────────────────────────────────────── */
+    .qa-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+    @media(max-width:768px) { .qa-grid { grid-template-columns:repeat(2,1fr); gap:12px; } }
+    .qa-btn {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:8px; padding:20px; background:#fff; border:1px solid var(--border);
+      border-radius:var(--radius); text-decoration:none; color:var(--text); transition:var(--t);
+      min-height:90px;
+    }
+    .qa-btn:hover { border-color:var(--green); box-shadow:var(--shadow2); transform:translateY(-2px); }
+    .qa-btn .ic { font-size:28px; }
+    .qa-btn .lbl { font-size:12px; font-weight:600; text-align:center; }
+
+    /* ─── Table ──────────────────────────────────────────────── */
+    .tbar { display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap }
+    .search-wrap { position:relative; flex:1; min-width:200px }
+    .search-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text3); font-size:14px; pointer-events:none }
+    .search-inp {
+      width:100%; background:#fff; border:1px solid var(--border); border-radius:var(--radius-sm);
+      padding:8px 12px 8px 34px; color:var(--text); font-size:13px; transition:var(--t);
+    }
+    .search-inp:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(11,93,42,.08) }
+    .fsel {
+      background:#fff; border:1px solid var(--border); border-radius:var(--radius-sm);
+      padding:8px 28px 8px 12px; color:var(--text2); font-size:12.5px; font-weight:500;
+      cursor:pointer; transition:var(--t); appearance:none; -webkit-appearance:none;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236B7280' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 8px center; background-size:11px;
+    }
+    .fsel:focus { border-color:var(--green); outline:none }
+    .table-wrap { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; background:#fff }
+    .dt { width:100%; border-collapse:collapse; font-size:12.5px }
+    .dt thead tr { background:#F9FAFB; border-bottom:1px solid var(--border) }
+    .dt th {
+      padding:11px 16px; text-align:left; font-size:10.5px; font-weight:700;
+      letter-spacing:.7px; text-transform:uppercase; color:var(--text3); white-space:nowrap;
+    }
+    .dt th input[type=checkbox],.dt td input[type=checkbox] { accent-color:var(--green); width:14px; height:14px; cursor:pointer }
+    .dt tbody tr { border-bottom:1px solid #F3F4F6; transition:background var(--t) }
+    .dt tbody tr:last-child { border-bottom:none }
+    .dt tbody tr:hover { background:#F9FAFB }
+    .dt td { padding:11px 16px; color:var(--text2); vertical-align:middle }
+    .td-name { color:var(--text); font-weight:600 }
+    .td-mono { font-family:monospace; font-size:12px; color:var(--text3) }
+    .tpag {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px 20px; border-top:1px solid var(--border);
+      font-size:12px; color:var(--text3); background:#FAFAFA;
+    }
+    .pag-btns { display:flex; gap:4px }
+    .pag-btn {
+      width:30px; height:30px; border-radius:6px; background:#fff;
+      border:1px solid var(--border); color:var(--text2); font-size:12px;
+      font-weight:600; display:flex; align-items:center; justify-content:center;
+      cursor:pointer; transition:var(--t);
+    }
+    .pag-btn:hover,.pag-btn.active { background:var(--green); border-color:var(--green); color:#fff }
+
+    /* ─── Badges ─────────────────────────────────────────────── */
+    .badge {
+      display:inline-flex; align-items:center; gap:4px; padding:3px 8px;
+      border-radius:99px; font-size:10.5px; font-weight:700; white-space:nowrap;
+    }
+    .badge-green { background:var(--green-lt); color:var(--green); border:1px solid var(--green-bd) }
+    .badge-gold { background:var(--gold-lt); color:#92400E; border:1px solid #FDE68A }
+    .badge-red { background:var(--red-lt); color:var(--red); border:1px solid #FECACA }
+    .badge-blue { background:var(--blue-lt); color:var(--blue); border:1px solid #BFDBFE }
+    .badge-gray { background:#F3F4F6; color:var(--text3); border:1px solid var(--border) }
+    .bdot { width:5px; height:5px; border-radius:50%; background:currentColor }
+
+    /* ─── Form Fields ────────────────────────────────────────── */
+    .fg { margin-bottom:16px }
+    .fl { display:block; font-size:11px; font-weight:700; letter-spacing:.4px; text-transform:uppercase; color:var(--text3); margin-bottom:6px }
+    .fi {
+      width:100%; background:#fff; border:1px solid var(--border);
+      border-radius:var(--radius-sm); padding:9px 13px; color:var(--text);
+      font-size:13px; transition:var(--t);
+    }
+    .fi:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(11,93,42,.08) }
+    .fta { min-height:90px; resize:vertical }
+
+    /* ─── Alerts / Messages ──────────────────────────────────── */
+    .alert { padding:12px 16px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; margin-bottom:16px; display:flex; align-items:flex-start; gap:10px }
+    .alert-success { background:var(--green-lt); color:var(--green); border:1px solid var(--green-bd) }
+    .alert-error { background:var(--red-lt); color:var(--red); border:1px solid #FECACA }
+    .alert-warning { background:var(--gold-lt); color:#92400E; border:1px solid #FDE68A }
+
+    /* ─── Toggle ─────────────────────────────────────────────── */
+    .tog { width:40px; height:22px; background:var(--border2); border-radius:99px; position:relative; cursor:pointer; transition:var(--t) }
+    .tog.on { background:var(--green) }
+    .tog::after { content:''; position:absolute; width:16px; height:16px; background:#fff; border-radius:50%; top:3px; left:3px; transition:var(--t); box-shadow:0 1px 3px rgba(0,0,0,.2) }
+    .tog.on::after { left:21px }
+
+    /* ─── Chart Wrapper ──────────────────────────────────────── */
+    .chart-wrap { position:relative; height:220px }
+
+    /* ─── Responsiveness ─────────────────────────────────────── */
+    @media(max-width:1024px) {
+      .stat-grid { grid-template-columns:repeat(2,1fr) }
+    }
+    @media(max-width:768px) {
+      /* Mobile Sidebar Drawer */
+      .sb {
+        display: block; position: fixed; top: var(--header-h); left: -100%; bottom: 0;
+        z-index: 999; transition: left 0.3s ease; box-shadow: 4px 0 15px rgba(0,0,0,0.1); width: 260px;
+        background: #fff; overflow-y: auto; padding-bottom: 80px;
+      }
+      body.sb-open .sb { left: 0; }
+      body.sb-open { overflow: hidden; }
+      .sb-overlay {
+        display: none; position: fixed; inset: 0; top: var(--header-h);
+        background: rgba(0,0,0,0.5); z-index: 998;
+      }
+      body.sb-open .sb-overlay { display: block; }
+
+      .main { margin-left:0; padding:16px; padding-bottom:80px; }
+      .stat-grid { grid-template-columns:1fr 1fr }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      
+      /* Mobile touch targets & spacing */
+      .btn, .btn-sm, .btn-xs, .fi, .fsel, .search-inp { min-height: 44px; }
+      .btn, .btn-sm, .btn-xs { display: inline-flex; align-items: center; justify-content: center; }
+      .pag-btn { min-width: 44px; min-height: 44px; }
+      
+      /* Search at top and full-width headers */
+      .tbar { flex-direction: column; align-items: stretch; gap: 12px; }
+      .search-wrap { width: 100%; min-width: 100%; }
+      .ph-actions { flex-direction: column; align-items: stretch; width: 100%; margin-top: 12px; }
+      .ph-actions .btn { width: 100%; justify-content: center; }
+      .ph-title { font-size: 20px; word-break: break-word; }
+      
+      /* Header fixes for mobile */
+      .hdr-center { display: none; }
+      .hdr-brand { padding-right: 0; border: none; }
+      .menu-btn { display: flex !important; }
+      
+      /* Table to Cards */
+      .table-wrap { background:transparent; border:none; border-radius:0; overflow:visible; }
+      .dt, .table, .dt thead, .table thead, .dt tbody, .table tbody, .dt th, .table th, .dt td, .table td, .dt tr, .table tr { display: block; }
+      .dt thead, .table thead { display: none; }
+      .dt tbody tr, .table tbody tr {
+        background: #fff; margin-bottom: 12px; border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 12px; box-shadow: var(--shadow);
+      }
+      .dt tbody tr:hover, .table tbody tr:hover { background: #fff; }
+      .dt td, .table td {
+        border: none; padding: 6px 0; position: relative; text-align: right;
+        display: flex; justify-content: space-between; align-items: center;
+      }
+      .dt td::before {
+        content: attr(data-label); font-weight: 700; color: var(--text3);
+        text-transform: uppercase; font-size: 10px; margin-right: 12px;
+      }
+      
+      /* Mobile Sticky Modal Footer & Scrollable Body */
+      .fixed.inset-0 .bg-white { max-height: 90vh; max-height: 90dvh; display: flex; flex-direction: column; }
+      .fixed.inset-0 .bg-white form { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+      .fixed.inset-0 .bg-white form > div.p-6 { overflow-y: auto; flex: 1; }
+      .fixed.inset-0 .bg-white form > div:last-child {
+        position: sticky; bottom: 0; z-index: 20; background: #f9fafb;
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.05); padding-bottom: max(16px, env(safe-area-inset-bottom));
+      }
+      
+      /* Mobile Bottom Nav */
+      .mobile-bottom-nav {
+        display:flex; position:fixed; bottom:0; left:0; width:100%;
+        background:#fff; border-top:1px solid var(--border);
+        box-shadow:0 -4px 12px rgba(0,0,0,0.05); z-index:50;
+        justify-content:space-around; align-items:center; height:65px;
+        padding-bottom: env(safe-area-inset-bottom);
+      }
+      .mobile-bottom-nav a {
+        display:flex; flex-direction:column; align-items:center; gap:4px;
+        color:var(--text3); font-size:10px; font-weight:600; text-decoration:none;
+        padding:8px; flex:1; text-align:center; transition:var(--t);
+      }
+      .mobile-bottom-nav a.active { color:var(--green); }
+      .mbn-icon { font-size:20px; }
+      .mbn-action .mbn-icon-add {
+        width:36px; height:36px; background:var(--green); color:#fff;
+        border-radius:50%; display:flex; align-items:center; justify-content:center;
+        font-size:22px; font-weight:400; margin-bottom:2px; box-shadow:0 2px 8px rgba(11,93,42,0.4);
+      }
+    }
+    @media(min-width:769px) {
+      .mobile-bottom-nav { display:none; }
+    }
+
+    /* ─── Utility ────────────────────────────────────────────── */
+    .flex { display:flex }
+    .gap-2 { gap:8px }
+    .gap-3 { gap:12px }
+    .w-full { width:100% }
+    .text-sm { font-size:12px }
+    .text-xs { font-size:11px }
+    .text-muted { color:var(--text3) }
+    .text-green { color:var(--green) }
+    .text-gold { color:var(--gold) }
+    .font-bold { font-weight:700 }
+    .mt-2 { margin-top:8px }
+    .mt-4 { margin-top:16px }
+    .mb-4 { margin-bottom:16px }
+    .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px }
+    .divider { height:1px; background:var(--border); margin:20px 0 }
+    .section-title {
+      font-size:14px; font-weight:700; color:var(--text); margin-bottom:16px;
+      display:flex; align-items:center; gap:8px; padding-bottom:10px; border-bottom:1px solid var(--border);
+    }
+
+    /* ─── Progress Ring ──────────────────────────────────────── */
+    .ring-wrap { display:flex; flex-direction:column; align-items:center; padding:16px 0 }
+    .ring-track { fill:none; stroke:#E5E7EB }
+    .ring-fill { fill:none; stroke:var(--green); stroke-linecap:round; stroke-dasharray:283; stroke-dashoffset:283; transition:stroke-dashoffset 1.5s ease }
+    .ring-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center }
+    .ring-pct { font-size:26px; font-weight:800; color:var(--green); line-height:1; letter-spacing:-1px }
+    .ring-lbl { font-size:9px; font-weight:600; color:var(--text3); margin-top:2px; letter-spacing:.5px }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<!-- ─── Top Header ─────────────────────────────────────────────────────── -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <div class="hdr-logo">
+      <img src="/static/images/gncn_logo.png" alt="Green Naroda Logo" onerror="this.parentElement.textContent='🌿'">
+    </div>
+    <div class="hdr-title">
+      <span class="hdr-t1">Green Naroda</span>
+      <span class="hdr-t2">Mission Control</span>
+    </div>
+  </div>
+  <div class="hdr-center">
+    <div class="hdr-badge"><span class="hdr-dot"></span>Website Live</div>
+    <div class="hdr-badge"><span class="hdr-dot"></span>Pledges Active</div>
+  </div>
+  <div class="hdr-right">
+    <button class="hbtn menu-btn" style="display:none;font-size:20px" onclick="document.body.classList.toggle('sb-open')" title="Toggle Menu">
+      ☰
+    </button>
+    <a href="/admin/export/pledges/excel/" class="hbtn" title="Export Pledges">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+    </a>
+    <form method="post" action="{% url 'admin_panel:logout' %}" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" class="hbtn" title="Sign Out">
+        <svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+      </button>
+    </form>
+    <div class="havatar" title="{{ request.user.email|default:'Admin' }}">{{ request.user.email|first|upper|default:"A" }}</div>
+  </div>
+</header>
+
+<div class="sb-overlay" onclick="document.body.classList.remove('sb-open')"></div>
+
+<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
+<aside class="sb">
+  <div class="sb-mission">
+    <div class="sb-mission-title">Mission 28,855</div>
+    <div class="sb-mission-sub" id="sbMissionSub">Loading...</div>
+    <div class="progress-bar"><div class="progress-fill" id="sbProgress" style="width:0%"></div></div>
+  </div>
+
+  <div class="sb-lbl">Main</div>
+  <a class="ni {% block nav_dashboard %}{% endblock %}" href="{% url 'admin_panel:dashboard' %}">
+    <span class="ni-icon">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    </span>Dashboard
+  </a>
+
+  <div class="sb-lbl" style="margin-top:8px">Community</div>
+  <a class="ni {% block nav_pledges %}{% endblock %}" href="{% url 'admin_panel:pledges' %}">
+    <span class="ni-icon">💚</span>Pledges
+    <span class="ni-badge" id="sbPledgeBadge">—</span>
+  </a>
+  <a class="ni {% block nav_students %}{% endblock %}" href="{% url 'admin_panel:students' %}">
+    <span class="ni-icon">🎓</span>Students
+  </a>
+  <a class="ni {% block nav_orgs %}{% endblock %}" href="{% url 'admin_panel:organizations' %}">
+    <span class="ni-icon">🏢</span>Organizations
+  </a>
+  
+  <div class="sb-lbl" style="margin-top:8px">Form Master Data</div>
+  <a class="ni {% block nav_associate_orgs %}{% endblock %}" href="{% url 'admin_panel:associate_orgs' %}">
+    <span class="ni-icon">🤝</span>Associate Orgs
+  </a>
+  <a class="ni {% block nav_org_types %}{% endblock %}" href="{% url 'admin_panel:org_types' %}">
+    <span class="ni-icon">🏷️</span>Organization Types
+  </a>
+  <a class="ni {% block nav_gallery %}{% endblock %}" href="{% url 'admin_panel:gallery' %}">
+    <span class="ni-icon">🖼️</span>Gallery
+    <span class="ni-badge gold" id="sbPhotoBadge" style="display:none"></span>
+  </a>
+
+  <div class="sb-lbl" style="margin-top:8px">Content</div>
+  <a class="ni {% block nav_events %}{% endblock %}" href="{% url 'admin_panel:events' %}">
+    <span class="ni-icon">📅</span>Events
+  </a>
+  <a class="ni {% block nav_leadership %}{% endblock %}" href="{% url 'admin_panel:leadership_photos' %}">
+    <span class="ni-icon">👥</span>Leadership Photos
+  </a>
+  <a class="ni {% block nav_news %}{% endblock %}" href="{% url 'admin_panel:news' %}">
+    <span class="ni-icon">📰</span>News
+  </a>
+  <div class="sb-lbl" style="margin-top:8px">Har Ghar Tiranga</div>
+  <a class="ni {% block nav_tiranga %}{% endblock %}" href="{% url 'admin_panel:tiranga_registrations' %}">
+    <span class="ni-icon">🇮🇳</span>Registrations
+  </a>
+
+  <div class="sb-lbl" style="margin-top:8px">Branding</div>
+  <a class="ni {% block nav_branding_logos %}{% endblock %}" href="{% url 'admin_panel:branding_header_logos' %}">
+    <span class="ni-icon">🎨</span>Header Logos
+  </a>
+
+  <div class="sb-lbl" style="margin-top:8px">Insights</div>
+  <a class="ni {% block nav_analytics %}{% endblock %}" href="{% url 'admin_panel:analytics' %}">
+    <span class="ni-icon">📈</span>Analytics
+  </a>
+  <a class="ni {% block nav_settings %}{% endblock %}" href="{% url 'admin_panel:settings' %}">
+    <span class="ni-icon">⚙️</span>Settings
+  </a>
+
+  <div class="sb-bot">
+    <form method="post" action="{% url 'admin_panel:logout' %}">
+      {% csrf_token %}
+      <button type="submit" class="ni w-full" style="background:none;border:none;width:100%;text-align:left">
+        <span class="ni-icon">🚪</span><span style="color:#DC2626;font-weight:600">Sign Out</span>
+      </button>
+    </form>
+    <div style="margin-top:12px;font-size:10.5px;color:var(--text3);text-align:center;padding:0 4px">
+      Logged in as<br><strong style="color:var(--text2)">{{ request.user.email|truncatechars:28 }}</strong>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── Main Content ───────────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- Django Messages -->
+  {% if messages %}
+    {% for msg in messages %}
+      <div class="alert alert-{{ msg.tags|default:'warning' }}">
+        <span>{% if msg.tags == 'success' %}✓{% elif msg.tags == 'error' %}✕{% else %}⚠{% endif %}</span>
+        {{ msg }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% block content %}{% endblock %}
+</main>
+
+<script>
+// Live sidebar stats from /api/stats/
+(function() {
+  fetch('/api/stats/')
+    .then(r => r.json())
+    .then(d => {
+      const pb = document.getElementById('sbPledgeBadge');
+      if (pb) { pb.textContent = d.pledges.toLocaleString('en-IN'); }
+      const phb = document.getElementById('sbPhotoBadge');
+      if (phb && d.pending_photos > 0) {
+        phb.textContent = d.pending_photos + ' pending';
+        phb.style.display = '';
+      }
+      // Mission progress (target 28855 pledges)
+      const pct = Math.min(100, Math.round((d.pledges / 28855) * 100));
+      const pf = document.getElementById('sbProgress');
+      const ms = document.getElementById('sbMissionSub');
+      if (pf) pf.style.width = pct + '%';
+      if (ms) ms.textContent = d.pledges.toLocaleString('en-IN') + ' / 28,855 pledges';
+    })
+    .catch(() => {});
+})();
+</script>
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+  <a href="{% url 'admin_panel:dashboard' %}" class="{% block nav_dashboard_mobile %}{% endblock %}">
+    <span class="mbn-icon">📊</span><span class="mbn-lbl">Home</span>
+  </a>
+  <a href="{% url 'admin_panel:gallery' %}" class="{% block nav_gallery_mobile %}{% endblock %}">
+    <span class="mbn-icon">🖼️</span><span class="mbn-lbl">Media</span>
+  </a>
+  <a href="{% url 'admin_panel:dashboard' %}#quickActions" class="mbn-action">
+    <span class="mbn-icon-add">+</span><span class="mbn-lbl">Add</span>
+  </a>
+  <a href="{% url 'admin_panel:events' %}" class="{% block nav_events_mobile %}{% endblock %}">
+    <span class="mbn-icon">📅</span><span class="mbn-lbl">Events</span>
+  </a>
+  <a href="{% url 'admin_panel:settings' %}" class="{% block nav_settings_mobile %}{% endblock %}">
+    <span class="mbn-icon">⚙️</span><span class="mbn-lbl">Settings</span>
+  </a>
+</nav>
+
+<script>
+// Auto-inject data-label for mobile cards
+document.querySelectorAll('table.dt, table.table').forEach(table => {
+  const headers = Array.from(table.querySelectorAll('th')).map(th => th.textContent.trim());
+  table.querySelectorAll('tbody tr').forEach(tr => {
+    tr.querySelectorAll('td').forEach((td, index) => {
+      if(headers[index]) {
+        td.setAttribute('data-label', headers[index]);
+      }
+    });
+  });
+});
+
+// Camera Capture for file inputs on mobile
+document.querySelectorAll('input[type="file"][accept*="image"]').forEach(input => {
+    input.setAttribute('capture', 'environment');
+});
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

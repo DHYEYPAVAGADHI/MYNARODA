@@ -1,0 +1,9 @@
+# Query: 28,855 Trees to be Planted
+# ContextLines: 1
+
+1 result - 1 file
+
+templates/pages/landing.html:
+  149              <div class="flex-1">
+  150:               <p class="text-white font-bold">28,855 Trees to be Planted</p>
+  151                <p class="text-white/60 text-xs">Across Naroda</p>
