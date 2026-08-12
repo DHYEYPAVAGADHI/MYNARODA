@@ -101,19 +101,26 @@ CELERY_TASK_ALWAYS_EAGER = True
 CELERY_TASK_EAGER_PROPAGATES = True
 
 
-# ─── Debug Toolbar ────────────────────────────────────────────────────────────
+# ─── Debug Toolbar & Extensions ────────────────────────────────────────────────────────────
 
-INSTALLED_APPS += ["debug_toolbar", "django_extensions"]  # noqa: F405
+try:
+    import debug_toolbar
+    INSTALLED_APPS += ["debug_toolbar"]  # noqa: F405
+    MIDDLEWARE = [  # noqa: F405
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ] + MIDDLEWARE  # noqa: F405
+    INTERNAL_IPS = ["127.0.0.1", "localhost"]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: DEBUG,
+    }
+except ImportError:
+    pass
 
-MIDDLEWARE = [  # noqa: F405
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
-] + MIDDLEWARE  # noqa: F405
-
-INTERNAL_IPS = ["127.0.0.1", "localhost"]
-
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": lambda request: DEBUG,
-}
+try:
+    import django_extensions
+    INSTALLED_APPS += ["django_extensions"]  # noqa: F405
+except ImportError:
+    pass
 
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
