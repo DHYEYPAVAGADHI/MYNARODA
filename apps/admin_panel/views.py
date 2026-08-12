@@ -744,9 +744,11 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
                 ext = format.split('/')[-1] 
                 # Fix any spaces that were converted from '+' during form submission
                 imgstr = imgstr.replace(' ', '+')
-                # Create a ContentFile and assign it to the field
-                data = ContentFile(base64.b64decode(imgstr), name=f"{field}_{timezone.now().timestamp()}.{ext}")
-                setattr(photos, field, data)
+                # Create a ContentFile
+                data = ContentFile(base64.b64decode(imgstr))
+                filename = f"{field}_{int(timezone.now().timestamp())}.{ext}"
+                # Save the file to the field using the proper Django method
+                getattr(photos, field).save(filename, data, save=False)
                 updated = True
                 
         if updated:
