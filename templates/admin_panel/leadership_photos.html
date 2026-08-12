@@ -232,13 +232,13 @@
       <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
       
       <div class="lp-avatar-wrapper">
-        {% if leader.url %}
-          <img src="{{ leader.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
+        {% if leader.photo %}
+          <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="Preview" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       
@@ -280,13 +280,13 @@
       <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
 
       <div class="lp-avatar-wrapper">
-        {% if leader.url %}
-          <img src="{{ leader.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
+        {% if leader.photo %}
+          <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="Preview" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
 
@@ -329,13 +329,13 @@
       <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
       
       <div class="lp-avatar-wrapper">
-        {% if leader.url %}
-          <img src="{{ leader.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
+        {% if leader.photo %}
+          <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="Preview" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       

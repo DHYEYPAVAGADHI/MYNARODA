@@ -703,7 +703,7 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
             for leader in leaders + committee_leaders + co_convener_leaders:
                 img_field = getattr(photos, leader["field"], None)
                 if img_field and img_field.name:
-                    leader["url"] = img_field.url
+                    leader["photo"] = img_field
 
         return render(request, self.template_name, {"leaders": leaders, "committee_leaders": committee_leaders, "co_convener_leaders": co_convener_leaders})
 
@@ -725,9 +725,10 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         updated = False
         
         # Check for AJAX Blob upload
-        if 'photo' in request.FILES and request.POST.get('field_name'):
+        if request.FILES.get('photo') and request.POST.get('field_name'):
             field = request.POST.get('field_name')
             if field in fields:
+                # Save the real uploaded file directly to the attribute
                 setattr(photos, field, request.FILES['photo'])
                 photos.save()
                 return JsonResponse({"success": True, "url": getattr(photos, field).url})
