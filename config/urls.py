@@ -106,20 +106,19 @@ urlpatterns += i18n_patterns(
 # ─── Debug-only URLs ──────────────────────────────────────────────────────────
 
 if settings.DEBUG:
-    import debug_toolbar
+    try:
+        import debug_toolbar
 
-    # Development-only mock Google OAuth (logs in as any email WITHOUT a
-    # password). MUST NEVER be exposed in production — it is an auth bypass.
-    from apps.accounts.views import MockGoogleLoginView
+        # Development-only mock Google OAuth (logs in as any email WITHOUT a
+        # password). MUST NEVER be exposed in production — it is an auth bypass.
+        from apps.accounts.views import MockGoogleLoginView
 
-    urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls)),
-        path(
-            "accounts/google/login/",
-            MockGoogleLoginView.as_view(),
-            name="google_login",
-        ),
-    ] + urlpatterns
+        urlpatterns = [
+            path("__debug__/", include(debug_toolbar.urls)),
+            path("auth/mock-google-login/", MockGoogleLoginView.as_view(), name="mock_google_login"),
+        ] + urlpatterns
+    except ImportError:
+        pass
 
     # Serve media files in development
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
