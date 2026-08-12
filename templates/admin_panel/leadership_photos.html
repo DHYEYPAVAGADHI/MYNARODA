@@ -232,7 +232,7 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept="image/*" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="showSaveButton('{{ leader.field }}', this)">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -278,7 +278,7 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept="image/*" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="showSaveButton('{{ leader.field }}', this)">
         </label>
 
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -353,90 +353,20 @@
 </div>
 
 <script>
-
-let currentCropper = null;
-let currentField = null;
-
-function openCropModal(input, fieldName) {
+function showSaveButton(fieldName, input) {
   if (input.files && input.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      const img = document.getElementById('cropImage');
-      
-      // Wait for image to load in DOM before initializing Cropper
-      img.onload = function() {
-        document.getElementById('cropModal').style.display = 'flex';
-        currentField = fieldName;
-        
-        if (currentCropper) {
-          currentCropper.destroy();
-        }
-        
-        currentCropper = new Cropper(img, {
-          aspectRatio: 1,
-          viewMode: 1,
-          dragMode: 'move',
-          autoCropArea: 0.9,
-          restore: false,
-          guides: false,
-          center: false,
-          highlight: false,
-          cropBoxMovable: true,
-          cropBoxResizable: true,
-          toggleDragModeOnDblclick: false,
-        });
-      };
-      
+      let img = document.getElementById('preview-img-' + fieldName);
+      let placeholder = document.getElementById('placeholder-' + fieldName);
+      if (placeholder) {
+          placeholder.style.display = 'none';
+      }
       img.src = e.target.result;
+      img.style.display = 'block';
+      document.getElementById('btn-save-' + fieldName).style.display = 'block';
     };
     reader.readAsDataURL(input.files[0]);
-    // reset input so same file can be selected again
-    input.value = '';
-  }
-}
-
-function closeCropModal() {
-  document.getElementById('cropModal').style.display = 'none';
-  if (currentCropper) {
-    currentCropper.destroy();
-    currentCropper = null;
-  }
-}
-
-function performCrop() {
-  if (!currentCropper) return;
-  
-  // Get 512x512 cropped canvas
-  const canvas = currentCropper.getCroppedCanvas({
-    width: 512,
-    height: 512,
-    imageSmoothingEnabled: true,
-    imageSmoothingQuality: 'high',
-  });
-  
-  const base64Image = canvas.toDataURL('image/jpeg', 0.9);
-  
-  // Update hidden field
-  document.getElementById('cropped-' + currentField).value = base64Image;
-  
-  // Update Preview UI
-  let img = document.getElementById('preview-img-' + currentField);
-  let placeholder = document.getElementById('placeholder-' + currentField);
-  
-  if (placeholder) {
-      placeholder.style.display = 'none';
-  }
-  img.src = base64Image;
-  img.style.display = 'block';
-  
-  // Show save button, hide remove button
-  document.getElementById('btn-save-' + currentField).style.display = 'block';
-  let removeBtn = document.getElementById('actions-' + currentField).querySelector('.lp-btn-remove');
-  if (removeBtn) {
-      removeBtn.style.display = 'none';
-  }
-  let chooseBtn = document.getElementById('actions-' + currentField).querySelector('.lp-btn-choose');
-  if (chooseBtn) chooseBtn.style.display = 'none';
   
   closeCropModal();
 }
