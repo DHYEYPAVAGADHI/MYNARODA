@@ -379,29 +379,36 @@ class HarGharTirangaRegistrationView(View):
 
     def post(self, request):
         try:
-            data = json.loads(request.body)
-            name = data.get("name", "").strip()
-            mobile_number = data.get("mobile_number", "").strip()
-            address = data.get("address", "").strip()
-            latitude = data.get("latitude")
-            longitude = data.get("longitude")
-            location_text = data.get("location_text", "")
+            name = request.POST.get("name", "").strip()
+            mobile_number = request.POST.get("mobile_number", "").strip()
+            address = request.POST.get("address", "").strip()
+            
+            # Safely handle latitude and longitude
+            lat_str = request.POST.get("latitude", "").strip()
+            lon_str = request.POST.get("longitude", "").strip()
+            latitude = float(lat_str) if lat_str and lat_str not in ["undefined", "null"] else None
+            longitude = float(lon_str) if lon_str and lon_str not in ["undefined", "null"] else None
+            
+            location_text = request.POST.get("location_text", "")
 
             # Validation
             if len(name) < 3:
-                return JsonResponse({"success": False, "error": "Name must be at least 3 characters long."})
+                msg = "Name must be at least 3 characters long."
+                return JsonResponse({"success": False, "error": msg, "message": msg})
             if len(mobile_number) != 10 or not mobile_number.isdigit():
-                return JsonResponse({"success": False, "error": "Mobile number must be exactly 10 digits."})
+                msg = "Mobile number must be exactly 10 digits."
+                return JsonResponse({"success": False, "error": msg, "message": msg})
             if len(address) < 10:
-                return JsonResponse({"success": False, "error": "Address must be at least 10 characters long."})
+                msg = "Address must be at least 10 characters long."
+                return JsonResponse({"success": False, "error": msg, "message": msg})
 
             # Save to DB
             registration = HarGharTirangaRegistration.objects.create(
                 name=name,
                 mobile_number=mobile_number,
                 address=address,
-                latitude=latitude if latitude else None,
-                longitude=longitude if longitude else None,
+                latitude=latitude,
+                longitude=longitude,
                 location_text=location_text
             )
 
@@ -410,6 +417,7 @@ class HarGharTirangaRegistrationView(View):
             registration.token_id = token_id
             registration.save(update_fields=['token_id'])
 
-            return JsonResponse({"success": True, "message": "Registration successful.", "token": token_id})
+            return JsonResponse({"success": True, "token_id": token_id, "message": "Registration successful."})
         except Exception as e:
-            return JsonResponse({"success": False, "error": str(e)})
+            error_msg = str(e) or "Unknown server error occurred."
+            return JsonResponse({"success": False, "error": error_msg, "message": error_msg})

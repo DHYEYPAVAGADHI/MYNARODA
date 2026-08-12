@@ -677,8 +677,6 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
 
         co_convener_leaders = [
             {"name": "Shri Kiran Raval", "role": "President, BJP Naroda Ward", "field": "kiran_raval_photo"},
-            {"name": "Shri Nirav Joshi", "role": "General Secretary, Naroda Ward", "field": "nirav_joshi_photo"},
-            {"name": "Shri Gautam Patel", "role": "General Secretary, Naroda Ward", "field": "gautam_patel_photo"},
             {"name": "Shri Vipul Patel", "role": "Chairman & Municipal Councilor, Naroda AMC", "field": "vipul_patel_photo"},
             {"name": "Shri Jayeshbhai Prajapati", "role": "Municipal Councilor, Naroda AMC", "field": "jayeshbhai_prajapati_photo"},
             {"name": "Shri Chandaben Patel", "role": "Municipal Councilor, Naroda AMC", "field": "chandaben_patel_photo"},

@@ -23,7 +23,7 @@
 
     <!-- Registration Form -->
     <div id="tiranga-form-container" class="p-6 pt-2">
-      <form id="tiranga-popup-form" class="space-y-4">
+      <form id="hgt-popup-form" action="{% url 'cms:register_har_ghar_tiranga' %}" class="space-y-4">
         {% csrf_token %}
         
         <div>
@@ -67,21 +67,31 @@
             <i class="fa-solid fa-check text-2xl"></i>
         </div>
         <h2 class="font-serif text-lg font-bold text-[#0B1020] mb-1">Success!</h2>
-        <p class="text-[#4B5563] text-xs mb-4">Please present this token at a pickup point.</p>
+        <p class="text-[#4B5563] text-xs mb-3">Your token has been generated.</p>
         
         <div class="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4 relative overflow-hidden" id="token-print-area">
             <!-- QR Code Container -->
             <div id="qrcode" class="flex justify-center mb-3"></div>
             <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">YOUR TOKEN ID</div>
             <div class="font-mono text-lg font-bold text-[#111827] tracking-tight bg-white py-2 rounded-lg border border-gray-200" id="popup-token-display">HGT-NRD-2026-00000</div>
+            
+            <div class="mt-4 text-left border-t border-gray-200 pt-3">
+                <div class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest mb-2 flex items-center gap-1"><i class="fa-solid fa-location-dot"></i> Pickup Points</div>
+                <ul class="text-[11px] text-gray-700 space-y-1.5 list-disc pl-4 mb-2 font-medium">
+                    <li>Kedarnath Mahadev Mandir, Near Uma Cinema, Naroda</li>
+                    <li>Amul Ice Cream Store, Old Navyug School, Mohangar</li>
+                    <li>Gram Panchayat Office, Naroda Gam</li>
+                </ul>
+                <div class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest flex items-center gap-1"><i class="fa-regular fa-clock"></i> Timing: 10:00 AM – 6:00 PM</div>
+            </div>
         </div>
 
         <div class="flex gap-2 mb-4">
             <button type="button" onclick="copyToken()" class="flex-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-2">
-                <i class="fa-regular fa-copy"></i> Copy
+                <i class="fa-regular fa-copy"></i> Copy Token
             </button>
             <button type="button" onclick="printToken()" class="flex-1 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2 rounded-lg text-xs flex items-center justify-center gap-2">
-                <i class="fa-solid fa-print"></i> Print
+                <i class="fa-solid fa-print"></i> Download/Print
             </button>
         </div>
     </div>
@@ -230,7 +240,7 @@ window.addEventListener('pageshow', forceUnlockBodyScroll);
 document.addEventListener('DOMContentLoaded', function() {
     // Show after 20 seconds
     const popupEnabled = true;
-    if (popupEnabled && sessionStorage.getItem('hgt_popup_seen') !== 'true') {
+    if (popupEnabled && sessionStorage.getItem('hgt_popup_seen') !== 'true' && localStorage.getItem('hgt_registered') !== 'true') {
         setTimeout(() => {
             const popup = document.getElementById('registration-popup');
             const box = document.getElementById('modal-box');
@@ -273,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    const form = document.getElementById('tiranga-popup-form');
+    const form = document.getElementById('hgt-popup-form');
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -286,11 +296,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
             try {
                 const formData = new FormData(this);
-                const response = await fetch('{% url "cms:har_ghar_tiranga_registration" %}', {
+                const csrfToken = this.querySelector('[name=csrfmiddlewaretoken]').value;
+                const response = await fetch(this.action, {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': csrfToken
                     }
                 });
 
@@ -313,8 +325,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
                     // Mark as seen so they don't get the popup again on refresh
                     sessionStorage.setItem('hgt_popup_seen', 'true');
+                    localStorage.setItem('hgt_registered', 'true');
                 } else {
-                    errorDiv.innerText = data.message || 'An error occurred. Please try again.';
+                    errorDiv.innerText = data.message || data.error || 'An error occurred. Please try again.';
                     errorDiv.classList.remove('hidden');
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = '<i class="fa-solid fa-flag"></i> Submit Details';

@@ -15,5 +15,5 @@ urlpatterns = [
     path("terms/", views.TermsPageView.as_view(), name="terms"),
     path("green-naroda/", views.GreenNarodaPageView.as_view(), name="green_naroda"),
     path("clean-naroda/", views.CleanNarodaPageView.as_view(), name="clean_naroda"),
-    path("har-ghar-tiranga/register/", views.HarGharTirangaRegistrationView.as_view(), name="har_ghar_tiranga_registration"),
+    path("har-ghar-tiranga/register/", views.HarGharTirangaRegistrationView.as_view(), name="register_har_ghar_tiranga"),
 ]
