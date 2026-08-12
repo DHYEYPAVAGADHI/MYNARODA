@@ -52,6 +52,7 @@ urlpatterns = [
     path("export/pledges/excel/", views.AdminExportPledgesExcelView.as_view(), name="export_pledges_excel"),
     path("export/students/excel/", views.AdminExportStudentsExcelView.as_view(), name="export_students_excel"),
     path("export/organizations/excel/", views.AdminExportOrgsExcelView.as_view(), name="export_orgs_excel"),
+    path("export/har-ghar-tiranga/excel/", views.AdminExportHarGharTirangaExcelView.as_view(), name="export_tiranga_excel"),
 
     # Exports — CSV
     path("export/pledges/csv/", views.AdminExportPledgesCSVView.as_view(), name="export_pledges_csv"),

@@ -905,12 +905,58 @@ class AdminHarGharTirangaRegistrationsView(AdminRequiredMixin, View):
 
         paginator = Paginator(qs, 50)
         page_obj = paginator.get_page(request.GET.get("page", 1))
+        
+        today = timezone.now().date()
+        today_count = HarGharTirangaRegistration.objects.filter(created_at__date=today).count()
 
         return render(request, self.template_name, {
             "page_obj": page_obj,
             "total": qs.count(),
+            "today_count": today_count,
             "q": q,
         })
+
+
+class AdminExportHarGharTirangaExcelView(AdminRequiredMixin, View):
+    def get(self, request):
+        qs = HarGharTirangaRegistration.objects.all().order_by("-created_at")
+
+        if not HAS_OPENPYXL:
+            return HttpResponse("openpyxl not installed.", status=500)
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Tiranga Registrations"
+
+        headers = [
+            "Sr.", "Token ID", "Name", "Mobile Number",
+            "Address", "Location", "Registration Date",
+        ]
+        _style_xl_header(ws, headers)
+
+        for i, reg in enumerate(qs, 1):
+            location_str = "Not provided"
+            if reg.latitude and reg.longitude:
+                location_str = f"{reg.latitude}, {reg.longitude}"
+                if reg.location_text:
+                    location_str += f" ({reg.location_text})"
+                    
+            ws.append([
+                i,
+                reg.token_id or "-",
+                reg.name,
+                reg.mobile_number,
+                reg.address,
+                location_str,
+                reg.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+            ])
+
+        response = HttpResponse(
+            content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+        response["Content-Disposition"] = 'attachment; filename="har_ghar_tiranga_registrations.xlsx"'
+        wb.save(response)
+        return response
 
 
 # ─── Organization Types & Associate Organizations ─────────────────────────────

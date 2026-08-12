@@ -4,97 +4,213 @@
 {% block nav_tiranga %}active{% endblock %}
 
 {% block content %}
-<div class="header-box">
-  <div class="flex items-center justify-between">
-    <div>
-      <div class="pg-title">Har Ghar Tiranga Registrations</div>
-      <div class="text-sm text-[#6B7280] mt-1">
-        Manage and view citizens registered for the Tiranga Yatra. Total: <strong>{{ total }}</strong>
+<style>
+  .dt thead th {
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    z-index: 10;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  
+  .token-badge {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .token-badge:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  /* Mobile Stacking Logic */
+  @media (max-width: 768px) {
+    .table-wrap {
+      border: none;
+      box-shadow: none;
+      background: transparent;
+    }
+    .dt thead {
+      display: none;
+    }
+    .dt tbody {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .dt tr {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .dt td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .dt td:last-child {
+      border-bottom: none;
+    }
+    .dt td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: #6B7280;
+      font-size: 13px;
+    }
+  }
+</style>
+
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Har Ghar Tiranga Registrations</div>
+    <div class="ph-sub">Manage and view citizens registered for the Tiranga Yatra</div>
+    
+    <div class="flex gap-4 mt-4">
+      <div class="bg-white border border-[#E5E7EB] rounded-xl px-4 py-2 shadow-sm flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Total Registrations</div>
+          <div class="text-lg font-bold text-gray-900">{{ total }}</div>
+        </div>
+      </div>
+      
+      <div class="bg-white border border-[#E5E7EB] rounded-xl px-4 py-2 shadow-sm flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-green-50 text-green-600 flex items-center justify-center">
+          <i class="fa-solid fa-calendar-day"></i>
+        </div>
+        <div>
+          <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider">Today</div>
+          <div class="text-lg font-bold text-gray-900">{{ today_count }}</div>
+        </div>
       </div>
     </div>
-    
-    <div class="flex items-center gap-3">
-      <!-- Search Form -->
-      <form method="get" class="flex gap-2">
-        <input type="text" name="q" value="{{ q }}" placeholder="Search by token, name, mobile..." class="admin-input w-[260px]">
-        <button type="submit" class="btn btn-secondary px-3">
-          Search
-        </button>
+  </div>
+  <div class="ph-actions" style="align-self: flex-start;">
+    <a href="{% url 'admin_panel:export_tiranga_excel' %}" class="btn btn-primary btn-sm">⬇ Export Excel</a>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="card" style="padding:18px;margin-bottom:20px;margin-top:20px;">
+  <form method="get" action="" id="filterForm">
+    <div class="tbar flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-inp" name="q" value="{{ q }}" placeholder="Search name, mobile, token..." style="width:260px;">
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
         {% if q %}
-          <a href="?" class="btn btn-secondary px-3 text-[#EF4444]">Clear</a>
+          <a href="{% url 'admin_panel:tiranga_registrations' %}" class="btn btn-outline btn-sm">Clear</a>
         {% endif %}
-      </form>
+      </div>
+      <div>
+        <a href="{% url 'admin_panel:tiranga_registrations' %}" class="btn btn-outline btn-sm" title="Refresh">
+          <i class="fa-solid fa-rotate-right"></i> Refresh
+        </a>
+      </div>
     </div>
-  </div>
+  </form>
 </div>
 
-<div class="table-container mt-6">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Token ID</th>
-        <th>Name</th>
-        <th>Mobile Number</th>
-        <th>Address</th>
-        <th>Location</th>
-        <th>Registration Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for reg in page_obj %}
-      <tr>
-        <td data-label="Token ID"><span class="badge badge-gray font-mono">{{ reg.token_id|default:"-" }}</span></td>
-        <td data-label="Name" class="font-medium text-[#111827]">{{ reg.name }}</td>
-        <td data-label="Mobile Number">{{ reg.mobile_number }}</td>
-        <td data-label="Address" style="max-width: 250px; white-space: normal;">{{ reg.address }}</td>
-        <td data-label="Location">
-          {% if reg.latitude and reg.longitude %}
-            <a href="https://maps.google.com/?q={{ reg.latitude|stringformat:'f' }},{{ reg.longitude|stringformat:'f' }}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1">
-              <span>📍 View on Map</span>
-            </a>
-            {% if reg.location_text %}
-              <div class="text-xs text-gray-500 mt-1 max-w-[200px] truncate" title="{{ reg.location_text }}">{{ reg.location_text }}</div>
+<!-- Table -->
+<div class="card" style="padding:0">
+  <div class="table-wrap" style="max-height: 600px; overflow-y: auto;">
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>Token ID</th>
+          <th>Citizen Details</th>
+          <th>Address</th>
+          <th>Location</th>
+          <th>Registration Date</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reg in page_obj %}
+        <tr>
+          <td data-label="Token ID">
+            <span class="badge badge-gray font-mono token-badge flex items-center gap-2 max-w-max" onclick="copyToken('{{ reg.token_id }}', this)" title="Click to copy">
+              {{ reg.token_id|default:"-" }}
+              <i class="fa-regular fa-copy text-gray-400"></i>
+            </span>
+          </td>
+          <td data-label="Citizen Details">
+            <div class="td-name text-[#111827] font-semibold">{{ reg.name }}</div>
+            <div class="td-mono text-gray-500 text-xs mt-1">{{ reg.mobile_number }}</div>
+          </td>
+          <td data-label="Address" style="max-width: 250px;">
+            <div class="text-sm text-gray-700 truncate" title="{{ reg.address }}">{{ reg.address }}</div>
+          </td>
+          <td data-label="Location">
+            {% if reg.latitude and reg.longitude %}
+              <a href="https://maps.google.com/?q={{ reg.latitude|stringformat:'f' }},{{ reg.longitude|stringformat:'f' }}" target="_blank" class="text-blue-600 hover:underline flex items-center gap-1 text-sm font-medium">
+                <span>📍 View Map</span>
+              </a>
+              {% if reg.location_text %}
+                <div class="text-xs text-gray-500 mt-1 max-w-[200px] truncate" title="{{ reg.location_text }}">{{ reg.location_text }}</div>
+              {% endif %}
+            {% else %}
+              <span class="badge badge-gray">Not provided</span>
             {% endif %}
-          {% else %}
-            <span class="text-gray-400">Not provided</span>
-          {% endif %}
-        </td>
-        <td data-label="Registration Date">{{ reg.created_at|date:"d M Y, h:i A" }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="5" class="empty-state">
-          No registrations found matching your criteria.
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <!-- Pagination -->
-  {% if page_obj.has_other_pages %}
-  <div class="p-4 border-t border-[#E5E7EB] flex items-center justify-between">
-    <div class="text-sm text-[#6B7280]">
-      Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ total }} registrations
-    </div>
-    <div class="flex items-center gap-2">
+          </td>
+          <td data-label="Registration Date">
+            <div class="text-sm text-gray-800">{{ reg.created_at|date:"d M Y" }}</div>
+            <div class="text-xs text-gray-500 mt-0.5">{{ reg.created_at|date:"h:i A" }}</div>
+          </td>
+          <td data-label="Actions" style="text-align:right">
+            <a href="#" class="btn btn-outline btn-xs" onclick="alert('Print functionality coming soon!')"><i class="fa-solid fa-print"></i> Print</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text3)">No registrations found matching your criteria.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+  <div class="tpag border-t border-[#E5E7EB]">
+    <span>
+      Showing {{ page_obj.start_index|default:"0" }}–{{ page_obj.end_index|default:"0" }} of {{ total }}
+      {% if q %} (filtered){% endif %}
+    </span>
+    <div class="pag-btns">
       {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" class="btn btn-secondary px-3">&larr; Prev</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if q %}&q={{ q }}{% endif %}" class="pag-btn">‹</a>
       {% else %}
-        <button class="btn btn-secondary px-3 opacity-50 cursor-not-allowed" disabled>&larr; Prev</button>
+        <span class="pag-btn opacity-50 cursor-not-allowed">‹</span>
       {% endif %}
-
-      <span class="text-sm font-medium text-[#111827]">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-      </span>
-
+      
+      <span class="text-sm font-medium mx-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages|default:"1" }}</span>
+      
       {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}" class="btn btn-secondary px-3">Next &rarr;</a>
+        <a href="?page={{ page_obj.next_page_number }}{% if q %}&q={{ q }}{% endif %}" class="pag-btn">›</a>
       {% else %}
-        <button class="btn btn-secondary px-3 opacity-50 cursor-not-allowed" disabled>Next &rarr;</button>
+        <span class="pag-btn opacity-50 cursor-not-allowed">›</span>
       {% endif %}
     </div>
   </div>
-  {% endif %}
 </div>
+
+<script>
+function copyToken(token, el) {
+  if (!token || token === '-') return;
+  navigator.clipboard.writeText(token).then(() => {
+    const icon = el.querySelector('i');
+    const oldClass = icon.className;
+    icon.className = 'fa-solid fa-check text-green-500';
+    setTimeout(() => {
+      icon.className = oldClass;
+    }, 1500);
+  });
+}
+</script>
 {% endblock %}
