@@ -36,54 +36,12 @@
     box-shadow: 0 4px 12px rgba(11, 93, 42, 0.08);
   }
 
-  .lp-avatar-wrapper {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 16px;
-    border-radius: 50%;
-    border: 4px solid var(--bg);
-    background: var(--bg);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .lp-avatar-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .avatar-img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    border-radius:50%;
-    display:block;
-  }
-  .avatar-placeholder {
-    width:100%;
-    height:100%;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#f3f4f6;
-    color:#64748b;
-    font-size: 32px;
-  }
-
-  .lp-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 4px;
-  }
-  .lp-role {
-    font-size: 12px;
-    color: var(--text3);
-    margin-bottom: 24px;
-    min-height: 36px;
-  }
+  .avatar-wrapper{ width:124px; height:124px; margin:0 auto 20px; position:relative; flex-shrink:0; } 
+  .avatar-img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; border:4px solid #fff; box-shadow:0 8px 24px rgba(0,0,0,.12); } 
+  .avatar-placeholder{ width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#f3f4f6; color:#64748b; border:4px solid #fff; font-size: 32px; } 
+  .member-content{ text-align:center; } 
+  .member-name{ margin-top:0; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .member-role { font-size: 12px; color: var(--text3); margin-bottom: 24px; min-height: 36px; }
 
   .lp-actions {
     display: flex;
@@ -231,24 +189,26 @@
       {% csrf_token %}
       <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
       
-      <div class="lp-avatar-wrapper">
-        {% if leader.photo %}
-          <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}">
+      <div class="avatar-wrapper">
+        {% if leader.photo and leader.photo.name %}
+          <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       
-      <div class="lp-name">{{ leader.name }}</div>
-      <div class="lp-role">{{ leader.role }}</div>
+      <div class="member-content">
+        <h3 class="member-name">{{ leader.name }}</h3>
+        <p class="member-role">{{ leader.role }}</p>
+      </div>
       
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -279,24 +239,26 @@
       {% csrf_token %}
       <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
 
-      <div class="lp-avatar-wrapper">
-        {% if leader.photo %}
-          <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}">
+      <div class="avatar-wrapper">
+        {% if leader.photo and leader.photo.name %}
+          <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
-
-      <div class="lp-name">{{ leader.name }}</div>
-      <div class="lp-role">{{ leader.role }}</div>
+      
+      <div class="member-content">
+        <h3 class="member-name">{{ leader.name }}</h3>
+        <p class="member-role">{{ leader.role }}</p>
+      </div>
 
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
         </label>
 
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -328,24 +290,26 @@
       {% csrf_token %}
       <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
       
-      <div class="lp-avatar-wrapper">
-        {% if leader.photo %}
-          <img src="{{ leader.photo.url }}" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}">
+      <div class="avatar-wrapper">
+        {% if leader.photo and leader.photo.name %}
+          <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="{{ leader.name }}" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       
-      <div class="lp-name">{{ leader.name }}</div>
-      <div class="lp-role">{{ leader.role }}</div>
+      <div class="member-content">
+        <h3 class="member-name">{{ leader.name }}</h3>
+        <p class="member-role">{{ leader.role }}</p>
+      </div>
       
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Choose Photo
-          <input type="file" name="{{ leader.field }}" accept="image/*" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
