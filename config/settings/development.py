@@ -111,7 +111,7 @@ try:
     ] + MIDDLEWARE  # noqa: F405
     INTERNAL_IPS = ["127.0.0.1", "localhost"]
     DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": lambda request: DEBUG,
+        "SHOW_TOOLBAR_CALLBACK": lambda request: False,
     }
 except ImportError:
     pass
