@@ -3,9 +3,7 @@
 {% block nav_leadership %}active{% endblock %}
 
 {% block content %}
-<!-- Cropper.js -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
 <style>
   .lp-grid {
     display: grid;
@@ -79,71 +77,7 @@
     background: var(--green2);
   }
 
-  /* Crop Modal Styles */
-  .crop-modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 99999;
-    align-items: center;
-    justify-content: center;
-  }
-  .crop-modal-content {
-    background: #fff;
-    border-radius: 24px;
-    padding: 24px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  }
-  .crop-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  .crop-modal-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .crop-container {
-    width: 100%;
-    height: 400px;
-    background: #f3f4f6;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .crop-modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-  }
-  .btn-cancel {
-    background: #f3f4f6;
-    color: #374151;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-save-crop {
-    background: #15803D;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  /* Make cropper mask circular */
-  .cropper-view-box,
-  .cropper-face {
-    border-radius: 50%;
-  }
+  
   
   .lp-btn-remove {
     background: #FEF2F2;
@@ -187,8 +121,6 @@
   <div class="lp-card">
     <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
-      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
-      
       <div class="avatar-wrapper">
         {% if leader.photo and leader.photo.name %}
           <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
@@ -208,12 +140,11 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="this.form.submit()">
+          <input type="hidden" name="field_name" value="{{ leader.field }}">
         </label>
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
-          Save Photo
-        </button>
+        
         
         {% if leader.url %}
         <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
@@ -237,8 +168,6 @@
   <div class="lp-card">
     <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
-      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
-
       <div class="avatar-wrapper">
         {% if leader.photo and leader.photo.name %}
           <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
@@ -258,12 +187,11 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="this.form.submit()">
+          <input type="hidden" name="field_name" value="{{ leader.field }}">
         </label>
 
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
-          Save Photo
-        </button>
+        
 
         {% if leader.url %}
         <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
@@ -288,8 +216,6 @@
   <div class="lp-card">
     <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
-      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
-      
       <div class="avatar-wrapper">
         {% if leader.photo and leader.photo.name %}
           <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
@@ -309,12 +235,11 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Choose Photo
-          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="this.form.submit()">
+          <input type="hidden" name="field_name" value="{{ leader.field }}">
         </label>
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
-          Save Photo
-        </button>
+        
         
         {% if leader.url %}
         <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
@@ -333,128 +258,8 @@
 </div>
 
 
-<!-- Crop Modal -->
-<div class="crop-modal" id="cropModal">
-  <div class="crop-modal-content">
-    <div class="crop-modal-header">
-      <div class="crop-modal-title">Crop Portrait</div>
-    </div>
-    <div class="crop-container">
-      <img id="cropImage" src="" style="max-width: 100%;">
-    </div>
-    <div class="crop-modal-footer">
-      <button type="button" class="btn-cancel" onclick="closeCropModal()">Cancel</button>
-      <button type="button" class="btn-save-crop" onclick="performCrop()">Crop & Save</button>
-    </div>
-  </div>
-</div>
 
 <script>
-let currentCropper = null;
-let currentField = null;
-
-function openCropModal(input, fieldName) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = document.getElementById('cropImage');
-      
-      img.onload = function() {
-        document.getElementById('cropModal').style.display = 'flex';
-        currentField = fieldName;
-        
-        if (currentCropper) {
-          currentCropper.destroy();
-        }
-        
-        currentCropper = new Cropper(img, {
-          aspectRatio: 1,
-          viewMode: 1,
-          dragMode: 'move',
-          autoCropArea: 0.9,
-          restore: false,
-          guides: false,
-          center: false,
-          highlight: false,
-          cropBoxMovable: true,
-          cropBoxResizable: true,
-          toggleDragModeOnDblclick: false,
-        });
-      };
-      
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
-    input.value = '';
-  }
-}
-
-function closeCropModal() {
-  document.getElementById('cropModal').style.display = 'none';
-  if (currentCropper) {
-    currentCropper.destroy();
-    currentCropper = null;
-  }
-}
-
-function performCrop() {
-  if (!currentCropper) return;
-  
-  const saveBtn = document.querySelector('.btn-save-crop');
-  const originalText = saveBtn.innerText;
-  saveBtn.innerText = "Saving...";
-  saveBtn.disabled = true;
-
-  currentCropper.getCroppedCanvas({
-    width: 512,
-    height: 512,
-    imageSmoothingEnabled: true,
-    imageSmoothingQuality: 'high',
-  }).toBlob(function(blob) {
-    if (!blob) {
-      alert("Failed to crop image.");
-      saveBtn.innerText = originalText;
-      saveBtn.disabled = false;
-      return;
-    }
-    
-    const formData = new FormData();
-    formData.append('photo', blob, currentField + '.jpg');
-    formData.append('field_name', currentField);
-    
-    // Add CSRF token
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
-    fetch(window.location.href, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRFToken': csrfToken
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      saveBtn.innerText = originalText;
-      saveBtn.disabled = false;
-      
-      if (data.success) {
-        // Refresh the page so the image correctly loads via Django template url resolution
-        // and clears out any weird state.
-        window.location.reload();
-      } else {
-        alert("Upload failed: " + (data.error || "Unknown error"));
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert("Upload failed due to a network error.");
-      saveBtn.innerText = originalText;
-      saveBtn.disabled = false;
-    });
-  }, 'image/jpeg', 0.95);
-}
-
 function removePhoto(fieldName) {
   if (confirm("Are you sure you want to remove this photo? The placeholder will be restored.")) {
       document.getElementById('form-remove-' + fieldName).submit();
