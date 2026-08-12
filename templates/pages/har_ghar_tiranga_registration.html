@@ -254,8 +254,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                if(data.token) {
-                    document.getElementById('token-display').innerText = data.token;
+                if(data.token_id) {
+                    document.getElementById('token-display').innerText = data.token_id;
                 }
                 document.getElementById('registration-card').classList.add('hidden');
                 document.getElementById('success-card').classList.remove('hidden');

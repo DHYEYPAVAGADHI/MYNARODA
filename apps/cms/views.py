@@ -379,17 +379,24 @@ class HarGharTirangaRegistrationView(View):
 
     def post(self, request):
         try:
-            name = request.POST.get("name", "").strip()
-            mobile_number = request.POST.get("mobile_number", "").strip()
-            address = request.POST.get("address", "").strip()
+            import json
+            
+            if request.content_type == 'application/json':
+                data = json.loads(request.body)
+            else:
+                data = request.POST
+                
+            name = data.get("name", "").strip()
+            mobile_number = data.get("mobile_number", "").strip()
+            address = data.get("address", "").strip()
             
             # Safely handle latitude and longitude
-            lat_str = request.POST.get("latitude", "").strip()
-            lon_str = request.POST.get("longitude", "").strip()
+            lat_str = str(data.get("latitude", "") or "").strip()
+            lon_str = str(data.get("longitude", "") or "").strip()
             latitude = float(lat_str) if lat_str and lat_str not in ["undefined", "null"] else None
             longitude = float(lon_str) if lon_str and lon_str not in ["undefined", "null"] else None
             
-            location_text = request.POST.get("location_text", "")
+            location_text = data.get("location_text", "")
 
             # Validation
             if len(name) < 3:
