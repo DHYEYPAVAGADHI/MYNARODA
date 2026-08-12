@@ -724,17 +724,15 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         
         updated = False
         
-        # Check for standard file upload
+        # Check for AJAX Blob upload
         if request.FILES.get('photo') and request.POST.get('field_name'):
             field = request.POST.get('field_name')
             if field in fields:
                 # Save the real uploaded file directly to the attribute
                 setattr(photos, field, request.FILES['photo'])
                 photos.save()
-                messages.success(request, "Photo uploaded successfully.")
-                return redirect('admin_panel:leadership_photos')
-            messages.error(request, "Invalid field name.")
-            return redirect('admin_panel:leadership_photos')
+                return JsonResponse({"success": True, "url": getattr(photos, field).url})
+            return JsonResponse({"success": False, "error": "Invalid field name"}, status=400)
             
         # Handle remove logic
         remove_field = request.POST.get("remove_field")
