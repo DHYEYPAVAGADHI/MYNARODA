@@ -742,6 +742,8 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
             if cropped_data and cropped_data.startswith("data:image/"):
                 format, imgstr = cropped_data.split(';base64,') 
                 ext = format.split('/')[-1] 
+                # Fix any spaces that were converted from '+' during form submission
+                imgstr = imgstr.replace(' ', '+')
                 # Create a ContentFile and assign it to the field
                 data = ContentFile(base64.b64decode(imgstr), name=f"{field}_{timezone.now().timestamp()}.{ext}")
                 setattr(photos, field, data)

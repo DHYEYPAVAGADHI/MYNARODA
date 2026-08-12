@@ -62,7 +62,7 @@ services:
       - .env
     volumes:
       - .:/app
-      - media_data:/app/media
+      - ./media:/app/media
     ports:
       - "8000:8000"
     depends_on:
