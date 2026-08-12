@@ -364,36 +364,24 @@ function showSaveButton(fieldName, input) {
       }
       img.src = e.target.result;
       img.style.display = 'block';
-      document.getElementById('btn-save-' + fieldName).style.display = 'block';
+      
+      let saveBtn = document.getElementById('btn-save-' + fieldName);
+      if (saveBtn) saveBtn.style.display = 'block';
+      
+      let chooseBtn = input.closest('.lp-btn-choose');
+      if (chooseBtn) chooseBtn.style.display = 'none';
     };
     reader.readAsDataURL(input.files[0]);
-  
-  closeCropModal();
+  }
+}
+
+function previewImage(input, fieldName) {
+  showSaveButton(fieldName, input);
 }
 
 function removePhoto(fieldName) {
   if (confirm("Are you sure you want to remove this photo? The placeholder will be restored.")) {
       document.getElementById('form-remove-' + fieldName).submit();
-  }
-}
-
-function previewImage(input, fieldName) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    var card = input.closest('.lp-card');
-    var wrapper = card.querySelector('.lp-avatar-wrapper');
-    var saveBtn = document.getElementById('btn-save-' + fieldName);
-    var chooseBtn = input.closest('.lp-btn-choose');
-    
-    reader.onload = function(e) {
-      wrapper.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
-      
-      // Update UI to prompt saving
-      saveBtn.style.display = 'block';
-      chooseBtn.style.display = 'none';
-    }
-    
-    reader.readAsDataURL(input.files[0]);
   }
 }
 </script>
