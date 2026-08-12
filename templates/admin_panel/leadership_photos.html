@@ -209,7 +209,7 @@
         <label class="lp-btn-choose">
           Upload Photo
           <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
-          <input type="hidden" name="field_name" value="{{ leader.field }}">
+          <input type="hidden" name="field_key" value="{{ leader.field }}">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -259,7 +259,8 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="hidden" name="field_key" value="{{ leader.field }}">
         </label>
 
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -310,7 +311,8 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Choose Photo
-          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="hidden" name="field_key" value="{{ leader.field }}">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">

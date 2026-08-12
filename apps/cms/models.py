@@ -260,8 +260,6 @@ class LeadershipPhotos(TimeStampedModel):
     
     # Co-Conveners
     kiran_raval_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
-    nirav_joshi_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
-    gautam_patel_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
     vipul_patel_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
     jayesh_prajapati_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
     chandaben_patel_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)

@@ -671,40 +671,39 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         photos = LeadershipPhotos.objects.first()
         
         committee_leaders = [
-            {"name": "Dr. Payalben Kukrani", "role": "President", "field": "payalben_photo"},
-            {"name": "Shri Nikunj Rameshbhai Khakhi", "role": "Convener", "field": "nikunj_photo"},
+            {"name": "Dr. Payalben Kukrani", "role": "President", "field": "president", "model_field": "payalben_photo"},
+            {"name": "Shri Nikunj Rameshbhai Khakhi", "role": "Convener", "field": "convener", "model_field": "nikunj_photo"},
         ]
 
         co_convener_leaders = [
-            {"name": "Shri Kiran Raval", "role": "President, BJP Naroda Ward", "field": "kiran_raval_photo"},
-            {"name": "Shri Nirav Joshi", "role": "General Secretary, Naroda Ward", "field": "nirav_joshi_photo"},
-            {"name": "Shri Gautam Patel", "role": "General Secretary, Naroda Ward", "field": "gautam_patel_photo"},
-            {"name": "Shri Vipul Patel", "role": "Chairman & Municipal Councilor, Naroda AMC", "field": "vipul_patel_photo"},
-            {"name": "Shri Jayeshbhai Prajapati", "role": "Municipal Councilor, Naroda AMC", "field": "jayesh_prajapati_photo"},
-            {"name": "Shri Chandaben Patel", "role": "Municipal Councilor, Naroda AMC", "field": "chandaben_patel_photo"},
-            {"name": "Shri Divya Nikunj Khakhi", "role": "Dy. Chairman & Municipal Councilor, Naroda AMC", "field": "divya_khakhi_photo"},
+            {"name": "Shri Kiran Raval", "role": "President, BJP Naroda Ward", "field": "kiran_raval", "model_field": "kiran_raval_photo"},
+            {"name": "Shri Vipul Patel", "role": "Chairman & Municipal Councilor, Naroda AMC", "field": "vipul_patel", "model_field": "vipul_patel_photo"},
+            {"name": "Shri Jayeshbhai Prajapati", "role": "Municipal Councilor, Naroda AMC", "field": "jayesh_prajapati", "model_field": "jayesh_prajapati_photo"},
+            {"name": "Shri Chandaben Patel", "role": "Municipal Councilor, Naroda AMC", "field": "chandaben_patel", "model_field": "chandaben_patel_photo"},
+            {"name": "Shri Divya Nikunj Khakhi", "role": "Dy. Chairman & Municipal Councilor, Naroda AMC", "field": "divya_khakhi", "model_field": "divya_khakhi_photo"},
         ]
 
 
         leaders = [
-            {"name": "Shri Nitin Nabin", "role": "Hon'ble National President, BJP", "field": "nitin_nabin_photo"},
-            {"name": "Shri Bhupendrabhai Patel", "role": "Hon'ble Chief Minister, Gujarat", "field": "bhupendrabhai_patel_photo"},
-            {"name": "Shri Jagdish Vishwakarma", "role": "Hon'ble State President, BJP Gujarat", "field": "jagdish_vishwakarma_photo"},
-            {"name": "Shri Harshbhai Sanghavi", "role": "Hon'ble Dy. Chief Minister of Gujarat", "field": "harshbhai_sanghavi_photo"},
-            {"name": "Shri Ratnakarji", "role": "Hon'ble State Organization General Secretary", "field": "ratnakarji_photo"},
-            {"name": "Shri Ajay Brahmbhatt", "role": "State General Secretary, BJP Gujarat", "field": "ajay_brahmbhatt_photo"},
-            {"name": "Shri Anirudhbhai Dave", "role": "State General Secretary, BJP Gujarat", "field": "anirudhbhai_dave_photo"},
-            {"name": "Dr. Prashantbhai Korat", "role": "State General Secretary, BJP Gujarat", "field": "prashantbhai_korat_photo"},
-            {"name": "Shri Hitendrasinh Chauhan", "role": "State General Secretary, BJP Gujarat", "field": "hitendrasinh_chauhan_photo"},
-            {"name": "Shri Prerakbhai Shah", "role": "President, Karnavati Mahanagar BJP", "field": "prerakbhai_shah_photo"},
-            {"name": "Shri Hasmukhbhai Patel", "role": "Hon. Member of Parliament", "field": "hasmukhbhai_patel_photo"},
-            {"name": "Shri Dineshbhai Makwana", "role": "Hon. Member of Parliament", "field": "dineshbhai_makwana_photo"},
+            {"name": "Shri Nitin Nabin", "role": "Hon'ble National President, BJP", "field": "nitin_nabin_photo", "model_field": "nitin_nabin_photo"},
+            {"name": "Shri Bhupendrabhai Patel", "role": "Hon'ble Chief Minister, Gujarat", "field": "bhupendrabhai_patel_photo", "model_field": "bhupendrabhai_patel_photo"},
+            {"name": "Shri Jagdish Vishwakarma", "role": "Hon'ble State President, BJP Gujarat", "field": "jagdish_vishwakarma_photo", "model_field": "jagdish_vishwakarma_photo"},
+            {"name": "Shri Harshbhai Sanghavi", "role": "Hon'ble Dy. Chief Minister of Gujarat", "field": "harshbhai_sanghavi_photo", "model_field": "harshbhai_sanghavi_photo"},
+            {"name": "Shri Ratnakarji", "role": "Hon'ble State Organization General Secretary", "field": "ratnakarji_photo", "model_field": "ratnakarji_photo"},
+            {"name": "Shri Ajay Brahmbhatt", "role": "State General Secretary, BJP Gujarat", "field": "ajay_brahmbhatt_photo", "model_field": "ajay_brahmbhatt_photo"},
+            {"name": "Shri Anirudhbhai Dave", "role": "State General Secretary, BJP Gujarat", "field": "anirudhbhai_dave_photo", "model_field": "anirudhbhai_dave_photo"},
+            {"name": "Dr. Prashantbhai Korat", "role": "State General Secretary, BJP Gujarat", "field": "prashantbhai_korat_photo", "model_field": "prashantbhai_korat_photo"},
+            {"name": "Shri Hitendrasinh Chauhan", "role": "State General Secretary, BJP Gujarat", "field": "hitendrasinh_chauhan_photo", "model_field": "hitendrasinh_chauhan_photo"},
+            {"name": "Shri Prerakbhai Shah", "role": "President, Karnavati Mahanagar BJP", "field": "prerakbhai_shah_photo", "model_field": "prerakbhai_shah_photo"},
+            {"name": "Shri Hasmukhbhai Patel", "role": "Hon. Member of Parliament", "field": "hasmukhbhai_patel_photo", "model_field": "hasmukhbhai_patel_photo"},
+            {"name": "Shri Dineshbhai Makwana", "role": "Hon. Member of Parliament", "field": "dineshbhai_makwana_photo", "model_field": "dineshbhai_makwana_photo"},
         ]
         
         # Attach the photo URL if it exists
         if photos:
             for leader in leaders + committee_leaders + co_convener_leaders:
-                img_field = getattr(photos, leader["field"], None)
+                model_attr = leader.get("model_field", leader["field"])
+                img_field = getattr(photos, model_attr, None)
                 if img_field and img_field.name:
                     leader["photo"] = img_field
 
@@ -715,54 +714,57 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         if not photos:
             photos = LeadershipPhotos.objects.create()
 
-        fields = [
-            'payalben_photo', 'nikunj_photo',
-            'kiran_raval_photo', 'nirav_joshi_photo', 'gautam_patel_photo', 'vipul_patel_photo',
-            'jayesh_prajapati_photo', 'chandaben_patel_photo', 'divya_khakhi_photo',
-            'nitin_nabin_photo', 'bhupendrabhai_patel_photo', 'jagdish_vishwakarma_photo',
-            'harshbhai_sanghavi_photo', 'ratnakarji_photo', 'ajay_brahmbhatt_photo',
-            'anirudhbhai_dave_photo', 'prashantbhai_korat_photo', 'hitendrasinh_chauhan_photo',
-            'prerakbhai_shah_photo', 'hasmukhbhai_patel_photo', 'dineshbhai_makwana_photo'
-        ]
+        field_map = {
+            'president': 'payalben_photo',
+            'convener': 'nikunj_photo',
+            'kiran_raval': 'kiran_raval_photo',
+            'vipul_patel': 'vipul_patel_photo',
+            'jayesh_prajapati': 'jayesh_prajapati_photo',
+            'chandaben_patel': 'chandaben_patel_photo',
+            'divya_khakhi': 'divya_khakhi_photo',
+            'nitin_nabin_photo': 'nitin_nabin_photo',
+            'bhupendrabhai_patel_photo': 'bhupendrabhai_patel_photo',
+            'jagdish_vishwakarma_photo': 'jagdish_vishwakarma_photo',
+            'harshbhai_sanghavi_photo': 'harshbhai_sanghavi_photo',
+            'ratnakarji_photo': 'ratnakarji_photo',
+            'ajay_brahmbhatt_photo': 'ajay_brahmbhatt_photo',
+            'anirudhbhai_dave_photo': 'anirudhbhai_dave_photo',
+            'prashantbhai_korat_photo': 'prashantbhai_korat_photo',
+            'hitendrasinh_chauhan_photo': 'hitendrasinh_chauhan_photo',
+            'prerakbhai_shah_photo': 'prerakbhai_shah_photo',
+            'hasmukhbhai_patel_photo': 'hasmukhbhai_patel_photo',
+            'dineshbhai_makwana_photo': 'dineshbhai_makwana_photo'
+        }
         
         updated = False
         
         # Check for standard cropped blob upload
-        if request.FILES.get('photo') and request.POST.get('field_name'):
-            field = request.POST.get('field_name')
-            if field in fields:
-                # Save the real uploaded file directly to the attribute
-                setattr(photos, field, request.FILES['photo'])
-                photos.save()
-                messages.success(request, "Photo uploaded successfully.")
-                return redirect('admin_panel:leadership_photos')
-            messages.error(request, "Invalid field name.")
+        uploaded = request.FILES.get('photo')
+        field_key = request.POST.get('field_key')
+        
+        if field_key in field_map and uploaded:
+            setattr(photos, field_map[field_key], uploaded)
+            photos.save()
+            messages.success(request, "Photo uploaded successfully.")
             return redirect('admin_panel:leadership_photos')
             
         # Handle remove logic
         remove_field = request.POST.get("remove_field")
-        if remove_field and remove_field in fields:
-            setattr(photos, remove_field, None)
-            updated = True
-        
-        # Handle regular file uploads and base64 cropped uploads (fallback)
-        for field in fields:
-            if field in request.FILES:
-                setattr(photos, field, request.FILES[field])
+        if remove_field:
+            if remove_field in field_map:
+                setattr(photos, field_map[remove_field], None)
                 updated = True
-            
-            # Check for base64 cropped image
-            cropped_data = request.POST.get(f"cropped_{field}")
-            if cropped_data and cropped_data.startswith("data:image/"):
-                format, imgstr = cropped_data.split(';base64,') 
-                ext = format.split('/')[-1] 
-                # Fix any spaces that were converted from '+' during form submission
-                imgstr = imgstr.replace(' ', '+')
-                # Create a ContentFile
-                data = ContentFile(base64.b64decode(imgstr))
-                filename = f"{field}_{int(timezone.now().timestamp())}.{ext}"
-                # Save the file to the field using the proper Django method
-                getattr(photos, field).save(filename, data, save=False)
+            elif remove_field in field_map.values():
+                setattr(photos, remove_field, None)
+                updated = True
+        
+        # Handle regular file uploads (fallback)
+        for key, model_field in field_map.items():
+            if key in request.FILES:
+                setattr(photos, model_field, request.FILES[key])
+                updated = True
+            elif model_field in request.FILES:
+                setattr(photos, model_field, request.FILES[model_field])
                 updated = True
                 
         if updated:
