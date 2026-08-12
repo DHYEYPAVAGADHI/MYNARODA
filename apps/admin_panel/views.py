@@ -677,11 +677,14 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
 
         co_convener_leaders = [
             {"name": "Shri Kiran Raval", "role": "President, BJP Naroda Ward", "field": "kiran_raval_photo"},
+            {"name": "Shri Nirav Joshi", "role": "General Secretary, Naroda Ward", "field": "nirav_joshi_photo"},
+            {"name": "Shri Gautam Patel", "role": "General Secretary, Naroda Ward", "field": "gautam_patel_photo"},
             {"name": "Shri Vipul Patel", "role": "Chairman & Municipal Councilor, Naroda AMC", "field": "vipul_patel_photo"},
-            {"name": "Shri Jayeshbhai Prajapati", "role": "Municipal Councilor, Naroda AMC", "field": "jayeshbhai_prajapati_photo"},
+            {"name": "Shri Jayeshbhai Prajapati", "role": "Municipal Councilor, Naroda AMC", "field": "jayesh_prajapati_photo"},
             {"name": "Shri Chandaben Patel", "role": "Municipal Councilor, Naroda AMC", "field": "chandaben_patel_photo"},
-            {"name": "Shri Divya Nikunj Khakhi", "role": "Dy. Chairman & Municipal Councilor, Naroda AMC", "field": "divya_nikunj_khakhi_photo"},
+            {"name": "Shri Divya Nikunj Khakhi", "role": "Dy. Chairman & Municipal Councilor, Naroda AMC", "field": "divya_khakhi_photo"},
         ]
+
 
         leaders = [
             {"name": "Shri Nitin Nabin", "role": "Hon'ble National President, BJP", "field": "nitin_nabin_photo"},
@@ -715,7 +718,7 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         fields = [
             'payalben_photo', 'nikunj_photo',
             'kiran_raval_photo', 'nirav_joshi_photo', 'gautam_patel_photo', 'vipul_patel_photo',
-            'jayeshbhai_prajapati_photo', 'chandaben_patel_photo', 'divya_nikunj_khakhi_photo',
+            'jayesh_prajapati_photo', 'chandaben_patel_photo', 'divya_khakhi_photo',
             'nitin_nabin_photo', 'bhupendrabhai_patel_photo', 'jagdish_vishwakarma_photo',
             'harshbhai_sanghavi_photo', 'ratnakarji_photo', 'ajay_brahmbhatt_photo',
             'anirudhbhai_dave_photo', 'prashantbhai_korat_photo', 'hitendrasinh_chauhan_photo',

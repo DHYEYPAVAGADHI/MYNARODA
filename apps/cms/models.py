@@ -263,9 +263,9 @@ class LeadershipPhotos(TimeStampedModel):
     nirav_joshi_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
     gautam_patel_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
     vipul_patel_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
-    jayeshbhai_prajapati_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
+    jayesh_prajapati_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
     chandaben_patel_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
-    divya_nikunj_khakhi_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
+    divya_khakhi_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
 
     # Mentoring Leadership
     nitin_nabin_photo = models.ImageField(upload_to="leadership/", blank=True, null=True)
