@@ -232,7 +232,7 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="showSaveButton('{{ leader.field }}', this)">
+          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, '{{ leader.field }}')">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -278,7 +278,7 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="showSaveButton('{{ leader.field }}', this)">
+          <input type="file" accept="image/*" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, '{{ leader.field }}')">
         </label>
 
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -306,30 +306,43 @@
   {% for leader in leaders %}
 
   <div class="lp-card">
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
+      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
       
       <div class="lp-avatar-wrapper">
         {% if leader.url %}
-          <img src="{{ leader.url }}" alt="{{ leader.name }}">
+          <img src="{{ leader.url }}" alt="{{ leader.name }}" id="preview-img-{{ leader.field }}">
         {% else %}
-          <div class="lp-avatar-placeholder">👤</div>
+          <div class="lp-avatar-placeholder" id="placeholder-{{ leader.field }}">👤</div>
+          <img src="" alt="Preview" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       
       <div class="lp-name">{{ leader.name }}</div>
       <div class="lp-role">{{ leader.role }}</div>
       
-      <div class="lp-actions">
+      <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Choose Photo
-          <input type="file" name="{{ leader.field }}" accept="image/*" style="display:none;" onchange="previewImage(this, '{{ leader.field }}')">
+          <input type="file" name="{{ leader.field }}" accept="image/*" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
         </label>
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}">
+        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
           Save Photo
         </button>
+        
+        {% if leader.url %}
+        <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
+          Remove
+        </button>
+        {% endif %}
       </div>
+    </form>
+    
+    <form method="post" id="form-remove-{{ leader.field }}" style="display:none;">
+        {% csrf_token %}
+        <input type="hidden" name="remove_field" value="{{ leader.field }}">
     </form>
   </div>
   {% endfor %}
@@ -353,30 +366,91 @@
 </div>
 
 <script>
-function showSaveButton(fieldName, input) {
+let currentCropper = null;
+let currentField = null;
+
+function openCropModal(input, fieldName) {
   if (input.files && input.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      let img = document.getElementById('preview-img-' + fieldName);
-      let placeholder = document.getElementById('placeholder-' + fieldName);
-      if (placeholder) {
-          placeholder.style.display = 'none';
-      }
+      const img = document.getElementById('cropImage');
+      
+      img.onload = function() {
+        document.getElementById('cropModal').style.display = 'flex';
+        currentField = fieldName;
+        
+        if (currentCropper) {
+          currentCropper.destroy();
+        }
+        
+        currentCropper = new Cropper(img, {
+          aspectRatio: 1,
+          viewMode: 1,
+          dragMode: 'move',
+          autoCropArea: 0.9,
+          restore: false,
+          guides: false,
+          center: false,
+          highlight: false,
+          cropBoxMovable: true,
+          cropBoxResizable: true,
+          toggleDragModeOnDblclick: false,
+        });
+      };
+      
       img.src = e.target.result;
-      img.style.display = 'block';
-      
-      let saveBtn = document.getElementById('btn-save-' + fieldName);
-      if (saveBtn) saveBtn.style.display = 'block';
-      
-      let chooseBtn = input.closest('.lp-btn-choose');
-      if (chooseBtn) chooseBtn.style.display = 'none';
     };
     reader.readAsDataURL(input.files[0]);
+    input.value = '';
   }
 }
 
-function previewImage(input, fieldName) {
-  showSaveButton(fieldName, input);
+function closeCropModal() {
+  document.getElementById('cropModal').style.display = 'none';
+  if (currentCropper) {
+    currentCropper.destroy();
+    currentCropper = null;
+  }
+}
+
+function performCrop() {
+  if (!currentCropper) return;
+  
+  const canvas = currentCropper.getCroppedCanvas({
+    width: 512,
+    height: 512,
+    imageSmoothingEnabled: true,
+    imageSmoothingQuality: 'high',
+  });
+  
+  const base64Image = canvas.toDataURL('image/jpeg', 0.9);
+  
+  let croppedInput = document.getElementById('cropped-' + currentField);
+  if (croppedInput) {
+      croppedInput.value = base64Image;
+  }
+  
+  let img = document.getElementById('preview-img-' + currentField);
+  let placeholder = document.getElementById('placeholder-' + currentField);
+  
+  if (placeholder) {
+      placeholder.style.display = 'none';
+  }
+  if (img) {
+      img.src = base64Image;
+      img.style.display = 'block';
+  }
+  
+  let saveBtn = document.getElementById('btn-save-' + currentField);
+  if (saveBtn) saveBtn.style.display = 'block';
+  
+  let chooseBtn = document.getElementById('actions-' + currentField);
+  if (chooseBtn) {
+      let labelBtn = chooseBtn.querySelector('.lp-btn-choose');
+      if (labelBtn) labelBtn.style.display = 'none';
+  }
+  
+  closeCropModal();
 }
 
 function removePhoto(fieldName) {
