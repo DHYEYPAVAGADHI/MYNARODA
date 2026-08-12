@@ -416,41 +416,59 @@ function closeCropModal() {
 function performCrop() {
   if (!currentCropper) return;
   
-  const canvas = currentCropper.getCroppedCanvas({
+  const saveBtn = document.querySelector('.btn-save-crop');
+  const originalText = saveBtn.innerText;
+  saveBtn.innerText = "Saving...";
+  saveBtn.disabled = true;
+
+  currentCropper.getCroppedCanvas({
     width: 512,
     height: 512,
     imageSmoothingEnabled: true,
     imageSmoothingQuality: 'high',
-  });
-  
-  const base64Image = canvas.toDataURL('image/jpeg', 0.9);
-  
-  let croppedInput = document.getElementById('cropped-' + currentField);
-  if (croppedInput) {
-      croppedInput.value = base64Image;
-  }
-  
-  let img = document.getElementById('preview-img-' + currentField);
-  let placeholder = document.getElementById('placeholder-' + currentField);
-  
-  if (placeholder) {
-      placeholder.style.display = 'none';
-  }
-  if (img) {
-      img.src = base64Image;
-      img.style.display = 'block';
-  }
-  
-  let saveBtn = document.getElementById('btn-save-' + currentField);
-  if (saveBtn) saveBtn.style.display = 'block';
-  
-  let chooseBtn = document.getElementById('actions-' + currentField);
-  if (chooseBtn) {
-      let labelBtn = chooseBtn.querySelector('.lp-btn-choose');
-      if (labelBtn) labelBtn.style.display = 'none';
-  }
-  
-  closeCropModal();
+  }).toBlob(function(blob) {
+    if (!blob) {
+      alert("Failed to crop image.");
+      saveBtn.innerText = originalText;
+      saveBtn.disabled = false;
+      return;
+    }
+    
+    const formData = new FormData();
+    formData.append('photo', blob, currentField + '.jpg');
+    formData.append('field_name', currentField);
+    
+    // Add CSRF token
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+    fetch(window.location.href, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': csrfToken
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      saveBtn.innerText = originalText;
+      saveBtn.disabled = false;
+      
+      if (data.success) {
+        // Refresh the page so the image correctly loads via Django template url resolution
+        // and clears out any weird state.
+        window.location.reload();
+      } else {
+        alert("Upload failed: " + (data.error || "Unknown error"));
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert("Upload failed due to a network error.");
+      saveBtn.innerText = originalText;
+      saveBtn.disabled = false;
+    });
+  }, 'image/jpeg', 0.95);
 }
 
 function removePhoto(fieldName) {

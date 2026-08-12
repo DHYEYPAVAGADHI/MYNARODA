@@ -712,7 +712,6 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         if not photos:
             photos = LeadershipPhotos.objects.create()
 
-        # Update whichever file was uploaded
         fields = [
             'payalben_photo', 'nikunj_photo',
             'kiran_raval_photo', 'nirav_joshi_photo', 'gautam_patel_photo', 'vipul_patel_photo',
@@ -725,13 +724,22 @@ class AdminLeadershipPhotosView(AdminRequiredMixin, View):
         
         updated = False
         
+        # Check for AJAX Blob upload
+        if 'photo' in request.FILES and request.POST.get('field_name'):
+            field = request.POST.get('field_name')
+            if field in fields:
+                setattr(photos, field, request.FILES['photo'])
+                photos.save()
+                return JsonResponse({"success": True, "url": getattr(photos, field).url})
+            return JsonResponse({"success": False, "error": "Invalid field name"}, status=400)
+            
         # Handle remove logic
         remove_field = request.POST.get("remove_field")
         if remove_field and remove_field in fields:
             setattr(photos, remove_field, None)
             updated = True
         
-        # Handle regular file uploads and base64 cropped uploads
+        # Handle regular file uploads and base64 cropped uploads (fallback)
         for field in fields:
             if field in request.FILES:
                 setattr(photos, field, request.FILES[field])
