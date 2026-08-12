@@ -16,4 +16,5 @@ urlpatterns = [
     path("green-naroda/", views.GreenNarodaPageView.as_view(), name="green_naroda"),
     path("clean-naroda/", views.CleanNarodaPageView.as_view(), name="clean_naroda"),
     path("har-ghar-tiranga/register/", views.HarGharTirangaRegistrationView.as_view(), name="register_har_ghar_tiranga"),
+    path("har-ghar-tiranga/pass/<str:token_id>/", views.HarGharTirangaPassView.as_view(), name="tiranga_pass"),
 ]

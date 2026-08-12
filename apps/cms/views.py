@@ -428,3 +428,21 @@ class HarGharTirangaRegistrationView(View):
         except Exception as e:
             error_msg = str(e) or "Unknown server error occurred."
             return JsonResponse({"success": False, "error": error_msg, "message": error_msg})
+
+class HarGharTirangaPassView(View):
+    template_name = "pages/har_ghar_tiranga_pass.html"
+
+    def get(self, request, token_id):
+        from django.shortcuts import get_object_or_404
+        from apps.cms.models import HarGharTirangaRegistration
+        registration = get_object_or_404(HarGharTirangaRegistration, token_id=token_id)
+        
+        # Build absolute URL for QR code
+        pass_url = request.build_absolute_uri(
+            reverse("cms:tiranga_pass", kwargs={"token_id": token_id})
+        )
+        
+        return render(request, self.template_name, {
+            "registration": registration,
+            "pass_url": pass_url,
+        })

@@ -106,31 +106,20 @@
                         <i class="fa-regular fa-copy"></i> Copy Token
                     </button>
                     <button onclick="window.print()" class="bg-[#FF7A00] hover:bg-[#E66E00] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-print"></i> Download / Print
+                        <i class="fa-solid fa-print"></i> Print Pass
                     </button>
+                    <a id="btn-view-pass" href="#" class="bg-[#15803D] hover:bg-[#166534] text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-id-card"></i> View Full Pass
+                    </a>
                 </div>
             </div>
 
-            <!-- Pickup Points -->
-            <div class="text-left">
-                <h3 class="font-bold text-[#111827] text-lg mb-4 border-b pb-2">Pickup Points</h3>
-                <div class="space-y-3 mb-6">
-                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
-                        <div class="w-6 h-6 rounded-full bg-[#15803D]/10 text-[#15803D] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="text-sm text-[#374151] font-medium"><span class="font-bold">1.</span> Kedarnath Mahadev Mandir, Near Uma Cinema, Naroda</div>
-                    </div>
-                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
-                        <div class="w-6 h-6 rounded-full bg-[#15803D]/10 text-[#15803D] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="text-sm text-[#374151] font-medium"><span class="font-bold">2.</span> Amul Ice Cream Store, Old Navyug School, Mohangar</div>
-                    </div>
-                    <div class="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
-                        <div class="w-6 h-6 rounded-full bg-[#15803D]/10 text-[#15803D] flex items-center justify-center font-bold text-xs shrink-0 mt-0.5"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="text-sm text-[#374151] font-medium"><span class="font-bold">3.</span> Gram Panchayat Office, Naroda Gam</div>
-                    </div>
-                </div>
-                <div class="flex items-center justify-center gap-2 text-sm font-semibold text-[#15803D] bg-[#F0FDF4] p-3 rounded-xl mb-6">
-                    <i class="fa-regular fa-clock"></i> 10:00 AM – 6:00 PM
-                </div>
+            <!-- Flexible Collection Notice -->
+            <div class="text-left bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-5 mb-8 flex items-start gap-3">
+                <div class="text-[#15803D] mt-1 shrink-0"><i class="fa-solid fa-circle-info text-xl"></i></div>
+                <p class="text-sm text-[#166534] font-medium leading-relaxed">
+                    You may collect the Tiranga from any authorized volunteer, campaign desk, or distribution center associated with the Green Naroda • Clean Naroda mission. Please show this token or QR code at the time of collection.
+                </p>
             </div>
 
             <a href="{% url 'cms:home' %}" class="inline-flex items-center justify-center h-14 w-full bg-[#111827] hover:bg-[#374151] text-white font-bold rounded-xl shadow transition-all gap-2">
@@ -254,9 +243,18 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                if(data.token_id) {
-                    document.getElementById('token-display').innerText = data.token_id;
+                // Update Token display
+                const tokenDisplay = document.getElementById('token-display');
+                if(tokenDisplay) {
+                    tokenDisplay.innerText = data.token_id;
                 }
+                
+                // Update "View Full Pass" link
+                const btnViewPass = document.getElementById('btn-view-pass');
+                if(btnViewPass) {
+                    btnViewPass.href = `/har-ghar-tiranga/pass/${data.token_id}/`;
+                }
+
                 document.getElementById('registration-card').classList.add('hidden');
                 document.getElementById('success-card').classList.remove('hidden');
                 

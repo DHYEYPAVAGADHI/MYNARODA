@@ -1,0 +1,117 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block title %}Har Ghar Tiranga Pass - {{ registration.token_id }}{% endblock %}
+
+{% block content %}
+<div class="bg-[#F7F8F5] min-h-screen py-10 px-4 sm:px-6 lg:px-8 font-sans print-page">
+    <div class="max-w-[640px] mx-auto">
+        <!-- Pass Card -->
+        <div id="pass-card" class="bg-white/90 backdrop-blur-xl rounded-[32px] p-8 md:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-white text-center print-card">
+            
+            <div class="w-16 h-16 rounded-full bg-[#F0FDF4] text-[#15803D] flex items-center justify-center mx-auto mb-4 hide-on-print">
+                <i class="fa-solid fa-check text-3xl"></i>
+            </div>
+            
+            <h2 class="font-serif text-2xl font-bold text-[#0B1020] mb-2">Har Ghar Tiranga Pass</h2>
+            
+            <div class="bg-gradient-to-r from-[#FF9933] via-white to-[#138808] h-1.5 w-24 mx-auto rounded-full mb-6 mt-3"></div>
+
+            <!-- Token Display -->
+            <div class="bg-[#F9FAFB] border border-[#E5E7EB] rounded-2xl p-6 mb-6 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#FF9933] via-white to-[#138808]"></div>
+                
+                <div class="flex flex-col items-center justify-center mb-6">
+                    <div id="qrcode" class="bg-white p-3 rounded-xl border border-[#E5E7EB] shadow-sm mb-3"></div>
+                    <div class="text-xs font-bold text-[#6B7280] uppercase tracking-wider mb-1">Your Token ID</div>
+                    <div id="token-display" class="font-mono text-2xl md:text-3xl font-extrabold text-[#111827] tracking-tight">{{ registration.token_id }}</div>
+                </div>
+
+                <div class="text-left space-y-4 border-t border-[#E5E7EB] pt-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <div class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Full Name</div>
+                            <div class="text-sm font-semibold text-[#111827]">{{ registration.name }}</div>
+                        </div>
+                        <div>
+                            <div class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Mobile Number</div>
+                            <div class="text-sm font-semibold text-[#111827]">{{ registration.mobile_number }}</div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Address</div>
+                            <div class="text-sm font-semibold text-[#111827]">{{ registration.address }}</div>
+                        </div>
+                        <div class="md:col-span-2">
+                            <div class="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider mb-1">Registration Date & Time</div>
+                            <div class="text-sm font-semibold text-[#111827]">{{ registration.created_at|date:"F d, Y h:i A" }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flexible Collection Notice -->
+            <div class="text-left bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-5 mb-8 flex items-start gap-3">
+                <div class="text-[#15803D] mt-1 shrink-0"><i class="fa-solid fa-circle-info text-xl"></i></div>
+                <p class="text-sm text-[#166534] font-medium leading-relaxed">
+                    You may collect the Tiranga from any authorized volunteer, campaign desk, or distribution center associated with the Green Naroda • Clean Naroda mission. Please show this token or QR code at the time of collection.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-3 justify-center hide-on-print">
+                <button onclick="window.print()" class="bg-[#FF7A00] hover:bg-[#E66E00] text-white h-12 px-6 rounded-xl text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-print"></i> Print Pass
+                </button>
+                <button onclick="window.print()" class="bg-[#15803D] hover:bg-[#166534] text-white h-12 px-6 rounded-xl text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Download PDF
+                </button>
+            </div>
+
+            <div class="mt-4 hide-on-print">
+                <a href="{% url 'cms:home' %}" class="inline-flex items-center justify-center h-12 w-full sm:w-auto px-6 bg-[#111827] hover:bg-[#374151] text-white font-bold rounded-xl shadow transition-all gap-2">
+                    <i class="fa-solid fa-home"></i> Back to Homepage
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .print-page, .print-card, .print-card * {
+        visibility: visible;
+    }
+    .hide-on-print {
+        display: none !important;
+    }
+    .print-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    /* Hide top nav and footer */
+    header, footer {
+        display: none !important;
+    }
+}
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new QRCode(document.getElementById("qrcode"), {
+            text: "{{ pass_url }}",
+            width: 120,
+            height: 120,
+            colorDark : "#111827",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+        });
+    });
+</script>
+{% endblock %}
