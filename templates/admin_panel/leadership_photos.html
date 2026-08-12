@@ -208,7 +208,8 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp" style="display:none;" name="{{ leader.field }}" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="hidden" name="field_name" value="{{ leader.field }}">
         </label>
         
         <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
@@ -397,17 +398,18 @@ function closeCropModal() {
   }
 }
 
+
 function performCrop() {
   if (!currentCropper) return;
   
   const saveBtn = document.querySelector('.btn-save-crop');
   const originalText = saveBtn.innerText;
-  saveBtn.innerText = "Saving...";
+  saveBtn.innerText = "Processing...";
   saveBtn.disabled = true;
 
   currentCropper.getCroppedCanvas({
-    width: 512,
-    height: 512,
+    width: 600,
+    height: 600,
     imageSmoothingEnabled: true,
     imageSmoothingQuality: 'high',
   }).toBlob(function(blob) {
@@ -418,40 +420,26 @@ function performCrop() {
       return;
     }
     
-    const formData = new FormData();
-    formData.append('photo', blob, currentField + '.jpg');
-    formData.append('field_name', currentField);
-    
-    // Add CSRF token
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    
-    fetch(window.location.href, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRFToken': csrfToken
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      saveBtn.innerText = originalText;
-      saveBtn.disabled = false;
-      
-      if (data.success) {
-        // Refresh the page so the image correctly loads via Django template url resolution
-        // and clears out any weird state.
-        window.location.reload();
-      } else {
-        alert("Upload failed: " + (data.error || "Unknown error"));
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert("Upload failed due to a network error.");
-      saveBtn.innerText = originalText;
-      saveBtn.disabled = false;
+    // Construct a File object from the cropped Blob
+    const croppedFile = new File([blob], currentField + ".jpg", {
+      type: "image/jpeg",
+      lastModified: new Date().getTime()
     });
+
+    // Create a DataTransfer object to assign the File to the input element
+    const dataTransfer = new DataTransfer();
+    dataTransfer.items.add(croppedFile);
+
+    // Find the original file input and replace its files
+    const fileInput = document.getElementById('file-' + currentField);
+    fileInput.files = dataTransfer.files;
+
+    // Remove the Cropper element so it doesn't block the UI
+    closeCropModal();
+
+    // Native form submission
+    document.getElementById('form-' + currentField).submit();
+
   }, 'image/jpeg', 0.95);
 }
 
