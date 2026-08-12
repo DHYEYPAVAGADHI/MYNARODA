@@ -53,9 +53,23 @@
     height: 100%;
     object-fit: cover;
   }
-  .lp-avatar-placeholder {
+  .avatar-img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:50%;
+    display:block;
+  }
+  .avatar-placeholder {
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#f3f4f6;
+    color:#64748b;
     font-size: 32px;
-    color: var(--text3);
   }
 
   .lp-name {
@@ -219,10 +233,12 @@
       
       <div class="lp-avatar-wrapper">
         {% if leader.url %}
-          <img src="{{ leader.url }}" alt="{{ leader.name }}" id="preview-img-{{ leader.field }}">
+          <img src="{{ leader.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
-          <div class="lp-avatar-placeholder" id="placeholder-{{ leader.field }}">👤</div>
-          <img src="" alt="Preview" id="preview-img-{{ leader.field }}" style="display:none;">
+          <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
+            <i class="fas fa-user"></i>
+          </div>
+          <img src="" alt="Preview" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       
@@ -265,10 +281,12 @@
 
       <div class="lp-avatar-wrapper">
         {% if leader.url %}
-          <img src="{{ leader.url }}" alt="{{ leader.name }}" id="preview-img-{{ leader.field }}">
+          <img src="{{ leader.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
-          <div class="lp-avatar-placeholder" id="placeholder-{{ leader.field }}">👤</div>
-          <img src="" alt="Preview" id="preview-img-{{ leader.field }}" style="display:none;">
+          <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
+            <i class="fas fa-user"></i>
+          </div>
+          <img src="" alt="Preview" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
 
@@ -312,10 +330,12 @@
       
       <div class="lp-avatar-wrapper">
         {% if leader.url %}
-          <img src="{{ leader.url }}" alt="{{ leader.name }}" id="preview-img-{{ leader.field }}">
+          <img src="{{ leader.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
         {% else %}
-          <div class="lp-avatar-placeholder" id="placeholder-{{ leader.field }}">👤</div>
-          <img src="" alt="Preview" id="preview-img-{{ leader.field }}" style="display:none;">
+          <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
+            <i class="fas fa-user"></i>
+          </div>
+          <img src="" alt="Preview" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
         {% endif %}
       </div>
       
