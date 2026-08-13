@@ -3,9 +3,6 @@
 {% block nav_leadership %}active{% endblock %}
 
 {% block content %}
-<!-- Cropper.js -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
 <style>
   .lp-grid {
     display: grid;
@@ -51,6 +48,9 @@
   }
   .lp-btn-choose {
     background: var(--green-lt);
+    display: block !important;
+    width: 100%;
+    margin-top: 8px;
     color: var(--green);
     border: 1px solid var(--green-bd);
     padding: 10px 16px;
@@ -65,6 +65,9 @@
   }
   .lp-btn-save {
     background: var(--green);
+    display: block !important;
+    width: 100%;
+    margin-top: 8px;
     color: #fff;
     border: 1px solid var(--green);
     padding: 10px 16px;
@@ -187,7 +190,7 @@
   <div class="lp-card">
     <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
-      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
+      
       
       <div class="avatar-wrapper">
         {% if leader.photo and leader.photo.name %}
@@ -196,7 +199,7 @@
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" >
         {% endif %}
       </div>
       
@@ -208,11 +211,11 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, '{{ leader.field }}')">
+          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png"  >
           <input type="hidden" name="field_key" value="{{ leader.field }}">
         </label>
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
+        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" >
           Save Photo
         </button>
         
@@ -238,7 +241,7 @@
   <div class="lp-card">
     <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
-      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
+      
 
       <div class="avatar-wrapper">
         {% if leader.photo and leader.photo.name %}
@@ -247,7 +250,7 @@
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" >
         {% endif %}
       </div>
       
@@ -259,11 +262,11 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Upload Photo
-          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png"  >
           <input type="hidden" name="field_key" value="{{ leader.field }}">
         </label>
 
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
+        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" >
           Save Photo
         </button>
 
@@ -290,7 +293,7 @@
   <div class="lp-card">
     <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
       {% csrf_token %}
-      <input type="hidden" name="cropped_{{ leader.field }}" id="cropped-{{ leader.field }}">
+      
       
       <div class="avatar-wrapper">
         {% if leader.photo and leader.photo.name %}
@@ -299,7 +302,7 @@
           <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
             <i class="fas fa-user"></i>
           </div>
-          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" >
         {% endif %}
       </div>
       
@@ -311,11 +314,11 @@
       <div class="lp-actions" id="actions-{{ leader.field }}">
         <label class="lp-btn-choose">
           Choose Photo
-          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;" onchange="openCropModal(this, \'{{ leader.field }}\')">
+          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png"  >
           <input type="hidden" name="field_key" value="{{ leader.field }}">
         </label>
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" style="display:none;">
+        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" >
           Save Photo
         </button>
         
@@ -336,115 +339,9 @@
 </div>
 
 
-<!-- Crop Modal -->
-<div class="crop-modal" id="cropModal">
-  <div class="crop-modal-content">
-    <div class="crop-modal-header">
-      <div class="crop-modal-title">Crop Portrait</div>
-    </div>
-    <div class="crop-container">
-      <img id="cropImage" src="" style="max-width: 100%;">
-    </div>
-    <div class="crop-modal-footer">
-      <button type="button" class="btn-cancel" onclick="closeCropModal()">Cancel</button>
-      <button type="button" class="btn-save-crop" onclick="performCrop()">Crop & Save</button>
-    </div>
-  </div>
-</div>
+
 
 <script>
-let currentCropper = null;
-let currentField = null;
-
-function openCropModal(input, fieldName) {
-  if (input.files && input.files[0]) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = document.getElementById('cropImage');
-      
-      img.onload = function() {
-        document.getElementById('cropModal').style.display = 'flex';
-        currentField = fieldName;
-        
-        if (currentCropper) {
-          currentCropper.destroy();
-        }
-        
-        currentCropper = new Cropper(img, {
-          aspectRatio: 1,
-          viewMode: 1,
-          dragMode: 'move',
-          autoCropArea: 0.9,
-          restore: false,
-          guides: false,
-          center: false,
-          highlight: false,
-          cropBoxMovable: true,
-          cropBoxResizable: true,
-          toggleDragModeOnDblclick: false,
-        });
-      };
-      
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(input.files[0]);
-    input.value = '';
-  }
-}
-
-function closeCropModal() {
-  document.getElementById('cropModal').style.display = 'none';
-  if (currentCropper) {
-    currentCropper.destroy();
-    currentCropper = null;
-  }
-}
-
-
-function performCrop() {
-  if (!currentCropper) return;
-  
-  const saveBtn = document.querySelector('.btn-save-crop');
-  const originalText = saveBtn.innerText;
-  saveBtn.innerText = "Processing...";
-  saveBtn.disabled = true;
-
-  currentCropper.getCroppedCanvas({
-    width: 600,
-    height: 600,
-    imageSmoothingEnabled: true,
-    imageSmoothingQuality: 'high',
-  }).toBlob(function(blob) {
-    if (!blob) {
-      alert("Failed to crop image.");
-      saveBtn.innerText = originalText;
-      saveBtn.disabled = false;
-      return;
-    }
-    
-    // Construct a File object from the cropped Blob
-    const croppedFile = new File([blob], currentField + ".jpg", {
-      type: "image/jpeg",
-      lastModified: new Date().getTime()
-    });
-
-    // Create a DataTransfer object to assign the File to the input element
-    const dataTransfer = new DataTransfer();
-    dataTransfer.items.add(croppedFile);
-
-    // Find the original file input and replace its files
-    const fileInput = document.getElementById('file-' + currentField);
-    fileInput.files = dataTransfer.files;
-
-    // Remove the Cropper element so it doesn't block the UI
-    closeCropModal();
-
-    // Native form submission
-    document.getElementById('form-' + currentField).submit();
-
-  }, 'image/jpeg', 0.95);
-}
-
 function removePhoto(fieldName) {
   if (confirm("Are you sure you want to remove this photo? The placeholder will be restored.")) {
       document.getElementById('form-remove-' + fieldName).submit();
