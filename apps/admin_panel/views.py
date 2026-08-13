@@ -307,19 +307,38 @@ class AdminOrgListView(AdminRequiredMixin, View):
         if status:
             qs = qs.filter(status=status)
         if org_type:
-            qs = qs.filter(organization_type=org_type)
+            qs = qs.filter(organization_type_id=org_type)
 
         paginator = Paginator(qs, 18)
         page_obj = paginator.get_page(request.GET.get("page", 1))
 
+        # Dynamically build choices from CompetitionOrganizationType
+        from apps.competitions.models import CompetitionOrganizationType
+        try:
+            org_types = CompetitionOrganizationType.objects.filter(is_active=True).order_by('sort_order', 'name')
+            type_choices = [(str(t.id), t.name) for t in org_types]
+        except Exception:
+            type_choices = []
+
+        try:
+            total_count = CompetitionRegistration.objects.count()
+            approved_count = CompetitionRegistration.objects.filter(status="APPROVED").count()
+            pending_count = CompetitionRegistration.objects.filter(status="PENDING").count()
+            status_choices = CompetitionRegistration.ApprovalStatus.choices
+        except Exception:
+            total_count = 0
+            approved_count = 0
+            pending_count = 0
+            status_choices = []
+
         return render(request, self.template_name, {
             "page_obj": page_obj,
-            "total": CompetitionRegistration.objects.count(),
-            "approved": CompetitionRegistration.objects.filter(status="APPROVED").count(),
-            "pending": CompetitionRegistration.objects.filter(status="PENDING").count(),
+            "total": total_count,
+            "approved": approved_count,
+            "pending": pending_count,
             "q": q, "status": status, "org_type": org_type,
-            "type_choices": CompetitionRegistration.OrganizationType.choices,
-            "status_choices": CompetitionRegistration.ApprovalStatus.choices,
+            "type_choices": type_choices,
+            "status_choices": status_choices,
         })
 
 
