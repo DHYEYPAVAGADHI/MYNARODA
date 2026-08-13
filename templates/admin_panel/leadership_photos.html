@@ -3,6 +3,10 @@
 {% block nav_leadership %}active{% endblock %}
 
 {% block content %}
+<!-- Cropper.js -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
 <style>
   .lp-grid {
     display: grid;
@@ -11,9 +15,12 @@
     margin-top: 24px;
   }
   @media (max-width: 1024px) {
+    .lp-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
     .lp-grid { grid-template-columns: repeat(2, 1fr); }
   }
-  @media (max-width: 640px) {
+  @media (max-width: 480px) {
     .lp-grid { grid-template-columns: 1fr; }
   }
 
@@ -36,7 +43,7 @@
   .avatar-wrapper{ width:124px; height:124px; margin:0 auto 20px; position:relative; flex-shrink:0; } 
   .avatar-img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; border:4px solid #fff; box-shadow:0 8px 24px rgba(0,0,0,.12); } 
   .avatar-placeholder{ width:100%; height:100%; border-radius:50%; display:flex; align-items:center; justify-content:center; background:#f3f4f6; color:#64748b; border:4px solid #fff; font-size: 32px; } 
-  .member-content{ text-align:center; } 
+  .member-content{ text-align:center; flex-grow: 1; } 
   .member-name{ margin-top:0; font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
   .member-role { font-size: 12px; color: var(--text3); margin-bottom: 24px; min-height: 36px; }
 
@@ -46,34 +53,8 @@
     gap: 8px;
     margin-top: auto;
   }
-  
-  .custom-file-input {
-    width: 100%;
-    margin-bottom: 8px;
-    font-size: 13px;
-    color: var(--text);
-  }
-  .custom-file-input::file-selector-button {
-    background: var(--green-lt);
-    color: var(--green);
-    border: 1px solid var(--green-bd);
-    padding: 8px 12px;
-    border-radius: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--t);
-    margin-right: 8px;
-  }
-  .custom-file-input::file-selector-button:hover {
-    background: #D1EAE0;
-  }
-
   .lp-btn-choose {
     background: var(--green-lt);
-    display: block !important;
-    width: 100%;
-    margin-top: 8px;
     color: var(--green);
     border: 1px solid var(--green-bd);
     padding: 10px 16px;
@@ -82,93 +63,10 @@
     font-weight: 600;
     cursor: pointer;
     transition: var(--t);
+    width: 100%;
   }
   .lp-btn-choose:hover {
     background: #D1EAE0;
-  }
-  .lp-btn-save {
-    background: var(--green);
-    display: block !important;
-    width: 100%;
-    margin-top: 8px;
-    color: #fff;
-    border: 1px solid var(--green);
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--t);
-    display: none;
-  }
-  .lp-btn-save:hover {
-    background: var(--green2);
-  }
-
-  /* Crop Modal Styles */
-  .crop-modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
-    z-index: 99999;
-    align-items: center;
-    justify-content: center;
-  }
-  .crop-modal-content {
-    background: #fff;
-    border-radius: 24px;
-    padding: 24px;
-    width: 90%;
-    max-width: 600px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-  }
-  .crop-modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-  .crop-modal-title {
-    font-size: 18px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  .crop-container {
-    width: 100%;
-    height: 400px;
-    background: #f3f4f6;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .crop-modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-  }
-  .btn-cancel {
-    background: #f3f4f6;
-    color: #374151;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .btn-save-crop {
-    background: #15803D;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  /* Make cropper mask circular */
-  .cropper-view-box,
-  .cropper-face {
-    border-radius: 50%;
   }
   
   .lp-btn-remove {
@@ -181,12 +79,114 @@
     font-weight: 600;
     cursor: pointer;
     transition: var(--t);
-    margin-top: 4px;
+    width: 100%;
   }
   .lp-btn-remove:hover {
     background: #FEE2E2;
   }
 
+  /* Crop Modal Styles */
+  .crop-modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+  }
+  .crop-modal-content {
+    background: #fff;
+    border-radius: 24px;
+    padding: 24px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+  }
+  @media (max-width: 640px) {
+    .crop-modal-content {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        padding: 16px;
+    }
+  }
+  .crop-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .crop-modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .crop-container {
+    width: 100%;
+    height: 400px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    overflow: hidden;
+    flex-grow: 1;
+  }
+  .crop-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .btn-cancel {
+    background: #f3f4f6;
+    color: #374151;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cancel:hover { background: #e5e7eb; }
+  .btn-save-crop {
+    background: #15803D;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-save-crop:hover { background: #166534; }
+  
+  /* Make cropper mask circular */
+  .cropper-view-box,
+  .cropper-face {
+    border-radius: 50%;
+  }
+  
+  /* Toast */
+  #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 16px 24px;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      z-index: 100000;
+      transform: translateY(150%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  }
+  #toast.show {
+      transform: translateY(0);
+  }
+  #toast.success { background: #15803D; }
+  #toast.error { background: #DC2626; }
 </style>
 
 <div class="ph">
@@ -196,64 +196,43 @@
   </div>
 </div>
 
-{% if messages %}
-<div style="margin-bottom: 20px;">
-  {% for msg in messages %}
-    <div style="padding: 12px 16px; background: var(--green-lt); border: 1px solid var(--green-bd); color: var(--green); border-radius: var(--radius-sm); font-size: 13px; font-weight: 500;">
-      {{ msg }}
-    </div>
-  {% endfor %}
-</div>
-{% endif %}
+<div id="toast"></div>
 
+<!-- Centralized Hidden Input -->
+<input type="file" id="master-file-input" accept=".jpg,.jpeg,.png,image/jpeg,image/png" style="display:none;">
+
+<!-- CSRF Token for AJAX -->
+<input type="hidden" id="csrf-token" value="{{ csrf_token }}">
 
 <h2 style="font-size: 20px; font-weight: 700; color: var(--text); margin-top: 24px;">Main Planning Committee</h2>
 <div class="lp-grid" style="margin-top: 16px; margin-bottom: 48px;">
   {% for leader in committee_leaders %}
-  <div class="lp-card">
-    <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
-      {% csrf_token %}
-      
-      
-      <div class="avatar-wrapper">
-        {% if leader.photo and leader.photo.name %}
-          <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
-        {% else %}
-          <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
-            <i class="fas fa-user"></i>
-          </div>
-          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" >
-        {% endif %}
-      </div>
-      
-      <div class="member-content">
-        <h3 class="member-name">{{ leader.name }}</h3>
-        <p class="member-role">{{ leader.role }}</p>
-      </div>
-      
-      
-      <div class="lp-actions">
-        <input type="hidden" name="field_key" value="{{ leader.field }}">
-        
-        <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required class="custom-file-input">
-        
-        <button type="submit" class="lp-btn-save">
-          Save Photo
-        </button>
-        
-        {% if leader.url %}
-        <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
-          Remove
-        </button>
-        {% endif %}
-        
-      </div>
-    </form>
+  <div class="lp-card" id="card-{{ leader.field }}">
+    <div class="avatar-wrapper">
+      {% if leader.photo and leader.photo.name %}
+        <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
+      {% else %}
+        <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
+          <i class="fas fa-user"></i>
+        </div>
+        <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+      {% endif %}
+    </div>
     
-    <form method="post" id="form-remove-{{ leader.field }}" style="display:none;">
-        {% csrf_token %}
-        <input type="hidden" name="remove_field" value="{{ leader.field }}">
-    </form>
+    <div class="member-content">
+      <h3 class="member-name">{{ leader.name }}</h3>
+      <p class="member-role">{{ leader.role }}</p>
+    </div>
+    
+    <div class="lp-actions">
+      <button type="button" class="lp-btn-choose" onclick="triggerUpload('{{ leader.field }}')">
+        Change Photo
+      </button>
+      
+      <button type="button" class="lp-btn-remove" id="btn-remove-{{ leader.field }}" onclick="removePhoto('{{ leader.field }}')" style="{% if not leader.photo or not leader.photo.name %}display:none;{% endif %}">
+        Remove
+      </button>
+    </div>
   </div>
   {% endfor %}
 </div>
@@ -261,50 +240,32 @@
 <h2 style="font-size: 20px; font-weight: 700; color: var(--text); margin-top: 24px;">Co-Conveners</h2>
 <div class="lp-grid" style="margin-top: 16px; margin-bottom: 48px;">
   {% for leader in co_convener_leaders %}
-  <div class="lp-card">
-    <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
-      {% csrf_token %}
+  <div class="lp-card" id="card-{{ leader.field }}">
+    <div class="avatar-wrapper">
+      {% if leader.photo and leader.photo.name %}
+        <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
+      {% else %}
+        <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
+          <i class="fas fa-user"></i>
+        </div>
+        <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+      {% endif %}
+    </div>
+    
+    <div class="member-content">
+      <h3 class="member-name">{{ leader.name }}</h3>
+      <p class="member-role">{{ leader.role }}</p>
+    </div>
+    
+    <div class="lp-actions">
+      <button type="button" class="lp-btn-choose" onclick="triggerUpload('{{ leader.field }}')">
+        Change Photo
+      </button>
       
-
-      <div class="avatar-wrapper">
-        {% if leader.photo and leader.photo.name %}
-          <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
-        {% else %}
-          <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
-            <i class="fas fa-user"></i>
-          </div>
-          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" >
-        {% endif %}
-      </div>
-      
-      <div class="member-content">
-        <h3 class="member-name">{{ leader.name }}</h3>
-        <p class="member-role">{{ leader.role }}</p>
-      </div>
-
-      
-      <div class="lp-actions">
-        <input type="hidden" name="field_key" value="{{ leader.field }}">
-        
-        <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required class="custom-file-input">
-        
-        <button type="submit" class="lp-btn-save">
-          Save Photo
-        </button>
-        
-        {% if leader.url %}
-        <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
-          Remove
-        </button>
-        {% endif %}
-        
-      </div>
-    </form>
-
-    <form method="post" id="form-remove-{{ leader.field }}" style="display:none;">
-        {% csrf_token %}
-        <input type="hidden" name="remove_field" value="{{ leader.field }}">
-    </form>
+      <button type="button" class="lp-btn-remove" id="btn-remove-{{ leader.field }}" onclick="removePhoto('{{ leader.field }}')" style="{% if not leader.photo or not leader.photo.name %}display:none;{% endif %}">
+        Remove
+      </button>
+    </div>
   </div>
   {% endfor %}
 </div>
@@ -312,63 +273,241 @@
 <h2 style="font-size: 20px; font-weight: 700; color: var(--text);">Mentoring Leadership</h2>
 <div class="lp-grid" style="margin-top: 16px;">
   {% for leader in leaders %}
-
-  <div class="lp-card">
-    <form method="post" enctype="multipart/form-data" id="form-{{ leader.field }}">
-      {% csrf_token %}
-      
-      
-      <div class="avatar-wrapper">
-        {% if leader.photo and leader.photo.name %}
-          <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
-        {% else %}
-          <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
-            <i class="fas fa-user"></i>
-          </div>
-          <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" >
-        {% endif %}
-      </div>
-      
-      <div class="member-content">
-        <h3 class="member-name">{{ leader.name }}</h3>
-        <p class="member-role">{{ leader.role }}</p>
-      </div>
-      
-      
-      <div class="lp-actions">
-        <input type="hidden" name="field_key" value="{{ leader.field }}">
-        
-        <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required class="custom-file-input">
-        
-        <button type="submit" class="lp-btn-save">
-          Save Photo
-        </button>
-        
-        {% if leader.url %}
-        <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
-          Remove
-        </button>
-        {% endif %}
-        
-      </div>
-    </form>
+  <div class="lp-card" id="card-{{ leader.field }}">
+    <div class="avatar-wrapper">
+      {% if leader.photo and leader.photo.name %}
+        <img src="{{ leader.photo.url }}" alt="" class="avatar-img" id="preview-img-{{ leader.field }}">
+      {% else %}
+        <div class="avatar-placeholder" id="placeholder-{{ leader.field }}">
+          <i class="fas fa-user"></i>
+        </div>
+        <img src="" alt="" class="avatar-img" id="preview-img-{{ leader.field }}" style="display:none;">
+      {% endif %}
+    </div>
     
-    <form method="post" id="form-remove-{{ leader.field }}" style="display:none;">
-        {% csrf_token %}
-        <input type="hidden" name="remove_field" value="{{ leader.field }}">
-    </form>
+    <div class="member-content">
+      <h3 class="member-name">{{ leader.name }}</h3>
+      <p class="member-role">{{ leader.role }}</p>
+    </div>
+    
+    <div class="lp-actions">
+      <button type="button" class="lp-btn-choose" onclick="triggerUpload('{{ leader.field }}')">
+        Change Photo
+      </button>
+      
+      <button type="button" class="lp-btn-remove" id="btn-remove-{{ leader.field }}" onclick="removePhoto('{{ leader.field }}')" style="{% if not leader.photo or not leader.photo.name %}display:none;{% endif %}">
+        Remove
+      </button>
+    </div>
   </div>
   {% endfor %}
 </div>
 
-
-
+<!-- Crop Modal -->
+<div class="crop-modal" id="cropModal">
+  <div class="crop-modal-content">
+    <div class="crop-modal-header">
+      <div class="crop-modal-title">Crop Portrait</div>
+      <button onclick="closeCropModal()" style="background:none;border:none;font-size:24px;cursor:pointer;color:#6b7280;">&times;</button>
+    </div>
+    <div class="crop-container">
+      <img id="cropImage" src="" style="max-width: 100%;">
+    </div>
+    <div class="crop-modal-footer">
+      <button type="button" class="btn-cancel" onclick="closeCropModal()">Cancel</button>
+      <button type="button" class="btn-save-crop" id="btn-save-crop" onclick="performCrop()">Crop & Save</button>
+    </div>
+  </div>
+</div>
 
 <script>
+let currentCropper = null;
+let currentField = null;
+const fileInput = document.getElementById('master-file-input');
+const csrfToken = document.getElementById('csrf-token').value;
+
+function showToast(message, type) {
+    const toast = document.getElementById('toast');
+    toast.innerText = message;
+    toast.className = 'show ' + type;
+    setTimeout(() => { toast.className = ''; }, 3000);
+}
+
+function triggerUpload(fieldName) {
+    currentField = fieldName;
+    fileInput.value = '';
+    fileInput.click();
+}
+
+fileInput.addEventListener('change', function(e) {
+    if (this.files && this.files[0]) {
+        const file = this.files[0];
+        
+        // Validation
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!validTypes.includes(file.type)) {
+            showToast('Invalid file type. Only JPG and PNG are allowed.', 'error');
+            return;
+        }
+        if (file.size > 10 * 1024 * 1024) {
+            showToast('Image is too large. Max size is 10MB.', 'error');
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById('cropImage');
+            
+            img.onload = function() {
+                document.getElementById('cropModal').style.display = 'flex';
+                
+                if (currentCropper) {
+                    currentCropper.destroy();
+                }
+                
+                currentCropper = new Cropper(img, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    dragMode: 'move',
+                    autoCropArea: 0.9,
+                    restore: false,
+                    guides: false,
+                    center: false,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            };
+            
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+function closeCropModal() {
+    document.getElementById('cropModal').style.display = 'none';
+    if (currentCropper) {
+        currentCropper.destroy();
+        currentCropper = null;
+    }
+    fileInput.value = '';
+}
+
+function performCrop() {
+    if (!currentCropper || !currentField) return;
+    
+    const saveBtn = document.getElementById('btn-save-crop');
+    const originalText = saveBtn.innerText;
+    saveBtn.innerText = "Saving...";
+    saveBtn.disabled = true;
+
+    currentCropper.getCroppedCanvas({
+        width: 600,
+        height: 600,
+        imageSmoothingEnabled: true,
+        imageSmoothingQuality: 'high',
+    }).toBlob(function(blob) {
+        if (!blob) {
+            showToast("Failed to crop image.", "error");
+            saveBtn.innerText = originalText;
+            saveBtn.disabled = false;
+            return;
+        }
+        
+        const formData = new FormData();
+        formData.append('photo', blob, currentField + '.jpg');
+        formData.append('field_key', currentField);
+        formData.append('ajax_upload', '1');
+        formData.append('csrfmiddlewaretoken', csrfToken);
+        
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            saveBtn.innerText = originalText;
+            saveBtn.disabled = false;
+            closeCropModal();
+            
+            if (data.success) {
+                showToast(data.message, 'success');
+                // Update UI instantly
+                const previewImg = document.getElementById('preview-img-' + currentField);
+                const placeholder = document.getElementById('placeholder-' + currentField);
+                const removeBtn = document.getElementById('btn-remove-' + currentField);
+                
+                if (previewImg) {
+                    previewImg.src = data.url + '?t=' + new Date().getTime(); // bypass cache
+                    previewImg.style.display = 'block';
+                }
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'block';
+                }
+            } else {
+                showToast(data.error || 'Upload failed.', 'error');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            saveBtn.innerText = originalText;
+            saveBtn.disabled = false;
+            showToast("Network error occurred.", "error");
+        });
+        
+    }, 'image/jpeg', 0.95);
+}
+
 function removePhoto(fieldName) {
-  if (confirm("Are you sure you want to remove this photo? The placeholder will be restored.")) {
-      document.getElementById('form-remove-' + fieldName).submit();
-  }
+    if (confirm("Are you sure you want to remove this photo?")) {
+        const formData = new FormData();
+        formData.append('remove_field', fieldName);
+        formData.append('ajax_upload', '1');
+        formData.append('csrfmiddlewaretoken', csrfToken);
+        
+        fetch(window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                // Update UI instantly
+                const previewImg = document.getElementById('preview-img-' + fieldName);
+                const placeholder = document.getElementById('placeholder-' + fieldName);
+                const removeBtn = document.getElementById('btn-remove-' + fieldName);
+                
+                if (previewImg) {
+                    previewImg.src = '';
+                    previewImg.style.display = 'none';
+                }
+                if (placeholder) {
+                    placeholder.style.display = 'flex';
+                }
+                if (removeBtn) {
+                    removeBtn.style.display = 'none';
+                }
+            } else {
+                showToast(data.error || 'Removal failed.', 'error');
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            showToast("Network error occurred.", "error");
+        });
+    }
 }
 </script>
 {% endblock %}
