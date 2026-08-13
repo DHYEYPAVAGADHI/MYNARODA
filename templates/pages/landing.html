@@ -743,15 +743,15 @@
     <div class="max-w-3xl mx-auto mb-16 reveal">
       <div class="flex justify-between items-end mb-3">
         <span class="text-sm font-bold text-[#4B5563]">Tree Plantation Progress</span>
-        <span class="text-2xl font-bold text-[#0E7A37] font-serif">64%</span>
+        <span class="text-2xl font-bold text-[#0E7A37] font-serif">{{ dashboard_stats.progress_percent }}%</span>
       </div>
       <div class="w-full bg-white rounded-full h-4 shadow-inner border border-[#BBF7D0]">
         <div
           class="bg-gradient-to-r from-[#0E7A37] to-[#22C55E] h-4 rounded-full shadow-sm transition-all duration-1000"
-          style="width: 64%"></div>
+          style="width: {{ dashboard_stats.progress_percent }}%"></div>
       </div>
       <div class="flex justify-between mt-2 text-xs text-[#6B7280]">
-        <span><span class="counter-num font-bold text-[#0F172A]" data-target="18420">0</span> Planted</span>
+        <span><span class="counter-num font-bold text-[#0F172A]" data-target="{{ dashboard_stats.trees_planted }}">0</span> Planted</span>
         <span class="font-bold text-[#0E7A37]">Target: 28,855</span>
       </div>
     </div>
@@ -761,37 +761,37 @@
 
       <div class="progress-stat-card reveal reveal-delay-1">
         <div class="stat-icon"><i class="fa-solid fa-tree"></i></div>
-        <div class="stat-number counter-num" data-target="18420">0</div>
+        <div class="stat-number counter-num" data-target="{{ dashboard_stats.trees_planted }}">0</div>
         <div class="stat-label">Trees Planted</div>
       </div>
 
       <div class="progress-stat-card reveal reveal-delay-2">
         <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
-        <div class="stat-number counter-num" data-target="12780">0</div>
+        <div class="stat-number counter-num" data-target="{{ dashboard_stats.citizens_joined }}">0</div>
         <div class="stat-label">Citizens Joined</div>
       </div>
 
       <div class="progress-stat-card reveal reveal-delay-3">
         <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-building"></i></div>
-        <div class="stat-number counter-num" data-target="96">0</div>
+        <div class="stat-number counter-num" data-target="{{ dashboard_stats.organizations }}">0</div>
         <div class="stat-label">Organizations</div>
       </div>
 
       <div class="progress-stat-card reveal reveal-delay-4">
         <div class="stat-icon"><i class="fa-solid fa-graduation-cap"></i></div>
-        <div class="stat-number counter-num" data-target="7400">0</div>
+        <div class="stat-number counter-num" data-target="{{ dashboard_stats.students }}">0</div>
         <div class="stat-label">Students</div>
       </div>
 
       <div class="progress-stat-card reveal reveal-delay-1">
         <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-broom"></i></div>
-        <div class="stat-number counter-num" data-target="212">0</div>
+        <div class="stat-number counter-num" data-target="{{ dashboard_stats.cleanliness_drives }}">0</div>
         <div class="stat-label">Cleanliness Drives</div>
       </div>
 
       <div class="progress-stat-card reveal reveal-delay-2">
         <div class="stat-icon"><i class="fa-solid fa-trash"></i></div>
-        <div class="stat-number counter-num" data-target="64">0</div>
+        <div class="stat-number counter-num" data-target="{{ dashboard_stats.waste_removed_tons }}">0</div>
         <div class="stat-label">Tons Waste Removed</div>
       </div>
 

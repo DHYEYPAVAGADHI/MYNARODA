@@ -331,3 +331,17 @@ class HarGharTirangaRegistration(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.mobile_number}"
+
+class CampaignStatistics(TimeStampedModel):
+    """
+    Model for manually editable campaign statistics.
+    """
+    cleanliness_drives = models.PositiveIntegerField(_("cleanliness drives"), default=212)
+    waste_removed_tons = models.DecimalField(_("waste removed (tons)"), max_digits=10, decimal_places=2, default=64.0)
+
+    class Meta:
+        verbose_name = _("Campaign Statistics")
+        verbose_name_plural = _("Campaign Statistics")
+
+    def __str__(self):
+        return "Campaign Statistics (Editable)"

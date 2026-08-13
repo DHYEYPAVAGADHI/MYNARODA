@@ -10,8 +10,22 @@ from apps.cms.models import (
     Partner, SiteSettings, Testimonial, ContactMessage,
     MediaAsset, PageMission, PageObjective, PageHighlight, 
     PageActivity, PageStatistic, PageTimeline,
-    Homepage, CampaignProgress, HeroSlide
+    Homepage, CampaignProgress, HeroSlide, CampaignStatistics
 )
+
+
+@admin.register(CampaignStatistics)
+class CampaignStatisticsAdmin(ModelAdmin):
+    """
+    Singleton admin for Campaign Statistics.
+    Hides 'Add' button if one already exists.
+    """
+    list_display = ("__str__", "cleanliness_drives", "waste_removed_tons")
+
+    def has_add_permission(self, request):
+        if self.model.objects.exists():
+            return False
+        return super().has_add_permission(request)
 
 
 @admin.register(SiteSettings)

@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
 from apps.cms.models import Partner, SiteSettings, Testimonial, ContactMessage, PageMission, LeadershipPhotos
+from apps.cms.services import get_dashboard_stats
 from apps.events.models import Event
 from apps.gallery.models import Photo
 from apps.trees.models import Tree, TreeSpecies
@@ -126,6 +127,7 @@ class LandingPageView(View):
             "gallery_photos": gallery_photos,
             "leadership_photos": LeadershipPhotos.objects.first(),
             "news_articles": news_articles,
+            "dashboard_stats": get_dashboard_stats(),
 
             "upcoming_events": Event.objects.filter(is_published=True, starts_at__gte=timezone.now()).order_by("starts_at")[:4],
             "testimonials": Testimonial.objects.filter(is_active=True).order_by("sort_order")[:8],
