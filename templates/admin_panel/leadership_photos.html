@@ -46,6 +46,29 @@
     gap: 8px;
     margin-top: auto;
   }
+  
+  .custom-file-input {
+    width: 100%;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .custom-file-input::file-selector-button {
+    background: var(--green-lt);
+    color: var(--green);
+    border: 1px solid var(--green-bd);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--t);
+    margin-right: 8px;
+  }
+  .custom-file-input::file-selector-button:hover {
+    background: #D1EAE0;
+  }
+
   .lp-btn-choose {
     background: var(--green-lt);
     display: block !important;
@@ -208,14 +231,13 @@
         <p class="member-role">{{ leader.role }}</p>
       </div>
       
-      <div class="lp-actions" id="actions-{{ leader.field }}">
-        <label class="lp-btn-choose">
-          Upload Photo
-          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png"  >
-          <input type="hidden" name="field_key" value="{{ leader.field }}">
-        </label>
+      
+      <div class="lp-actions">
+        <input type="hidden" name="field_key" value="{{ leader.field }}">
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" >
+        <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required class="custom-file-input">
+        
+        <button type="submit" class="lp-btn-save">
           Save Photo
         </button>
         
@@ -224,6 +246,7 @@
           Remove
         </button>
         {% endif %}
+        
       </div>
     </form>
     
@@ -259,22 +282,22 @@
         <p class="member-role">{{ leader.role }}</p>
       </div>
 
-      <div class="lp-actions" id="actions-{{ leader.field }}">
-        <label class="lp-btn-choose">
-          Upload Photo
-          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png"  >
-          <input type="hidden" name="field_key" value="{{ leader.field }}">
-        </label>
-
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" >
+      
+      <div class="lp-actions">
+        <input type="hidden" name="field_key" value="{{ leader.field }}">
+        
+        <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required class="custom-file-input">
+        
+        <button type="submit" class="lp-btn-save">
           Save Photo
         </button>
-
+        
         {% if leader.url %}
         <button type="button" class="lp-btn-remove" onclick="removePhoto('{{ leader.field }}')">
           Remove
         </button>
         {% endif %}
+        
       </div>
     </form>
 
@@ -311,14 +334,13 @@
         <p class="member-role">{{ leader.role }}</p>
       </div>
       
-      <div class="lp-actions" id="actions-{{ leader.field }}">
-        <label class="lp-btn-choose">
-          Choose Photo
-          <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png"  >
-          <input type="hidden" name="field_key" value="{{ leader.field }}">
-        </label>
+      
+      <div class="lp-actions">
+        <input type="hidden" name="field_key" value="{{ leader.field }}">
         
-        <button type="submit" class="lp-btn-save" id="btn-save-{{ leader.field }}" >
+        <input type="file" name="photo" id="file-{{ leader.field }}" accept=".jpg,.jpeg,.png,image/jpeg,image/png" required class="custom-file-input">
+        
+        <button type="submit" class="lp-btn-save">
           Save Photo
         </button>
         
@@ -327,6 +349,7 @@
           Remove
         </button>
         {% endif %}
+        
       </div>
     </form>
     
