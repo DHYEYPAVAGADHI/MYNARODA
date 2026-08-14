@@ -40,7 +40,7 @@ def get_dashboard_stats():
         # Target math
         target = 28855
         raw_progress = (trees_planted / target) * 100 if target > 0 else 0
-        progress_percent = min(round(raw_progress), 100)
+        progress_percent = min(round(raw_progress, 1), 100)
         
         stats = {
             'trees_planted': trees_planted,
