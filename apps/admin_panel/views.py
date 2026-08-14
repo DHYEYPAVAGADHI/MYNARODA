@@ -1188,44 +1188,89 @@ class AdminTirangaUploadExcelView(AdminRequiredMixin, View):
             wb = openpyxl.load_workbook(file, data_only=True)
             ws = wb.active
             
+            rows = list(ws.iter_rows(values_only=True))
+            if not rows:
+                messages.error(request, "File is empty.")
+                return redirect("admin_panel:tiranga_registrations")
+                
+            headers = [str(h).strip().lower() if h else "" for h in rows[0]]
+            
+            col_map = {}
+            for i, h in enumerate(headers):
+                if 'token id' in h: col_map['token'] = i
+                elif 'citizen details' in h: col_map['citizen'] = i
+                elif 'full name' in h or h == 'name': col_map['name'] = i
+                elif 'mobile' in h or 'phone' in h: col_map['mobile'] = i
+                elif 'address' in h: col_map['address'] = i
+                elif 'location' in h: col_map['location'] = i
+                
+            is_format_a = 'citizen' in col_map
+            is_format_b = 'name' in col_map and 'mobile' in col_map
+            
+            if not is_format_a and not is_format_b:
+                messages.error(request, "Unrecognized column format. Please make sure the header row contains valid columns.")
+                return redirect("admin_panel:tiranga_registrations")
+                
             imported = 0
             skipped = 0
             skip_reasons = []
             
-            for row in ws.iter_rows(min_row=2, values_only=True):
+            for row in rows[1:]:
                 if not any(row):
                     continue
                     
-                name, mobile, address, location, reg_date = row[:5]
+                def get_val(key):
+                    idx = col_map.get(key)
+                    if idx is not None and idx < len(row) and row[idx] is not None:
+                        return str(row[idx]).strip()
+                    return ""
+                    
+                token_id = get_val('token')
+                address = get_val('address')
+                location = get_val('location')
+                
+                name, mobile = "", ""
+                if is_format_a:
+                    citizen_details = get_val('citizen')
+                    if '|' in citizen_details:
+                        parts = citizen_details.split('|')
+                        name = parts[0].strip()
+                        mobile = parts[1].strip()
+                    else:
+                        name = citizen_details.strip()
+                        mobile = ""
+                else:
+                    name = get_val('name')
+                    mobile = get_val('mobile')
                 
                 if not name or not mobile:
                     skipped += 1
                     skip_reasons.append("Missing name or mobile")
                     continue
                     
-                name = str(name).strip()
-                mobile = str(mobile).strip()
-                
-                if not mobile.isdigit() or len(mobile) != 10:
+                # Clean mobile number
+                mobile_clean = "".join(filter(str.isdigit, mobile))
+                if len(mobile_clean) != 10:
                     skipped += 1
-                    skip_reasons.append(f"Invalid mobile number: {mobile}")
+                    skip_reasons.append(f"Invalid mobile number: {name} ({mobile})")
                     continue
                 
-                if HarGharTirangaRegistration.objects.filter(name=name, mobile_number=mobile).exists():
+                if HarGharTirangaRegistration.objects.filter(name=name, mobile_number=mobile_clean).exists():
                     skipped += 1
-                    skip_reasons.append(f"Duplicate entry: {name} ({mobile})")
+                    skip_reasons.append(f"Duplicate entry: {name} ({mobile_clean})")
                     continue
                 
-                token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
-                while HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
+                if not token_id:
                     token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
+                    while HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
+                        token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
                         
                 HarGharTirangaRegistration.objects.create(
                     token_id=token_id,
                     name=name,
-                    mobile_number=mobile,
-                    address=str(address) if address else "",
-                    location_text=str(location) if location else ""
+                    mobile_number=mobile_clean,
+                    address=address,
+                    location_text=location
                 )
                 imported += 1
                 
