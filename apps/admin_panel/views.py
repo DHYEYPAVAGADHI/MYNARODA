@@ -1155,14 +1155,14 @@ class AdminTirangaSampleExcelView(AdminRequiredMixin, View):
         ws = wb.active
         ws.title = "Sample Registrations"
         
-        headers = ["Token ID", "Citizen Details", "Address", "Location", "Registration Date"]
+        headers = ["Full Name", "Mobile", "Address", "Location", "Registration Date"]
         for col_num, header in enumerate(headers, 1):
             cell = ws.cell(row=1, column=col_num)
             cell.value = header
             cell.font = Font(bold=True, color="FFFFFF")
             cell.fill = PatternFill(start_color="0E7A37", end_color="0E7A37", fill_type="solid")
             
-        ws.append(["TIRANGA-80-AB12", "Rahul Desai | 9876543210", "123 Naroda Road", "Naroda Patiya", "2024-08-01"])
+        ws.append(["Rahul Desai", "9876543210", "123 Naroda Road", "Naroda Patiya", "2024-08-01"])
         
         response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response["Content-Disposition"] = 'attachment; filename="tiranga_sample.xlsx"'
@@ -1196,31 +1196,29 @@ class AdminTirangaUploadExcelView(AdminRequiredMixin, View):
                 if not any(row):
                     continue
                     
-                token_id, citizen_details, address, location, reg_date = row[:5]
+                name, mobile, address, location, reg_date = row[:5]
                 
-                if not citizen_details or '|' not in str(citizen_details):
+                if not name or not mobile:
                     skipped += 1
-                    skip_reasons.append(f"Invalid citizen details format: {citizen_details}")
+                    skip_reasons.append("Missing name or mobile")
                     continue
                     
-                parts = str(citizen_details).split('|')
-                name = parts[0].strip()
-                mobile = parts[1].strip()
+                name = str(name).strip()
+                mobile = str(mobile).strip()
                 
                 if not mobile.isdigit() or len(mobile) != 10:
                     skipped += 1
                     skip_reasons.append(f"Invalid mobile number: {mobile}")
                     continue
                 
-                if token_id and HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
+                if HarGharTirangaRegistration.objects.filter(name=name, mobile_number=mobile).exists():
                     skipped += 1
-                    skip_reasons.append(f"Duplicate token: {token_id}")
+                    skip_reasons.append(f"Duplicate entry: {name} ({mobile})")
                     continue
                 
-                if not token_id:
+                token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
+                while HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
                     token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
-                    while HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
-                        token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
                         
                 HarGharTirangaRegistration.objects.create(
                     token_id=token_id,
