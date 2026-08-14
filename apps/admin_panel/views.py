@@ -1138,3 +1138,233 @@ class AdminAssociateOrganizationsView(AdminRequiredMixin, View):
 
         return redirect("admin_panel:associate_orgs")
 
+
+# ─── Bulk Uploads ─────────────────────────────────────────────────────────────
+
+import uuid
+from datetime import datetime, date
+from django.utils.crypto import get_random_string
+
+class AdminTirangaSampleExcelView(AdminRequiredMixin, View):
+    def get(self, request):
+        if not HAS_OPENPYXL:
+            messages.error(request, "Excel export/import requires openpyxl.")
+            return redirect("admin_panel:tiranga_registrations")
+            
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Sample Registrations"
+        
+        headers = ["Token ID", "Citizen Details", "Address", "Location", "Registration Date"]
+        for col_num, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col_num)
+            cell.value = header
+            cell.font = Font(bold=True, color="FFFFFF")
+            cell.fill = PatternFill(start_color="0E7A37", end_color="0E7A37", fill_type="solid")
+            
+        ws.append(["TIRANGA-80-AB12", "Rahul Desai | 9876543210", "123 Naroda Road", "Naroda Patiya", "2024-08-01"])
+        
+        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = 'attachment; filename="tiranga_sample.xlsx"'
+        wb.save(response)
+        return response
+
+class AdminTirangaUploadExcelView(AdminRequiredMixin, View):
+    def post(self, request):
+        if not HAS_OPENPYXL:
+            messages.error(request, "Excel export/import requires openpyxl.")
+            return redirect("admin_panel:tiranga_registrations")
+            
+        file = request.FILES.get("excel_file")
+        if not file or not file.name.endswith('.xlsx'):
+            messages.error(request, "Please upload a valid .xlsx file.")
+            return redirect("admin_panel:tiranga_registrations")
+            
+        if file.size > 5 * 1024 * 1024:
+            messages.error(request, "File size must be under 5MB.")
+            return redirect("admin_panel:tiranga_registrations")
+            
+        try:
+            wb = openpyxl.load_workbook(file, data_only=True)
+            ws = wb.active
+            
+            imported = 0
+            skipped = 0
+            skip_reasons = []
+            
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                if not any(row):
+                    continue
+                    
+                token_id, citizen_details, address, location, reg_date = row[:5]
+                
+                if not citizen_details or '|' not in str(citizen_details):
+                    skipped += 1
+                    skip_reasons.append(f"Invalid citizen details format: {citizen_details}")
+                    continue
+                    
+                parts = str(citizen_details).split('|')
+                name = parts[0].strip()
+                mobile = parts[1].strip()
+                
+                if not mobile.isdigit() or len(mobile) != 10:
+                    skipped += 1
+                    skip_reasons.append(f"Invalid mobile number: {mobile}")
+                    continue
+                
+                if token_id and HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
+                    skipped += 1
+                    skip_reasons.append(f"Duplicate token: {token_id}")
+                    continue
+                
+                if not token_id:
+                    token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
+                    while HarGharTirangaRegistration.objects.filter(token_id=token_id).exists():
+                        token_id = f"TIRANGA-80-{get_random_string(6).upper()}"
+                        
+                HarGharTirangaRegistration.objects.create(
+                    token_id=token_id,
+                    name=name,
+                    mobile_number=mobile,
+                    address=str(address) if address else "",
+                    location_text=str(location) if location else ""
+                )
+                imported += 1
+                
+            msg = f"Imported {imported} registrations. Skipped {skipped} rows."
+            if skip_reasons:
+                msg += f" Reasons: {', '.join(skip_reasons[:3])}..."
+                messages.warning(request, msg)
+            else:
+                messages.success(request, msg)
+                
+        except Exception as e:
+            messages.error(request, f"Error processing file: {str(e)}")
+            
+        return redirect("admin_panel:tiranga_registrations")
+
+
+from apps.volunteers.models import Organization, OrganizationType
+
+class AdminPledgeSampleExcelView(AdminRequiredMixin, View):
+    def get(self, request):
+        if not HAS_OPENPYXL:
+            messages.error(request, "Excel export/import requires openpyxl.")
+            return redirect("admin_panel:pledges")
+            
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Sample Pledges"
+        
+        headers = ["Sr.", "Full Name", "Mobile", "Email", "Gender", "Organization", "City", "Status", "Date"]
+        for col_num, header in enumerate(headers, 1):
+            cell = ws.cell(row=1, column=col_num)
+            cell.value = header
+            cell.font = Font(bold=True, color="FFFFFF")
+            cell.fill = PatternFill(start_color="0E7A37", end_color="0E7A37", fill_type="solid")
+            
+        ws.append([1, "Rahul Desai", "9876543210", "rahul@example.com", "MALE", "Lions Club", "Ahmedabad", "Approved", "2024-08-01"])
+        
+        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = 'attachment; filename="pledges_sample.xlsx"'
+        wb.save(response)
+        return response
+
+class AdminPledgeUploadExcelView(AdminRequiredMixin, View):
+    def post(self, request):
+        if not HAS_OPENPYXL:
+            messages.error(request, "Excel export/import requires openpyxl.")
+            return redirect("admin_panel:pledges")
+            
+        file = request.FILES.get("excel_file")
+        if not file or not file.name.endswith('.xlsx'):
+            messages.error(request, "Please upload a valid .xlsx file.")
+            return redirect("admin_panel:pledges")
+            
+        if file.size > 5 * 1024 * 1024:
+            messages.error(request, "File size must be under 5MB.")
+            return redirect("admin_panel:pledges")
+            
+        try:
+            wb = openpyxl.load_workbook(file, data_only=True)
+            ws = wb.active
+            
+            imported = 0
+            skipped = 0
+            skip_reasons = []
+            
+            for row in ws.iter_rows(min_row=2, values_only=True):
+                if not any(row):
+                    continue
+                    
+                sr, name, mobile, email, gender, org_name, city, status, reg_date = row[:9]
+                
+                if not name or not mobile:
+                    skipped += 1
+                    skip_reasons.append("Missing name or mobile")
+                    continue
+                    
+                mobile = str(mobile).strip()
+                name = str(name).strip()
+                
+                if not mobile.isdigit() or len(mobile) != 10:
+                    skipped += 1
+                    skip_reasons.append(f"Invalid mobile number: {mobile}")
+                    continue
+                
+                if PledgeRegistration.objects.filter(full_name=name, mobile_number=mobile).exists():
+                    skipped += 1
+                    skip_reasons.append(f"Duplicate pledge: {name} ({mobile})")
+                    continue
+                
+                org_obj = None
+                if org_name:
+                    org_obj, _ = Organization.objects.get_or_create(
+                        name=str(org_name).strip(),
+                        defaults={"org_type": OrganizationType.OTHERS}
+                    )
+                else:
+                    org_obj, _ = Organization.objects.get_or_create(
+                        name="Individual / General Citizen",
+                        defaults={"org_type": OrganizationType.OTHERS}
+                    )
+                        
+                is_approved = str(status).strip().lower() == "approved" if status else True
+                
+                # Check gender
+                gender = str(gender).upper().strip() if gender else "OTHER"
+                if gender not in [c[0] for c in PledgeRegistration.GenderChoices.choices]:
+                    gender = "OTHER"
+                
+                # Create token/cert ID equivalent
+                cert_id = f"GNCN{get_random_string(6).upper()}"
+                while PledgeRegistration.objects.filter(certificate_id=cert_id).exists():
+                    cert_id = f"GNCN{get_random_string(6).upper()}"
+                
+                PledgeRegistration.objects.create(
+                    full_name=name,
+                    mobile_number=mobile,
+                    email=str(email) if email else "",
+                    gender=gender,
+                    organization=org_obj,
+                    city=str(city) if city else "Ahmedabad",
+                    is_approved=is_approved,
+                    date_of_birth=date(2000, 1, 1),
+                    certificate_id=cert_id,
+                    agreed_to_pledge=True,
+                    consent_accepted=True,
+                    otp_verified=True
+                )
+                imported += 1
+                
+            msg = f"Imported {imported} pledges. Skipped {skipped} rows."
+            if skip_reasons:
+                msg += f" Reasons: {', '.join(skip_reasons[:3])}..."
+                messages.warning(request, msg)
+            else:
+                messages.success(request, msg)
+                
+        except Exception as e:
+            messages.error(request, f"Error processing file: {str(e)}")
+            
+        return redirect("admin_panel:pledges")

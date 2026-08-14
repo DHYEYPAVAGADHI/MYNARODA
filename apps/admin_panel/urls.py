@@ -16,6 +16,8 @@ urlpatterns = [
 
     # Pledges
     path("pledges/", views.AdminPledgeListView.as_view(), name="pledges"),
+    path("pledges/sample/", views.AdminPledgeSampleExcelView.as_view(), name="sample_pledges_excel"),
+    path("pledges/upload/", views.AdminPledgeUploadExcelView.as_view(), name="upload_pledges_excel"),
     path("pledges/organizations/", views.AdminAssociateOrganizationsView.as_view(), name="associate_orgs"),
 
     # Students
@@ -47,6 +49,8 @@ urlpatterns = [
     path("branding/header-logos/", views.AdminBrandingHeaderLogosView.as_view(), name="branding_header_logos"),
     # Har Ghar Tiranga
     path("har-ghar-tiranga/registrations/", views.AdminHarGharTirangaRegistrationsView.as_view(), name="tiranga_registrations"),
+    path("har-ghar-tiranga/registrations/sample/", views.AdminTirangaSampleExcelView.as_view(), name="sample_tiranga_excel"),
+    path("har-ghar-tiranga/registrations/upload/", views.AdminTirangaUploadExcelView.as_view(), name="upload_tiranga_excel"),
 
     # Exports — Excel
     path("export/pledges/excel/", views.AdminExportPledgesExcelView.as_view(), name="export_pledges_excel"),
