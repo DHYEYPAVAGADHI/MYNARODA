@@ -54,7 +54,7 @@ services:
     restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:8000
     environment:
-      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.development}
+      DJANGO_SETTINGS_MODULE: config.settings.development
       DB_HOST: db
       DB_PORT: 5432
       REDIS_URL: redis://redis:6379/0
@@ -80,7 +80,7 @@ services:
     restart: unless-stopped
     command: celery -A config worker --loglevel=info
     environment:
-      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.development}
+      DJANGO_SETTINGS_MODULE: config.settings.development
       DB_HOST: db
       REDIS_URL: redis://redis:6379/0
     env_file:
@@ -100,7 +100,7 @@ services:
     restart: unless-stopped
     command: celery -A config beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
-      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.development}
+      DJANGO_SETTINGS_MODULE: config.settings.development
       DB_HOST: db
       REDIS_URL: redis://redis:6379/0
     env_file:

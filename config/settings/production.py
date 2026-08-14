@@ -90,7 +90,7 @@ if SENTRY_DSN:
 
 LOGGING["handlers"]["file"] = {  # noqa: F405
     "class": "logging.handlers.RotatingFileHandler",
-    "filename": "/app/django.log",
+    "filename": "/var/log/mynaroda/django.log",
     "maxBytes": 10 * 1024 * 1024,  # 10 MB
     "backupCount": 5,
     "formatter": "verbose",
