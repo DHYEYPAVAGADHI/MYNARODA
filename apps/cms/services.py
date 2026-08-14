@@ -24,12 +24,13 @@ def get_dashboard_stats():
     try:
         # Aggregations
         pledge_count = PledgeRegistration.objects.count()
+        approved_pledge_count = PledgeRegistration.objects.filter(is_approved=True).count()
         tiranga_count = HarGharTirangaRegistration.objects.count()
         student_count = StudentSubmission.objects.count()
         org_count = CompetitionRegistration.objects.filter(status='APPROVED').count()
 
         # Complex calculations
-        trees_planted = pledge_count + tiranga_count + student_count + org_count
+        trees_planted = approved_pledge_count
         citizens_joined = pledge_count + tiranga_count + student_count
         
         # Manual stats
