@@ -50,6 +50,7 @@ def get_dashboard_stats():
             'cleanliness_drives': cleanliness_drives,
             'waste_removed_tons': float(waste_removed_tons),
             'progress_percent': progress_percent,
+            'tiranga_distribution_count': tiranga_count,
         }
         
         # Cache for 60 seconds
@@ -67,4 +68,5 @@ def get_dashboard_stats():
             'cleanliness_drives': 212,
             'waste_removed_tons': 64.0,
             'progress_percent': 0,
+            'tiranga_distribution_count': 0,
         }

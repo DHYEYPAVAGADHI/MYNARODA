@@ -30,7 +30,7 @@ from apps.accounts.models import User, UserRole
 from apps.competitions.models import CompetitionRegistration
 from apps.events.models import Event
 from apps.gallery.models import Photo
-from apps.cms.models import LeadershipPhotos
+from apps.cms.models import LeadershipPhotos, HarGharTirangaRegistration
 from apps.news.models import NewsArticle
 
 from apps.student_portal.models import StudentSubmission
@@ -182,7 +182,7 @@ class AdminDashboardView(AdminRequiredMixin, View):
             "total_photos": Photo.objects.count(),
             "pending_photos": Photo.objects.filter(approval_status="PENDING").count(),
             "total_events": Event.objects.count(),
-
+            "total_tiranga": HarGharTirangaRegistration.objects.count(),
 
             # Charts
             "chart_days": json.dumps(trend_days),
