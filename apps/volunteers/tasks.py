@@ -252,7 +252,7 @@ def generate_certificate_task(self, pledge_id):
 
         # Tree No. / Tree Name / Plantation Location row
         col_labels = ["TREE NO.", "TREE NAME", "PLANTATION LOCATION"]
-        col_values = [pledge.tree_number or "—", fighter_name, "Bilasiya Farm"]
+        col_values = [pledge.tree_number or "—", fighter_name, "Naroda"]
         col_x = [width / 2 - 320, width / 2 - 40, width / 2 + 240]
         for lx2, label, value in zip(col_x, col_labels, col_values):
             draw.text((lx2, cy), label, font=label_font, fill=MUTED, anchor="lm")

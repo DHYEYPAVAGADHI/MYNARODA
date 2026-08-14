@@ -176,20 +176,43 @@
     </div>
 
     <!-- Success Card (Hidden initially) -->
-    <div id="pledge-success-container" class="hidden p-6 text-center">
-        <div class="w-12 h-12 rounded-full bg-[#F0FDF4] text-[#15803D] flex items-center justify-center mx-auto mb-3">
+    <div id="pledge-success-container" class="hidden p-5 text-center">
+        <div class="w-12 h-12 rounded-full bg-[#F0FDF4] text-[#15803D] flex items-center justify-center mx-auto mb-2">
             <i class="fa-solid fa-check text-2xl"></i>
         </div>
         <h2 class="font-serif text-lg font-bold text-[#0B1020] mb-1">Pledge Successful!</h2>
-        <p class="text-[#4B5563] text-xs mb-4">Your official certificate is ready to download.</p>
+        <p class="text-[#4B5563] text-xs mb-4">Your official certificate details are below.</p>
 
-        <div class="bg-gray-50 border border-gray-200 rounded-xl p-3 mb-4">
-            <img id="pledge-certificate-image" src="" alt="Certificate" class="w-full rounded-lg border border-gray-200 mb-2">
-            <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">CERTIFICATE ID</div>
-            <div class="font-mono text-sm font-bold text-[#111827]" id="pledge-certificate-id-display"></div>
+        <div class="bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl p-4 mb-3 text-left space-y-2">
+            <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest">Citizen Name</span>
+                <span class="font-bold text-[#0B1020] text-sm text-right" id="pledge-cert-name"></span>
+            </div>
+            <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest">Certificate No.</span>
+                <span class="font-mono font-bold text-[#0B1020] text-sm text-right" id="pledge-certificate-id-display"></span>
+            </div>
+            <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest">Tree No.</span>
+                <span class="font-mono font-bold text-[#0B1020] text-sm text-right" id="pledge-cert-tree-no"></span>
+            </div>
+            <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest">Tree Name</span>
+                <span class="font-bold text-[#0B1020] text-sm text-right" id="pledge-cert-tree-name"></span>
+            </div>
+            <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest">Location</span>
+                <span class="font-bold text-[#0B1020] text-sm text-right" id="pledge-cert-location"></span>
+            </div>
+            <div class="flex justify-between items-start">
+                <span class="text-[10px] font-bold text-[#15803D] uppercase tracking-widest">Date</span>
+                <span class="font-bold text-[#0B1020] text-sm text-right" id="pledge-cert-date"></span>
+            </div>
         </div>
 
-        <a id="pledge-download-link" href="#" download target="_blank" class="w-full bg-[#15803D] hover:bg-[#166534] text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2">
+        <img id="pledge-certificate-image" src="" alt="Certificate" class="w-full rounded-lg border border-gray-200 mb-3 hidden">
+
+        <a id="pledge-download-link" href="#" download target="_blank" class="w-full bg-[#15803D] hover:bg-[#166534] text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2 mb-2">
             <i class="fa-solid fa-download"></i> Download Certificate
         </a>
     </div>
@@ -455,9 +478,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.status === 'success') {
                     document.getElementById('pledge-form-container').classList.add('hidden');
                     document.getElementById('pledge-success-container').classList.remove('hidden');
+                    // Populate all certificate fields
+                    document.getElementById('pledge-cert-name').innerText = data.full_name || '';
                     document.getElementById('pledge-certificate-id-display').innerText = data.certificate_id || '';
+                    document.getElementById('pledge-cert-tree-no').innerText = data.tree_number || '';
+                    document.getElementById('pledge-cert-tree-name').innerText = data.tree_name || '—';
+                    document.getElementById('pledge-cert-location').innerText = data.plantation_location || 'Naroda';
+                    document.getElementById('pledge-cert-date').innerText = data.submission_date || '';
                     if (data.certificate_image_url) {
-                        document.getElementById('pledge-certificate-image').src = data.certificate_image_url;
+                        const certImg = document.getElementById('pledge-certificate-image');
+                        certImg.src = data.certificate_image_url;
+                        certImg.classList.remove('hidden');
                     }
                     if (data.certificate_pdf_url) {
                         document.getElementById('pledge-download-link').href = data.certificate_pdf_url;

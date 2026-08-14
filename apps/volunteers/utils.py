@@ -4,12 +4,64 @@ from datetime import date
 from django.db import transaction
 
 
+def generate_tree_number():
+    """
+    Generate a unique sequential tree number in GNCN/YYYY/NNNNN format.
+    Uses a DB-level lock to prevent duplicate IDs under concurrent submissions.
+    """
+    from apps.volunteers.models import PledgeRegistration
+
+    year = date.today().year
+    prefix = f"GNCN/{year}/"
+
+    with transaction.atomic():
+        existing = (
+            PledgeRegistration.objects.select_for_update()
+            .filter(tree_number__startswith=prefix)
+            .order_by("-tree_number")
+            .values_list("tree_number", flat=True)
+            .first()
+        )
+        if existing:
+            try:
+                last_seq = int(existing.split("/")[-1])
+            except (ValueError, IndexError):
+                last_seq = 0
+        else:
+            last_seq = 0
+
+        next_seq = last_seq + 1
+        return f"{prefix}{next_seq:05d}"
+
+
 def generate_certificate_id():
-    return f'GNCN/{date.today().year}/{random.randint(1, 99999):05d}'
+    """
+    Generate a unique sequential certificate number in NC/YYYY/NNNNN format.
+    Uses a DB-level lock to prevent duplicate IDs under concurrent submissions.
+    """
+    from apps.volunteers.models import PledgeRegistration
 
+    year = date.today().year
+    prefix = f"NC/{year}/"
 
-def generate_tree_number(pledge_id):
-    return f'GN-TREE-{date.today().year}-{pledge_id:05d}'
+    with transaction.atomic():
+        existing = (
+            PledgeRegistration.objects.select_for_update()
+            .filter(certificate_id__startswith=prefix)
+            .order_by("-certificate_id")
+            .values_list("certificate_id", flat=True)
+            .first()
+        )
+        if existing:
+            try:
+                last_seq = int(existing.split("/")[-1])
+            except (ValueError, IndexError):
+                last_seq = 0
+        else:
+            last_seq = 0
+
+        next_seq = last_seq + 1
+        return f"{prefix}{next_seq:05d}"
 
 
 def assign_freedom_fighter_name():

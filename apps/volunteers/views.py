@@ -100,7 +100,7 @@ class SubmitPledgeRegistrationView(View):
             )
             
             pledge.certificate_id = generate_certificate_id()
-            pledge.tree_number = generate_tree_number(pledge.id)
+            pledge.tree_number = generate_tree_number()
             pledge.dedicated_to = assign_freedom_fighter_name()
             pledge.save(update_fields=['certificate_id', 'tree_number', 'dedicated_to'])
             
@@ -112,10 +112,17 @@ class SubmitPledgeRegistrationView(View):
             pledge.refresh_from_db()
             
             if is_ajax:
+                from django.utils import timezone
+                submission_date = timezone.localtime(pledge.created_at).strftime("%d %B %Y") if pledge.created_at else ""
                 return JsonResponse({
                     "status": "success",
                     "pledge_id": pledge.id,
+                    "full_name": pledge.full_name,
                     "certificate_id": pledge.certificate_id,
+                    "tree_number": pledge.tree_number,
+                    "tree_name": pledge.dedicated_to.name if pledge.dedicated_to else "",
+                    "plantation_location": "Naroda",
+                    "submission_date": submission_date,
                     "certificate_image_url": pledge.certificate_image.url if pledge.certificate_image else None,
                     "certificate_pdf_url": pledge.certificate_pdf.url if pledge.certificate_pdf else None,
                     "citizens_joined": PledgeRegistration.objects.filter(is_approved=True).count()
