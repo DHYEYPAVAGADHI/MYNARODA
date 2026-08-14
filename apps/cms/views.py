@@ -172,6 +172,7 @@ class ContactPageView(View):
 
     def post(self, request):
         name = request.POST.get("name")
+        phone = request.POST.get("phone", "Not provided")
         email = request.POST.get("email")
         subject = request.POST.get("subject")
         message = request.POST.get("message")
@@ -184,7 +185,7 @@ class ContactPageView(View):
             name=name,
             email=email,
             subject=subject,
-            message=message
+            message=f"Phone: {phone}\n\n{message}"
         )
         
         # Send an email notification to the Nodal Office
@@ -192,8 +193,8 @@ class ContactPageView(View):
         try:
             send_mail(
                 subject=f"New Contact Message: {subject}",
-                message=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}",
-                from_email="noreply@mynaroda.in",
+                message=f"Name: {name}\nMobile: {phone}\nEmail: {email}\n\nMessage:\n{message}",
+                from_email="prathampriority@mynaroda.in",
                 recipient_list=["prathampriority@mynaroda.in"],
                 fail_silently=True,
             )
