@@ -1,6 +1,15 @@
 /**
  * Lenis Smooth Scroll — Green Naroda Portal
  * Initialises Lenis and syncs it with GSAP's ScrollTrigger.
+ *
+ * DISABLED: Lenis's eased/inertial wheel scroll was reported as slow and
+ * laggy on desktop Chrome, and repeated attempts to fix its interaction
+ * with the site's popups (which lock background scroll while open) did
+ * not resolve it. Disabling it falls back to normal native browser
+ * scrolling everywhere — anchor links (`href="#section"`) still animate
+ * via the site's `scroll-behavior: smooth` CSS (main.css), so that
+ * behavior isn't lost. `window.__lenis` simply stays undefined; other
+ * scripts already guard every use of it with `?.`, so this is safe.
  */
 
 (function () {
@@ -8,6 +17,8 @@
 
   // Only initialise when DOM is ready
   document.addEventListener("DOMContentLoaded", function () {
+    return; // Lenis disabled — see note above.
+    // eslint-disable-next-line no-unreachable
     if (typeof Lenis === "undefined") return;
 
     const lenis = new Lenis({
