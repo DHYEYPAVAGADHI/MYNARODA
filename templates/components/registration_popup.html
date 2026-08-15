@@ -414,12 +414,12 @@ forceUnlockBodyScroll();
 window.addEventListener('pageshow', forceUnlockBodyScroll);
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Show the pledge popup after 20 seconds
+    // Show the pledge popup after 15 seconds
     const popupEnabled = true;
     if (popupEnabled && sessionStorage.getItem('pledge_popup_seen') !== 'true' && localStorage.getItem('pledge_submitted') !== 'true') {
         setTimeout(() => {
             openPledgePopup();
-        }, 20000); // 20 seconds
+        }, 15000); // 15 seconds
     }
 
     const locBtn = document.getElementById('btn-popup-location');
