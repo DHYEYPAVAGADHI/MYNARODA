@@ -70,7 +70,7 @@ urlpatterns = [
 # These carry an optional language prefix: /en/, /gu/, /hi/
 
 urlpatterns += i18n_patterns(
-    path("verify/<str:certificate_id>/", VerifyCertificateView.as_view(), name="verify_certificate"),
+    path("verify/<path:certificate_id>/", VerifyCertificateView.as_view(), name="verify_certificate"),
 
     # Organization QR Verification
     path("verify/organization/<str:registration_id>/", include("apps.competitions.verify_urls")),

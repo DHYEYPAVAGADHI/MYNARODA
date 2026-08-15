@@ -170,7 +170,6 @@ def generate_certificate_task(self, pledge_id):
 
         label_font = load_font('Poppins-Regular.ttf', 14)
         value_font = load_font('Poppins-SemiBold.ttf', 18)
-        badge_font = load_font('Poppins-Bold.ttf', 12)
         title_font = load_font('Marcellus-Regular.ttf', 53)
         subtitle_font = load_font('Poppins-SemiBold.ttf', 16)
         certify_font = load_font('Poppins-Regular.ttf', 17)
@@ -378,8 +377,13 @@ def generate_certificate_task(self, pledge_id):
         draw.ellipse([seal_cx - seal_r, seal_cy - seal_r, seal_cx + seal_r, seal_cy + seal_r], outline=GREEN, width=2)
         inner_r = seal_r - 8
         draw.ellipse([seal_cx - inner_r, seal_cy - inner_r, seal_cx + inner_r, seal_cy + inner_r], fill=BG)
-        draw.text((seal_cx, seal_cy - 8), "GREEN NARODA\nCLEAN NARODA", font=badge_font, fill=GREEN, anchor="mm", align="center", spacing=2)
-        draw.text((seal_cx, seal_cy + 18), "VERIFIED", font=badge_font, fill=ORANGE, anchor="mm")
+        # Auto-fit the badge text to the inner circle's width instead of a
+        # hardcoded size, so it never overflows past the ring.
+        seal_text_max_width = int(inner_r * 1.7)
+        seal_title_font = fit_font("CLEAN NARODA", 'Poppins-Bold.ttf', 12, 6, seal_text_max_width)
+        seal_verified_font = fit_font("VERIFIED", 'Poppins-Bold.ttf', 12, 6, seal_text_max_width)
+        draw.text((seal_cx, seal_cy - 8), "GREEN NARODA\nCLEAN NARODA", font=seal_title_font, fill=GREEN, anchor="mm", align="center", spacing=2)
+        draw.text((seal_cx, seal_cy + 18), "VERIFIED", font=seal_verified_font, fill=ORANGE, anchor="mm")
 
         # QR Code (bottom center, below signatures)
         qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=4, border=2)

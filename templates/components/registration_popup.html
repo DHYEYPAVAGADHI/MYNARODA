@@ -215,12 +215,143 @@
         <a id="pledge-download-link" href="#" download target="_blank" class="w-full bg-[#15803D] hover:bg-[#166534] text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2 mb-2">
             <i class="fa-solid fa-download"></i> Download Certificate
         </a>
+
+        <button type="button" id="share-native-btn" class="w-full bg-[#0B1020] hover:bg-black text-white font-bold py-3 rounded-lg text-sm flex items-center justify-center gap-2 mb-2">
+            <i class="fa-solid fa-share-nodes"></i> Share Certificate
+        </button>
+        <div class="grid grid-cols-3 gap-2">
+            <a id="share-wa-btn" href="#" target="_blank" rel="noopener" class="bg-[#25D366] hover:opacity-90 text-white font-bold py-2.5 rounded-lg text-xs flex flex-col items-center justify-center gap-1">
+                <i class="fa-brands fa-whatsapp text-base"></i> WhatsApp
+            </a>
+            <a id="share-ig-btn" href="#" target="_blank" rel="noopener" class="bg-gradient-to-tr from-[#FEDA75] via-[#D62976] to-[#4F5BD5] hover:opacity-90 text-white font-bold py-2.5 rounded-lg text-xs flex flex-col items-center justify-center gap-1">
+                <i class="fa-brands fa-instagram text-base"></i> Instagram
+            </a>
+            <a id="share-fb-btn" href="#" target="_blank" rel="noopener" class="bg-[#1877F2] hover:opacity-90 text-white font-bold py-2.5 rounded-lg text-xs flex flex-col items-center justify-center gap-1">
+                <i class="fa-brands fa-facebook-f text-base"></i> Facebook
+            </a>
+        </div>
     </div>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
+// ── Certificate sharing ──────────────────────────────────────────────────
+// Populated once a pledge is submitted successfully (see the AJAX success
+// handler below).
+let _shareState = { pledgeId: null, certImageUrl: null, certId: null };
+
+// Django's url tag needs a real certificate_id at render time, so we build
+// the verify URL with a placeholder and swap in the real one once we have it.
+const VERIFY_URL_TEMPLATE = "{% url 'verify_certificate' certificate_id='__CERT_ID__' %}";
+
+function buildVerifyUrl(certId) {
+    return window.location.origin + VERIFY_URL_TEMPLATE.replace('__CERT_ID__', encodeURIComponent(certId || ''));
+}
+
+function trackShare(action) {
+    if (!_shareState.pledgeId) return;
+    fetch('{% url "volunteers:track_share" %}', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pledge_id: _shareState.pledgeId, action: action })
+    }).catch(() => {});
+}
+
+// Tries the OS-native share sheet with the actual certificate image
+// attached (works on most mobile browsers over HTTPS). Returns true if the
+// share sheet was actually opened, false if the browser doesn't support it
+// or the user needs a fallback.
+async function shareCertificateFile() {
+    if (!_shareState.certImageUrl || !navigator.canShare) return false;
+    try {
+        const resp = await fetch(_shareState.certImageUrl);
+        const blob = await resp.blob();
+        const file = new File([blob], 'tree-pledge-certificate.png', { type: blob.type || 'image/png' });
+        if (!navigator.canShare({ files: [file] })) return false;
+        await navigator.share({
+            files: [file],
+            title: 'My Tree Pledge Certificate',
+            text: 'I pledged to plant a tree for Green Naroda · Clean Naroda! 🌳'
+        });
+        return true;
+    } catch (err) {
+        // User cancelled the share sheet, or the fetch/share failed — either
+        // way, fall back to the link-based options below.
+        return false;
+    }
+}
+
+function downloadCertificateImage() {
+    if (!_shareState.certImageUrl) return;
+    const a = document.createElement('a');
+    a.href = _shareState.certImageUrl;
+    a.download = 'tree-pledge-certificate.png';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const nativeBtn = document.getElementById('share-native-btn');
+    if (nativeBtn) {
+        nativeBtn.addEventListener('click', async function () {
+            const shared = await shareCertificateFile();
+            if (shared) {
+                trackShare('native');
+            } else {
+                downloadCertificateImage();
+                alert("Your browser can't open the share menu directly, so we've downloaded the certificate image instead — you can share it manually from your gallery.");
+            }
+        });
+    }
+
+    const waBtn = document.getElementById('share-wa-btn');
+    if (waBtn) {
+        waBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            const shared = await shareCertificateFile();
+            trackShare('wa');
+            if (!shared) {
+                const text = encodeURIComponent(
+                    'I pledged to plant a tree for Green Naroda · Clean Naroda! 🌳 ' + buildVerifyUrl(_shareState.certId)
+                );
+                window.open('https://wa.me/?text=' + text, '_blank', 'noopener');
+            }
+        });
+    }
+
+    const igBtn = document.getElementById('share-ig-btn');
+    if (igBtn) {
+        igBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            const shared = await shareCertificateFile();
+            trackShare('ig');
+            if (!shared) {
+                downloadCertificateImage();
+                alert('Instagram sharing only works from the share menu on a phone. The certificate image has been downloaded — open Instagram and share it from there.');
+            }
+        });
+    }
+
+    const fbBtn = document.getElementById('share-fb-btn');
+    if (fbBtn) {
+        fbBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            trackShare('fb');
+            const url = encodeURIComponent(buildVerifyUrl(_shareState.certId));
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank', 'noopener,width=600,height=500');
+        });
+    }
+
+    const downloadLink = document.getElementById('pledge-download-link');
+    if (downloadLink) {
+        downloadLink.addEventListener('click', function () {
+            trackShare('download');
+        });
+    }
+});
+
 // Mobile-safe body scroll lock. `overflow:hidden` on <body> alone does not
 // reliably block background touch-scroll on iOS Safari, which is why the
 // page behind a popup could still scroll — this pins the body in place
@@ -493,6 +624,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (data.certificate_pdf_url) {
                         document.getElementById('pledge-download-link').href = data.certificate_pdf_url;
                     }
+                    _shareState.pledgeId = data.pledge_id || null;
+                    _shareState.certImageUrl = data.certificate_image_url || null;
+                    _shareState.certId = data.certificate_id || null;
                 } else {
                     errorDiv.innerText = data.message || 'An error occurred. Please try again.';
                     errorDiv.classList.remove('hidden');
