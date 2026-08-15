@@ -356,9 +356,19 @@ document.addEventListener('DOMContentLoaded', function () {
 // reliably block background touch-scroll on iOS Safari, which is why the
 // page behind a popup could still scroll — this pins the body in place
 // instead and restores the exact scroll position on close.
+//
+// On desktop, the site also runs Lenis (smooth-scroll library, wheel-only —
+// see lenis-scroll.js, smoothTouch:false) which drives scroll independently
+// via its own animation loop. If Lenis is left running while this manual
+// `position:fixed` lock is active, the two fight over the scroll position:
+// Lenis's loop keeps trying to apply its own (now stale) scroll target,
+// which is why desktop scrolling could end up stuck/laggy after a popup
+// opened and closed, while mobile (where Lenis never engages) was fine.
+// Pausing/resuming Lenis around the lock keeps the two in sync.
 let _scrollLockY = 0;
 function lockBodyScroll() {
     _scrollLockY = window.scrollY;
+    window.__lenis?.stop();
     document.body.style.position = 'fixed';
     document.body.style.top = `-${_scrollLockY}px`;
     document.body.style.left = '0';
@@ -372,6 +382,8 @@ function unlockBodyScroll() {
     document.body.style.right = '';
     document.body.classList.remove('overflow-hidden');
     window.scrollTo(0, _scrollLockY);
+    window.__lenis?.start();
+    window.__lenis?.scrollTo(_scrollLockY, { immediate: true });
 }
 
 // Safety net: if a popup was left open when the user navigated away (a link
@@ -384,6 +396,7 @@ function forceUnlockBodyScroll() {
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.classList.remove('overflow-hidden');
+    window.__lenis?.start();
 }
 forceUnlockBodyScroll();
 window.addEventListener('pageshow', forceUnlockBodyScroll);
