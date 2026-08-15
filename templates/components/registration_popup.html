@@ -414,25 +414,11 @@ forceUnlockBodyScroll();
 window.addEventListener('pageshow', forceUnlockBodyScroll);
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Show after 20 seconds
+    // Show the pledge popup after 20 seconds
     const popupEnabled = true;
-    if (popupEnabled && sessionStorage.getItem('hgt_popup_seen') !== 'true' && localStorage.getItem('hgt_registered') !== 'true') {
+    if (popupEnabled && sessionStorage.getItem('pledge_popup_seen') !== 'true' && localStorage.getItem('pledge_submitted') !== 'true') {
         setTimeout(() => {
-            const popup = document.getElementById('registration-popup');
-            const box = document.getElementById('modal-box');
-            if(popup && box) {
-                popup.classList.remove('hidden');
-                popup.classList.add('flex');
-                
-                // Animation trigger
-                setTimeout(() => {
-                    box.style.transform = 'scale(1)';
-                    box.style.opacity = '1';
-                    box.style.transition = 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-                }, 10);
-                
-                lockBodyScroll();
-            }
+            openPledgePopup();
         }, 20000); // 20 seconds
     }
 
@@ -598,6 +584,8 @@ function closePledgePopup() {
         box.style.opacity = '0';
     }
 
+    sessionStorage.setItem('pledge_popup_seen', 'true');
+
     setTimeout(() => {
         if (popup) {
             popup.classList.add('hidden');
@@ -652,6 +640,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     _shareState.pledgeId = data.pledge_id || null;
                     _shareState.certImageUrl = data.certificate_image_url || null;
                     _shareState.certId = data.certificate_id || null;
+                    sessionStorage.setItem('pledge_popup_seen', 'true');
+                    localStorage.setItem('pledge_submitted', 'true');
                 } else {
                     errorDiv.innerText = data.message || 'An error occurred. Please try again.';
                     errorDiv.classList.remove('hidden');
