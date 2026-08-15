@@ -381,7 +381,16 @@ function unlockBodyScroll() {
     document.body.style.left = '';
     document.body.style.right = '';
     document.body.classList.remove('overflow-hidden');
-    window.scrollTo(0, _scrollLockY);
+    // `behavior: 'instant'` is required here — the site sets
+    // `scroll-behavior: smooth` globally (main.css), and the legacy
+    // window.scrollTo(x, y) form inherits that CSS behavior per spec. In
+    // Chrome that meant this snap-back animated asynchronously, so
+    // lenis.start() below (which re-syncs to the position at the instant
+    // it runs) caught the scroll mid-animation and fought the browser's
+    // still-running native scroll — that fight was the source of the
+    // Chrome-specific lag. Forcing 'instant' here makes the restore happen
+    // synchronously, before Lenis re-syncs.
+    window.scrollTo({ top: _scrollLockY, left: 0, behavior: 'instant' });
     // Lenis's own start() already re-syncs its internal scroll state to the
     // real DOM position (it calls reset() internally), so no extra scrollTo
     // call is needed here — an earlier version of this fix added one and it
