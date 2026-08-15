@@ -29,6 +29,28 @@
   <div class="swiper hero-swiper">
     <div class="swiper-wrapper">
 
+      {% for slide in hero_slides %}
+      <!-- {{ slide.title }} -->
+      <div class="swiper-slide relative">
+        {% if slide.image %}
+          <img src="{{ slide.image.image.url }}" alt="{{ slide.image.alt_text|default:slide.title }}" class="w-full h-auto block">
+        {% endif %}
+        {% if slide.title or slide.subtitle or slide.description %}
+        <div class="hero-overlay"></div>
+        <div class="hero-content-anim absolute inset-0 z-10 flex flex-col justify-center px-6 sm:px-12 lg:px-20 max-w-3xl">
+          {% if slide.subtitle %}<p class="text-white/90 font-bold uppercase tracking-widest text-xs sm:text-sm mb-2">{{ slide.subtitle }}</p>{% endif %}
+          {% if slide.title %}<h2 class="text-white font-serif text-3xl sm:text-5xl font-bold mb-3">{{ slide.title }}</h2>{% endif %}
+          {% if slide.description %}<p class="text-white/85 text-sm sm:text-base max-w-xl mb-5">{{ slide.description }}</p>{% endif %}
+          {% if slide.primary_button_text or slide.secondary_button_text %}
+          <div class="flex flex-wrap gap-3">
+            {% if slide.primary_button_text %}<a href="{{ slide.primary_button_url|default:'#' }}" class="bg-[#15803D] hover:bg-[#166534] text-white font-bold px-5 py-2.5 rounded-full text-sm">{{ slide.primary_button_text }}</a>{% endif %}
+            {% if slide.secondary_button_text %}<a href="{{ slide.secondary_button_url|default:'#' }}" class="bg-white/90 hover:bg-white text-[#0B1020] font-bold px-5 py-2.5 rounded-full text-sm">{{ slide.secondary_button_text }}</a>{% endif %}
+          </div>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+      {% empty %}
       <!-- Slide 1: Green Mission -->
       <div class="swiper-slide">
         <img src="{% static 'images/redesign/hero-bg-greener-tomorrow.jpg' %}" alt="Green Mission" class="w-full h-auto block">
@@ -43,6 +65,7 @@
       <div class="swiper-slide">
         <img src="{% static 'images/redesign/hero-bg-trees-progress.jpg' %}" alt="Campaign Progress" class="w-full h-auto block">
       </div>
+      {% endfor %}
 
     </div><!-- /swiper-wrapper -->
 
