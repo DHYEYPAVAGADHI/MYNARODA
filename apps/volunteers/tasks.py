@@ -210,17 +210,32 @@ def generate_certificate_task(self, pledge_id):
                 lines[-1] = lines[-1].rstrip(".,") + "…"
             return lines[:max_lines]
 
+        # Double border frame (drawn first so the leaf art below sits on top of
+        # it, matching the layering in the original template, instead of the
+        # frame lines cutting across the leaves)
+        draw.rectangle([28, 28, width - 28, height - 28], outline=GREEN, width=3)
+        draw.rectangle([38, 38, width - 38, height - 38], outline=BORDER, width=1)
+
         # ── Decorative leaf border (left + right, faded toward center) ──
         border_path = os.path.join(cert_images_dir, 'border-leaves.png')
         if os.path.exists(border_path):
             try:
                 border_w = 190
                 border = Image.open(border_path).convert("RGBA")
-                border = border.resize(
-                    (border_w, int(border.height * (border_w / border.width))),
-                    Image.Resampling.LANCZOS,
-                )
-                border = border.resize((border_w, height), Image.Resampling.LANCZOS) if border.height != height else border
+                # Scale to fully COVER (border_w x height) without distorting
+                # proportions, then center-crop the overflow — equivalent to
+                # CSS object-fit:cover, instead of independently stretching
+                # width and height (which warped the artwork).
+                cover_scale = max(border_w / border.width, height / border.height)
+                scaled_w = int(border.width * cover_scale)
+                scaled_h = int(border.height * cover_scale)
+                border = border.resize((scaled_w, scaled_h), Image.Resampling.LANCZOS)
+                # The source artwork (trunk + leaves) is anchored to the left
+                # edge of the file with empty space to its right, so crop
+                # from the left rather than the center.
+                crop_x = 0
+                crop_y = (scaled_h - height) // 2
+                border = border.crop((crop_x, crop_y, crop_x + border_w, crop_y + height))
                 # Fade out horizontally (fully opaque near the edge, transparent toward center)
                 gradient = Image.new('L', (border_w, 1))
                 for x in range(border_w):
@@ -236,10 +251,6 @@ def generate_certificate_task(self, pledge_id):
                 img.paste(border_flipped, (width - border_w, 0), border_flipped)
             except Exception:
                 pass
-
-        # Double border frame (drawn after leaf art so it stays crisp)
-        draw.rectangle([28, 28, width - 28, height - 28], outline=GREEN, width=3)
-        draw.rectangle([38, 38, width - 38, height - 38], outline=BORDER, width=1)
 
         # ── Organizer logos (top-left) ──
         org_logos = ['logo-mynaroda.jpeg', 'logo-bjp.png', 'logo-pratham.png']
