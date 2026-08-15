@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.core.files.base import ContentFile
 from django.core.mail import EmailMessage
 from django.conf import settings
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance, ImageOps
 from decouple import config
 
 from apps.volunteers.models import PledgeRegistration
@@ -158,32 +158,93 @@ def generate_certificate_task(self, pledge_id):
         img = Image.new('RGB', (width, height), color=BG)
         draw = ImageDraw.Draw(img)
 
-        draw.rectangle([28, 28, width - 28, height - 28], outline=GREEN, width=3)
-        draw.rectangle([38, 38, width - 38, height - 38], outline=BORDER, width=1)
-
         static_dir = os.path.join(settings.BASE_DIR, 'static', 'images')
+        cert_images_dir = os.path.join(static_dir, 'certificate')
+        font_dir = os.path.join(settings.BASE_DIR, 'static', 'fonts', 'certificate')
 
         def load_font(name, size):
             try:
-                return ImageFont.truetype(os.path.join('/System/Library/Fonts', name), size)
+                return ImageFont.truetype(os.path.join(font_dir, name), size)
             except IOError:
                 return ImageFont.load_default()
 
-        label_font = load_font('Helvetica.ttc', 15)
-        value_font = load_font('Helvetica.ttc', 20)
-        badge_font = load_font('Helvetica.ttc', 13)
-        title_font = load_font('Times.ttc', 52)
-        subtitle_font = load_font('Helvetica.ttc', 17)
-        certify_font = load_font('Helvetica.ttc', 18)
-        name_font = load_font('Times.ttc', 56)
-        body_font = load_font('Helvetica.ttc', 18)
-        sign_name_font = load_font('Helvetica.ttc', 19)
-        sign_title_font = load_font('Helvetica.ttc', 14)
+        label_font = load_font('Poppins-Regular.ttf', 14)
+        value_font = load_font('Poppins-SemiBold.ttf', 18)
+        badge_font = load_font('Poppins-Bold.ttf', 12)
+        title_font = load_font('Marcellus-Regular.ttf', 53)
+        subtitle_font = load_font('Poppins-SemiBold.ttf', 16)
+        certify_font = load_font('Poppins-Regular.ttf', 17)
+        body_font = load_font('Poppins-Regular.ttf', 17)
+        sign_name_font = load_font('Poppins-SemiBold.ttf', 17)
+        sign_title_font = load_font('Poppins-Regular.ttf', 12)
+
+        def fit_font(text, font_name, start_size, min_size, max_width):
+            """Shrinks a font until `text` fits within max_width, so long
+            names (participant or freedom fighter) never overflow the layout."""
+            size = start_size
+            font = load_font(font_name, size)
+            while size > min_size and draw.textlength(text, font=font) > max_width:
+                size -= 2
+                font = load_font(font_name, size)
+            return font
+
+        def wrap_to_width(text, font, max_width, max_lines=2):
+            """Greedy word-wrap so a name that's still too wide at the
+            minimum font size wraps instead of overflowing its column."""
+            words = text.split()
+            lines = []
+            current = ""
+            i = 0
+            while i < len(words) and len(lines) < max_lines:
+                word = words[i]
+                candidate = f"{current} {word}".strip()
+                if not current or draw.textlength(candidate, font=font) <= max_width:
+                    current = candidate
+                    i += 1
+                else:
+                    lines.append(current)
+                    current = ""
+            if current:
+                lines.append(current)
+            if i < len(words):
+                lines[-1] = lines[-1].rstrip(".,") + "…"
+            return lines[:max_lines]
+
+        # ── Decorative leaf border (left + right, faded toward center) ──
+        border_path = os.path.join(cert_images_dir, 'border-leaves.png')
+        if os.path.exists(border_path):
+            try:
+                border_w = 190
+                border = Image.open(border_path).convert("RGBA")
+                border = border.resize(
+                    (border_w, int(border.height * (border_w / border.width))),
+                    Image.Resampling.LANCZOS,
+                )
+                border = border.resize((border_w, height), Image.Resampling.LANCZOS) if border.height != height else border
+                # Fade out horizontally (fully opaque near the edge, transparent toward center)
+                gradient = Image.new('L', (border_w, 1))
+                for x in range(border_w):
+                    frac = x / border_w
+                    alpha = 255 if frac < 0.55 else max(0, int(255 * (1 - (frac - 0.55) / 0.45)))
+                    gradient.putpixel((x, 0), alpha)
+                gradient = gradient.resize((border_w, height))
+                r, g, b, a = border.split()
+                a = Image.composite(a, Image.new('L', a.size, 0), gradient)
+                border.putalpha(a)
+                img.paste(border, (0, 0), border)
+                border_flipped = ImageOps.mirror(border)
+                img.paste(border_flipped, (width - border_w, 0), border_flipped)
+            except Exception:
+                pass
+
+        # Double border frame (drawn after leaf art so it stays crisp)
+        draw.rectangle([28, 28, width - 28, height - 28], outline=GREEN, width=3)
+        draw.rectangle([38, 38, width - 38, height - 38], outline=BORDER, width=1)
 
         # ── Organizer logos (top-left) ──
         org_logos = ['logo-mynaroda.jpeg', 'logo-bjp.png', 'logo-pratham.png']
-        draw.text((90, 60), "ORGANIZERS", font=label_font, fill=MUTED)
-        lx = 90
+        draw.text((210, 60), "ORGANIZERS", font=label_font, fill=MUTED)
+        lx = 210
         for logo_name in org_logos:
             logo_path = os.path.join(static_dir, logo_name)
             if os.path.exists(logo_path):
@@ -198,10 +259,10 @@ def generate_certificate_task(self, pledge_id):
             lx += 78
 
         # ── Certificate No. / Date (top-right) ──
-        draw.text((width - 90, 70), "Certificate No.", font=label_font, fill=MUTED, anchor="ra")
-        draw.text((width - 90, 92), pledge.certificate_id or "—", font=value_font, fill=TEXT, anchor="ra")
-        draw.text((width - 90, 130), "Date", font=label_font, fill=MUTED, anchor="ra")
-        draw.text((width - 90, 152), timezone.localtime(pledge.created_at).strftime("%d %B %Y"), font=value_font, fill=TEXT, anchor="ra")
+        draw.text((width - 210, 70), "Certificate No.", font=label_font, fill=MUTED, anchor="ra")
+        draw.text((width - 210, 92), pledge.certificate_id or "—", font=value_font, fill=TEXT, anchor="ra")
+        draw.text((width - 210, 130), "Date", font=label_font, fill=MUTED, anchor="ra")
+        draw.text((width - 210, 152), timezone.localtime(pledge.created_at).strftime("%d %B %Y"), font=value_font, fill=TEXT, anchor="ra")
 
         # ── Center emblem + titles ──
         gncn_logo_path = os.path.join(static_dir, 'logo-gncn.png')
@@ -209,9 +270,9 @@ def generate_certificate_task(self, pledge_id):
         if os.path.exists(gncn_logo_path):
             try:
                 emblem = Image.open(gncn_logo_path).convert("RGBA")
-                emblem.thumbnail((110, 110), Image.Resampling.LANCZOS)
-                img.paste(emblem, (int(width / 2 - 55), cy), emblem)
-                cy += 130
+                emblem.thumbnail((130, 130), Image.Resampling.LANCZOS)
+                img.paste(emblem, (int(width / 2 - 65), cy), emblem)
+                cy += 145
             except Exception:
                 cy += 20
         else:
@@ -227,11 +288,15 @@ def generate_certificate_task(self, pledge_id):
         draw.line([(width / 2 - 90, cy), (width / 2 + 90, cy)], fill=BORDER, width=2)
         cy += 40
 
+        # Participant name — auto-shrinks so long names never overflow the frame,
+        # with vertical spacing scaled to the fitted font so it can't collide
+        # with the lines above/below either.
         name = pledge.full_name
         draw.text((width / 2, cy), "This is to certify that", font=certify_font, fill=TEXT, anchor="mm")
-        cy += 50
-        draw.text((width / 2, cy), name, font=name_font, fill=GREEN, anchor="mm")
-        cy += 60
+        fitted_name_font = fit_font(name, 'CormorantGaramond-Italic.ttf', 56, 22, width - 600)
+        cy += max(50, int(fitted_name_font.size * 1.0))
+        draw.text((width / 2, cy), name, font=fitted_name_font, fill=GREEN, anchor="mm")
+        cy += max(65, int(fitted_name_font.size * 1.4))
 
         fighter_name = pledge.dedicated_to.name if pledge.dedicated_to else "an Indian Freedom Fighter"
         body = (
@@ -250,27 +315,46 @@ def generate_certificate_task(self, pledge_id):
             draw.rectangle([sx + i * seg_w, cy, sx + (i + 1) * seg_w, cy + strip_h], fill=color)
         cy += 45
 
-        # Tree No. / Tree Name / Plantation Location row
+        # Tree No. / Tree Name / Plantation Location row — long values first shrink,
+        # then wrap onto a second line rather than overflow into the next column.
         col_labels = ["TREE NO.", "TREE NAME", "PLANTATION LOCATION"]
         col_values = [pledge.tree_number or "—", fighter_name, "Naroda"]
         col_x = [width / 2 - 320, width / 2 - 40, width / 2 + 240]
-        for lx2, label, value in zip(col_x, col_labels, col_values):
+        col_max_width = [260, 260, 260]
+        row_extra = 0
+        for lx2, label, value, max_w in zip(col_x, col_labels, col_values, col_max_width):
             draw.text((lx2, cy), label, font=label_font, fill=MUTED, anchor="lm")
-            draw.text((lx2, cy + 24), value, font=value_font, fill=TEXT, anchor="lm")
-        cy += 90
+            col_value_font = fit_font(value, 'Poppins-SemiBold.ttf', 18, 12, max_w)
+            if draw.textlength(value, font=col_value_font) > max_w:
+                lines = wrap_to_width(value, col_value_font, max_w, max_lines=2)
+                line_h = col_value_font.size + 4
+                for li, line in enumerate(lines):
+                    draw.text((lx2, cy + 24 + li * line_h), line, font=col_value_font, fill=TEXT, anchor="lm")
+                row_extra = max(row_extra, (len(lines) - 1) * line_h)
+            else:
+                draw.text((lx2, cy + 24), value, font=col_value_font, fill=TEXT, anchor="lm")
+        cy += 90 + row_extra
 
-        # Signatures
+        # Signatures — actual signature images, with name/role beneath
         sign_y = height - 220
-        for sx2, sname, stitle in [
-            (width / 2 - 320, "Shri Payalben Kukrani, MLA", "EVENT PRESIDENT"),
-            (width / 2 + 320, "Shri Nikunj Rameshbhai Khakhi", "EVENT CONVENOR"),
+        for sx2, sig_file, sname, stitle in [
+            (width / 2 - 320, 'signature-payal-kukrani.png', "Shri Payalben Kukrani, MLA", "EVENT PRESIDENT"),
+            (width / 2 + 320, 'signature-nikunj-khakhi.png', "Shri Nikunj Rameshbhai Khakhi", "EVENT CONVENOR"),
         ]:
+            sig_path = os.path.join(cert_images_dir, sig_file)
+            if os.path.exists(sig_path):
+                try:
+                    sig = Image.open(sig_path).convert("RGBA")
+                    sig.thumbnail((190, 80), Image.Resampling.LANCZOS)
+                    img.paste(sig, (int(sx2 - sig.width / 2), sign_y - sig.height - 4), sig)
+                except Exception:
+                    pass
             draw.line([(sx2 - 100, sign_y), (sx2 + 100, sign_y)], fill=TEXT, width=1)
             draw.text((sx2, sign_y + 22), sname, font=sign_name_font, fill=GREEN, anchor="mm")
             draw.text((sx2, sign_y + 44), stitle, font=sign_title_font, fill=MUTED, anchor="mm")
 
         # Tricolor seal (center) — three horizontal bands clipped to a circle
-        seal_r = 55
+        seal_r = 50
         seal_cx, seal_cy = width / 2, sign_y - 10
         seal_img = Image.new('RGBA', (seal_r * 2, seal_r * 2), (0, 0, 0, 0))
         seal_draw = ImageDraw.Draw(seal_img)
@@ -291,7 +375,7 @@ def generate_certificate_task(self, pledge_id):
         qr.add_data(f"https://mynaroda.in/verify/{pledge.certificate_id}")
         qr.make(fit=True)
         qr_img = qr.make_image(fill_color="black", back_color="white").resize((90, 90))
-        img.paste(qr_img, (width - 160, height - 130))
+        img.paste(qr_img, (width - 250, height - 130))
 
         png_io = io.BytesIO()
         img.save(png_io, format='PNG')

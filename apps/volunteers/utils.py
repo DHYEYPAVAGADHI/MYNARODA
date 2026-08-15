@@ -1,4 +1,3 @@
-import random
 from datetime import date
 
 from django.db import transaction
@@ -36,13 +35,13 @@ def generate_tree_number():
 
 def generate_certificate_id():
     """
-    Generate a unique sequential certificate number in NC/YYYY/NNNNN format.
+    Generate a unique sequential certificate number in CERT/YYYY/NNNNN format.
     Uses a DB-level lock to prevent duplicate IDs under concurrent submissions.
     """
     from apps.volunteers.models import PledgeRegistration
 
     year = date.today().year
-    prefix = f"NC/{year}/"
+    prefix = f"CERT/{year}/"
 
     with transaction.atomic():
         existing = (
@@ -64,32 +63,24 @@ def generate_certificate_id():
         return f"{prefix}{next_seq:05d}"
 
 
-def assign_freedom_fighter_name():
+def assign_freedom_fighter_name(sequence_number):
     """
-    Randomly assigns an unused freedom fighter name from the pool.
-    Once every active name has been used once, the whole pool resets
-    and names start repeating in a new random order.
-    Row-locked so two simultaneous pledges never race for the same name.
+    Deterministically assigns a freedom fighter name based on a certificate's
+    1-based sequence number: certificate #1 gets the 1st name in the pool
+    (insertion order), #2 gets the 2nd, and so on. Once the pool is exhausted
+    it cycles back to the 1st name and repeats.
+
+    `sequence_number` should be the numeric suffix of the tree number
+    (already generated under a DB lock), so this stays deterministic and
+    race-free without any additional locking here.
     """
     from apps.volunteers.models import FreedomFighterName
 
-    with transaction.atomic():
-        available = list(
-            FreedomFighterName.objects.select_for_update()
-            .filter(is_active=True, used_in_current_cycle=False)
-        )
+    names = list(
+        FreedomFighterName.objects.filter(is_active=True).order_by("id")
+    )
+    if not names:
+        return None
 
-        if not available:
-            FreedomFighterName.objects.filter(is_active=True).update(used_in_current_cycle=False)
-            available = list(
-                FreedomFighterName.objects.select_for_update()
-                .filter(is_active=True, used_in_current_cycle=False)
-            )
-
-        if not available:
-            return None
-
-        chosen = random.choice(available)
-        chosen.used_in_current_cycle = True
-        chosen.save(update_fields=['used_in_current_cycle'])
-        return chosen
+    index = (sequence_number - 1) % len(names)
+    return names[index]

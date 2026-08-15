@@ -101,7 +101,8 @@ class SubmitPledgeRegistrationView(View):
             
             pledge.certificate_id = generate_certificate_id()
             pledge.tree_number = generate_tree_number()
-            pledge.dedicated_to = assign_freedom_fighter_name()
+            tree_sequence = int(pledge.tree_number.rsplit("/", 1)[-1])
+            pledge.dedicated_to = assign_freedom_fighter_name(tree_sequence)
             pledge.save(update_fields=['certificate_id', 'tree_number', 'dedicated_to'])
             
             # Trigger certificate generation synchronously so we can return the URLs
