@@ -1,0 +1,188 @@
+{% extends "admin_panel/base.html" %}
+{% block title %}Hero Banner{% endblock %}
+{% block nav_hero_banner %}active{% endblock %}
+
+{% block content %}
+<div class="ph">
+  <div class="ph-left">
+    <div class="ph-title">Hero Banner</div>
+    <div class="ph-sub">{{ slides|length }} slide{{ slides|length|pluralize }} · shown on the homepage in order below · leave empty to show the default banner</div>
+  </div>
+</div>
+
+<!-- Add New Slide -->
+<div class="card" style="padding:20px;margin-bottom:20px">
+  <div style="font-weight:700;margin-bottom:14px">Add New Slide</div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="create">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Title</label>
+        <input type="text" name="title" class="fsel" style="width:100%" placeholder="e.g. Together for a Greener Tomorrow">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Subtitle</label>
+        <input type="text" name="subtitle" class="fsel" style="width:100%" placeholder="e.g. GREEN NARODA · CLEAN NARODA">
+      </div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="font-size:12px;font-weight:600;color:var(--text3)">Description</label>
+      <textarea name="description" class="fsel" style="width:100%;min-height:60px" placeholder="Optional short description shown below the title"></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Primary Button Text</label>
+        <input type="text" name="primary_button_text" class="fsel" style="width:100%" placeholder="e.g. Take The Pledge">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Primary Button Link</label>
+        <input type="text" name="primary_button_url" class="fsel" style="width:100%" placeholder="e.g. /#har-ghar-tiranga">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Secondary Button Text</label>
+        <input type="text" name="secondary_button_text" class="fsel" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Secondary Button Link</label>
+        <input type="text" name="secondary_button_url" class="fsel" style="width:100%">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end;margin-bottom:14px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Image</label>
+        <input type="file" name="image" accept="image/*" class="fsel" style="width:100%">
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:var(--text3)">Display Order</label>
+        <input type="number" name="sort_order" class="fsel" style="width:100%" value="0" min="0">
+      </div>
+      <div>
+        <label style="font-size:12px;display:flex;align-items:center;gap:6px">
+          <input type="checkbox" name="is_active" checked> Active
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm">+ Add Slide</button>
+  </form>
+</div>
+
+<!-- Existing Slides -->
+<div class="card" style="padding:0">
+  <div class="table-wrap">
+    <table class="dt">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Order</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for slide in slides %}
+        <tr>
+          <td>
+            {% if slide.image %}
+              <img src="{{ slide.image.image.url }}" alt="" style="width:80px;height:45px;object-fit:cover;border-radius:6px">
+            {% else %}
+              <span style="font-size:11px;color:var(--text3)">No image</span>
+            {% endif %}
+          </td>
+          <td class="td-name">{{ slide.title|default:"—"|truncatechars:40 }}</td>
+          <td>{{ slide.sort_order }}</td>
+          <td>
+            {% if slide.is_active %}
+              <span class="badge badge-green"><span class="bdot"></span>Active</span>
+            {% else %}
+              <span class="badge badge-gray"><span class="bdot"></span>Hidden</span>
+            {% endif %}
+          </td>
+          <td>
+            <div class="flex gap-2">
+              <form method="post" style="display:inline">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="toggle">
+                <input type="hidden" name="slide_id" value="{{ slide.pk }}">
+                <button type="submit" class="btn btn-outline btn-xs">
+                  {% if slide.is_active %}🙈 Hide{% else %}👁 Show{% endif %}
+                </button>
+              </form>
+              <form method="post" onsubmit="return confirm('Delete this slide?');" style="display:inline">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="slide_id" value="{{ slide.pk }}">
+                <button type="submit" class="btn btn-outline btn-xs" style="color:#DC2626">🗑 Delete</button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="5" style="padding:0;border-top:none">
+            <details style="padding:0 16px 12px">
+              <summary style="cursor:pointer;font-size:12px;color:var(--text3);padding:4px 0">✏️ Edit this slide</summary>
+              <form method="post" enctype="multipart/form-data" style="padding:12px 0">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="update">
+                <input type="hidden" name="slide_id" value="{{ slide.pk }}">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Title</label>
+                    <input type="text" name="title" class="fsel" style="width:100%" value="{{ slide.title }}">
+                  </div>
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Subtitle</label>
+                    <input type="text" name="subtitle" class="fsel" style="width:100%" value="{{ slide.subtitle }}">
+                  </div>
+                </div>
+                <div style="margin-bottom:12px">
+                  <label style="font-size:12px;font-weight:600;color:var(--text3)">Description</label>
+                  <textarea name="description" class="fsel" style="width:100%;min-height:60px">{{ slide.description }}</textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Primary Button Text</label>
+                    <input type="text" name="primary_button_text" class="fsel" style="width:100%" value="{{ slide.primary_button_text }}">
+                  </div>
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Primary Button Link</label>
+                    <input type="text" name="primary_button_url" class="fsel" style="width:100%" value="{{ slide.primary_button_url }}">
+                  </div>
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Secondary Button Text</label>
+                    <input type="text" name="secondary_button_text" class="fsel" style="width:100%" value="{{ slide.secondary_button_text }}">
+                  </div>
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Secondary Button Link</label>
+                    <input type="text" name="secondary_button_url" class="fsel" style="width:100%" value="{{ slide.secondary_button_url }}">
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;align-items:end;margin-bottom:14px">
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Replace Image</label>
+                    <input type="file" name="image" accept="image/*" class="fsel" style="width:100%">
+                  </div>
+                  <div>
+                    <label style="font-size:12px;font-weight:600;color:var(--text3)">Display Order</label>
+                    <input type="number" name="sort_order" class="fsel" style="width:100%" value="{{ slide.sort_order }}" min="0">
+                  </div>
+                  <div>
+                    <label style="font-size:12px;display:flex;align-items:center;gap:6px">
+                      <input type="checkbox" name="is_active" {% if slide.is_active %}checked{% endif %}> Active
+                    </label>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+              </form>
+            </details>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3)">No slides yet — the homepage is showing its default banner. Add a slide above to override it.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

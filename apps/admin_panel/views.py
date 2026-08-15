@@ -1409,5 +1409,82 @@ class AdminPledgeUploadExcelView(AdminRequiredMixin, View):
                 
         except Exception as e:
             messages.error(request, f"Error processing file: {str(e)}")
-            
+
         return redirect("admin_panel:pledges")
+
+
+# ─── Hero Banner ────────────────────────────────────────────────────────────
+
+class AdminHeroBannerView(AdminRequiredMixin, View):
+    """Manage the homepage hero banner slides (title/subtitle/description,
+    image, buttons, active state, and display order)."""
+    template_name = "admin_panel/hero_banner.html"
+
+    def get(self, request):
+        from apps.cms.models import Homepage
+        homepage = Homepage.load()
+        slides = homepage.hero_slides.all().order_by("sort_order", "-created_at")
+        return render(request, self.template_name, {"slides": slides})
+
+    def post(self, request):
+        from apps.cms.models import Homepage, HeroSlide, MediaAsset
+
+        action = request.POST.get("action")
+        homepage = Homepage.load()
+
+        if action == "create":
+            image_asset = None
+            image_file = request.FILES.get("image")
+            if image_file:
+                image_asset = MediaAsset.objects.create(
+                    category=MediaAsset.AssetCategory.HERO,
+                    title=request.POST.get("title") or image_file.name,
+                    image=image_file,
+                )
+            HeroSlide.objects.create(
+                homepage=homepage,
+                title=request.POST.get("title", "").strip(),
+                subtitle=request.POST.get("subtitle", "").strip(),
+                description=request.POST.get("description", "").strip(),
+                image=image_asset,
+                primary_button_text=request.POST.get("primary_button_text", "").strip(),
+                primary_button_url=request.POST.get("primary_button_url", "").strip(),
+                secondary_button_text=request.POST.get("secondary_button_text", "").strip(),
+                secondary_button_url=request.POST.get("secondary_button_url", "").strip(),
+                is_active=request.POST.get("is_active") == "on",
+                sort_order=request.POST.get("sort_order") or 0,
+            )
+            messages.success(request, "Hero slide added.")
+
+        elif action == "update":
+            slide = get_object_or_404(HeroSlide, pk=request.POST.get("slide_id"), homepage=homepage)
+            slide.title = request.POST.get("title", "").strip()
+            slide.subtitle = request.POST.get("subtitle", "").strip()
+            slide.description = request.POST.get("description", "").strip()
+            slide.primary_button_text = request.POST.get("primary_button_text", "").strip()
+            slide.primary_button_url = request.POST.get("primary_button_url", "").strip()
+            slide.secondary_button_text = request.POST.get("secondary_button_text", "").strip()
+            slide.secondary_button_url = request.POST.get("secondary_button_url", "").strip()
+            slide.is_active = request.POST.get("is_active") == "on"
+            slide.sort_order = request.POST.get("sort_order") or 0
+            image_file = request.FILES.get("image")
+            if image_file:
+                slide.image = MediaAsset.objects.create(
+                    category=MediaAsset.AssetCategory.HERO,
+                    title=slide.title or image_file.name,
+                    image=image_file,
+                )
+            slide.save()
+            messages.success(request, "Hero slide updated.")
+
+        elif action == "delete":
+            slide = get_object_or_404(HeroSlide, pk=request.POST.get("slide_id"), homepage=homepage)
+            slide.delete()
+            messages.success(request, "Hero slide deleted.")
+
+        elif action == "toggle":
+            slide = get_object_or_404(HeroSlide, pk=request.POST.get("slide_id"), homepage=homepage)
+            slide.is_active = not slide.is_active
+            slide.save(update_fields=["is_active"])
+
+        return redirect("admin_panel:hero_banner")

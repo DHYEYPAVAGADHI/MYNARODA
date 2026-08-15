@@ -13,6 +13,7 @@ urlpatterns = [
     path("", views.AdminDashboardView.as_view(), name="dashboard"),
     path("dashboard/", views.AdminDashboardView.as_view(), name="dashboard_explicit"),
     path("leadership-photos/", views.AdminLeadershipPhotosView.as_view(), name="leadership_photos"),
+    path("hero-banner/", views.AdminHeroBannerView.as_view(), name="hero_banner"),
 
     # Pledges
     path("pledges/", views.AdminPledgeListView.as_view(), name="pledges"),
