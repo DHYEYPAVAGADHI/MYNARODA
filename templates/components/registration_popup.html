@@ -1,7 +1,7 @@
 {% load volunteer_tags %}
 <!-- Har Ghar Tiranga Popup Component -->
 <div id="registration-popup" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-  <div id="modal-box" class="bg-white rounded-2xl w-full max-w-[420px] max-h-[85vh] overflow-y-auto relative shadow-2xl custom-scrollbar" style="transform: scale(0.95); opacity: 0;">
+  <div id="modal-box" data-lenis-prevent class="bg-white rounded-2xl w-full max-w-[420px] max-h-[85vh] overflow-y-auto relative shadow-2xl custom-scrollbar" style="transform: scale(0.95); opacity: 0;">
     
     <button type="button" onclick="closePopup()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 z-10 transition-colors">
       <i class="fa-solid fa-xmark text-lg"></i>
@@ -97,7 +97,7 @@
 
 <!-- Green Naroda • Clean Naroda Tree Pledge Popup Component -->
 <div id="pledge-popup" class="fixed inset-0 z-[10000] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-  <div id="pledge-modal-box" class="bg-white rounded-2xl w-full max-w-[420px] max-h-[85vh] overflow-y-auto relative shadow-2xl custom-scrollbar" style="transform: scale(0.95); opacity: 0;">
+  <div id="pledge-modal-box" data-lenis-prevent class="bg-white rounded-2xl w-full max-w-[420px] max-h-[85vh] overflow-y-auto relative shadow-2xl custom-scrollbar" style="transform: scale(0.95); opacity: 0;">
 
     <button type="button" onclick="closePledgePopup()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 z-10 transition-colors">
       <i class="fa-solid fa-xmark text-lg"></i>
@@ -382,8 +382,11 @@ function unlockBodyScroll() {
     document.body.style.right = '';
     document.body.classList.remove('overflow-hidden');
     window.scrollTo(0, _scrollLockY);
+    // Lenis's own start() already re-syncs its internal scroll state to the
+    // real DOM position (it calls reset() internally), so no extra scrollTo
+    // call is needed here — an earlier version of this fix added one and it
+    // was redundant, contributing unnecessary work on every popup close.
     window.__lenis?.start();
-    window.__lenis?.scrollTo(_scrollLockY, { immediate: true });
 }
 
 // Safety net: if a popup was left open when the user navigated away (a link
